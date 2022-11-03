@@ -157,14 +157,12 @@ const Dashboard = () => {
         </div>
       </div>
       <div className='pt-20 pb-10'>
-        <div className=' bg-gray-200 rounded-lg w-full h-64  drop-shadow-xl  '>
-          <div className='flex w-full'>
-            <div className='w-24'>Goal Teratas</div>
-            <div className='flex justify-end bg-black w-96'>
-              <div className='border-2 border-gray-400 rounded-md '>Ma</div>
-              <div className='border-2 border-gray-400 rounded-md'>Goal</div>
-            </div>
-          </div>
+        <div className=' bg-cyan-100 rounded-lg w-full h-80  drop-shadow-xl  '>         
+            <div className='w-52 mx-auto font-extrabold pt-5'>Peringkat Teratas</div>           
+              <div className='grid grid-cols-2 gap-96 flex-auto w-full h-10 pt-4 pl-14 pr-14'>
+                <div className=' pl-14 pr-20 text-center font-medium'>GOAL</div>
+                <div className=' pl-14 pr-20 text-center font-medium'>MA</div>
+              </div>
         </div>
       </div>
     </div>
