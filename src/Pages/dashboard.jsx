@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import profile from '.././Images/profile.png';
 const data = [
   {
     name: 'Page A',
@@ -47,7 +48,32 @@ const data = [
 ];
 const percentage = 66;
 
+
+
 const Dashboard = () => {
+
+  let dummy = [
+    {
+      nama: "Fudail Ramadhani",
+      presentase: "150%"
+    },
+    {
+      nama: "Fudail Ramadhani",
+      presentase: "150%"
+    },
+    {
+      nama: "Fudail Ramadhani",
+      presentase: "150%"
+    },
+    {
+      nama: "Fudail Ramadhani",
+      presentase: "150%"
+    },
+    
+
+  ];
+
+  const [row, setrow] = React.useState(true);
   return (
     <div className='pl-10 pr-5 pt-10 h-full w-auto'>
       <div className='_periode flex justify-start pb-5'>
@@ -99,14 +125,14 @@ const Dashboard = () => {
               />
             </div>
             <div className='container mx-auto'>
-            <div className='_periode  flex w-full  '>
-             
-              <div className='text-center pl-5' >Anda telah mencapai</div>
-              <div className='pl-2 text center'>66%</div>
-              <div className='text-center'>dari</div>
-             
-            </div>
-            <div className='container mx-auto'>keseluruhan goal anda</div>
+              <div className='_periode  flex w-full  '>
+
+                <div className='text-center pl-5' >Anda telah mencapai</div>
+                <div className='pl-2 text center'>66%</div>
+                <div className='text-center'>dari</div>
+
+              </div>
+              <div className='container mx-auto'>keseluruhan goal anda</div>
             </div>
             <div className='container mx-auto grid grid-cols-2 gap-14 flex-auto w-60 h-7 pt-4'>
               <div className='bg-slate-200 border-2 border-gray-400 rounded-2xl'>
@@ -156,13 +182,61 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-      <div className='pt-20 pb-10'>
-        <div className=' bg-cyan-100 rounded-lg w-full h-80  drop-shadow-xl  '>         
-            <div className='w-52 mx-auto font-extrabold pt-5'>Peringkat Teratas</div>           
-              <div className='grid grid-cols-2 gap-96 flex-auto w-full h-10 pt-4 pl-14 pr-14'>
-                <div className=' pl-14 pr-20 text-center font-medium'>GOAL</div>
-                <div className=' pl-14 pr-20 text-center font-medium'>MA</div>
+
+      <div className='pt-20 pb-10 '>
+        <div className=' bg-slate-200 rounded-lg w-full h-96  drop-shadow-xl  '>
+          <div className='w-52 mx-auto font-extrabold pt-5 pl-8'>Peringkat Teratas</div>
+          <div className='grid grid-cols-2 gap-72 flex-auto w-full h-10 pt-4 pl-16 pr-14'>
+            <div className=' pl-14 pr-20 text-center font-medium'>GOAL</div>
+            <div className=' pl-14 pr-20 text-center font-medium'>MA</div>
+          </div>
+          <div>
+            
+              <div className='pl-12 pt-3 '>
+                <div className='grid grid-cols-2 gap-x-44 gap-y-3 '>
+                {dummy.map((e) => (
+                  <div className='overflow-y-auto'>
+                  <div className="grid grid-cols-12 w-96 flex-auto h-14 bg-white rounded-xl drop-shadow-xl  ">
+                    
+                    <div className=' col-span-2 '>
+                      <img className='w-14 h-14 py-2 pl-3  ' src={profile} alt="" />
+                    </div>
+                    <div className=' col-span-6 pl-4 pt-3'>
+                      <p>{e.nama}</p>
+                      <div className='w-52 bg-green-400 h-3 rounded-2xl'></div>
+                    </div>
+                    <div className='col-span-4 py-2 pl-12 pt-6'>
+                      <div className='w-16 bg-green-200 h-6 rounded-lg'>
+                        <div className='mx-auto text-center font-serif text-green-600'>{e.presentase}</div>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                  ))}
+                    {dummy.map((b) => (
+                  <div className="grid grid-cols-12 w-96 flex-auto h-14 bg-white rounded-xl drop-shadow-lg ">
+
+                    <div className=' col-span-2 '>
+                      <img className='w-14 h-14 py-2 pl-3  ' src={profile} alt="" />
+                    </div>
+                    <div className=' col-span-6 pl-4 pt-3'>
+                      <p>{b.nama}</p>
+                      <div className='w-52 bg-green-400 h-3 rounded-2xl'></div>
+                    </div>
+                    <div className='col-span-4 py-2 pl-12 pt-6'>
+                      <div className='w-16 bg-green-200 h-6 rounded-lg'>
+                        <div className='mx-auto text-center font-serif text-green-600'>{b.presentase}</div>
+                      </div>
+                    </div>
+                  </div>
+                   ))}
+                </div>
+
+
               </div>
+           
+          </div>
+
         </div>
       </div>
     </div>
@@ -170,3 +244,15 @@ const Dashboard = () => {
 }
 
 export default Dashboard
+{/* <div className='bg-green-500'></div>
+<div className='bg-red-500'></div>
+<div className='bg-blue-500'></div>
+<div className='bg-yellow-500'></div>
+<div className='bg-purple-500'></div>
+<div className='bg-orange-500'></div>
+<div className='bg-white'></div>
+<div className='bg-black'></div>
+<div className='bg-gray-400'></div>
+<div className='bg-yellow-500'></div>
+<div className='bg-green-500'></div>
+<div className='bg-red-500'></div> */}
