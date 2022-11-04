@@ -133,7 +133,7 @@ const Dashboard = () => {
           <div className='font-semibold p-5 pl-5'>
             <h3>Pencapaian Divisi</h3>
           </div>
-          <div className='w-full h-full pt-5 pl-5'>
+          <div className='mx-auto'>
             <BarChart
               width={500}
               height={300}
