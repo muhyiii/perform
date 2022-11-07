@@ -1,4 +1,5 @@
 import React, { PureComponent } from "react";
+import profile from '../Images/profile.png'
 import {
   BarChart,
   Bar,
@@ -15,6 +16,7 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import ChangingProgressProvider from "../Component/ChangingProggresProvider";
+import Peringkat from "./data"
 const data = [
   {
     name: "Page A",
@@ -64,6 +66,7 @@ const persen = 66;
 
 
 const Dashboard = () => {
+  
 
   let dummy = [
     {
@@ -188,8 +191,8 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
-      <div className='pt-20 pb-10 '>
+              <Peringkat></Peringkat>
+      {/* <div className='pt-20 pb-10 '>
         <div className=' bg-slate-200 rounded-lg w-full h-96  drop-shadow-xl  '>
           <div className='w-52 mx-auto font-extrabold pt-5 pl-8'>Peringkat Teratas</div>
           <div className='grid grid-cols-2 gap-72 flex-auto w-full h-10 pt-4 pl-16 pr-14'>
@@ -236,7 +239,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                    ))}
-                </div>
+                </div>/
 
 
               </div>
@@ -244,7 +247,7 @@ const Dashboard = () => {
           </div>
 
         </div>
-      </div>
+      </div>/ */}
     </div>
   );
 };
