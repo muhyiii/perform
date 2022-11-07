@@ -32,6 +32,7 @@ const Body = () => {
               </li>
               <li>
                 <br />
+                <hr />
               </li>
               <li>
                 <NavLink
