@@ -70,7 +70,7 @@ const Dashboard = () => {
         <div className="font-serif text-blue-500 bg-blue-50 ">oktober 2022</div>
       </div>
 
-      <div class="grid grid-cols-2 w-auto  flex-auto h-96  ">
+      <div className="grid grid-cols-2 w-auto  flex-auto h-96  ">
         <div className="bg-slate-200 rounded-lg w-5/6 drop-shadow-xl  ">
           <div className="container mx-auto    w-80 ">
             <div className="container text-center mx-auto font-semibold p-5 pb-5 pl-5">
