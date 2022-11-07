@@ -5,7 +5,7 @@ import Dashboard from "./Pages/dashboard";
 import Goals from "./Pages/goals";
 import Body from "./Component/Body";
 import GoalsDetail from "./Pages/SemiPage/goalsDetail";
-import Peringkat from "./Pages/data";
+import Peringkat from "../src/Pages/peringkat";
 
 function App() {
   return (

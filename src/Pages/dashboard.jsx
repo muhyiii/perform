@@ -16,7 +16,7 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import ChangingProgressProvider from "../Component/ChangingProggresProvider";
-import Peringkat from "./data"
+import Peringkat from "./peringkat"
 const data = [
   {
     name: "Page A",
