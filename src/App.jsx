@@ -5,12 +5,14 @@ import Dashboard from "./Pages/dashboard";
 import Goals from "./Pages/goals";
 import Body from "./Component/Body";
 import GoalsDetail from "./Pages/SemiPage/goalsDetail";
+import Peringkat from "./Pages/data";
 
 function App() {
   return (
     <div className="relative ">
       <Routes>
         <Route path="/" element={<Body />}>
+           <Route index path="peringkat" element={<Peringkat />}></Route>
           <Route index path="dashboard" element={<Dashboard />}></Route>
           <Route path="goals" element={<Goals />}>
             <Route path=":name" element={<GoalsDetail />} />
