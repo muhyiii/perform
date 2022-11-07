@@ -8,7 +8,6 @@ import {
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
 import {
-  CircularProgressbar,
   buildStyles,
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
@@ -20,24 +19,24 @@ const Goals = () => {
   const [data, setData] = React.useState([]);
 
   //////////////////////////////////////////////
-  let dummy = [
-    {
-      nama: "Fudail Ramadhani",
-      role: "Magang",
-      asign: "12 November",
-      status: "Done",
-      task: "Membuat halaman HTML dengan baik dan benar",
-      rate: 60,
-    },
-    {
-      nama: "Fudail Ramadhanwi",
-      role: "Magang",
-      asign: "12 November",
-      status: "Done",
-      task: "Membuat halaman HTML dengan baik dan benar",
-      rate: 90,
-    },
-  ];
+  // let dummy = [
+  //   {
+  //     nama: "Fudail Ramadhani",
+  //     role: "Magang",
+  //     asign: "12 November",
+  //     status: "Done",
+  //     task: "Membuat halaman HTML dengan baik dan benar",
+  //     rate: 60,
+  //   },
+  //   {
+  //     nama: "Fudail Ramadhanwi",
+  //     role: "Magang",
+  //     asign: "12 November",
+  //     status: "Done",
+  //     task: "Membuat halaman HTML dengan baik dan benar",
+  //     rate: 90,
+  //   },
+  // ];
 
   //////////////////////////////////////////////
   React.useEffect(() => {
