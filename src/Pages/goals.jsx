@@ -10,15 +10,11 @@ import {
   MdSearch,
   MdOutlineCancel,
 } from "react-icons/md";
-import { BiDotsVerticalRounded } from "react-icons/bi";
 
-import {
-  buildStyles,
-  CircularProgressbarWithChildren,
-} from "react-circular-progressbar";
-import ChangingProgressProvider from "../Component/Support/ChangingProggresProvider";
+
+
 import AddGoals from "./goals/addGoal";
-import ModalOption from "../Component/Page Component/ModalOption";
+
 import ColView from "../Component/Page Component/ColView";
 import RowView from "../Component/Page Component/RowView";
 

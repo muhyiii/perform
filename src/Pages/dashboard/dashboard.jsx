@@ -1,5 +1,10 @@
+<<<<<<< HEAD:src/Pages/dashboard.jsx
 import React from "react";
 import profile from "../Images/profile.png";
+=======
+import React, { PureComponent } from "react";
+// import profile from '../Images/profile.png'
+>>>>>>> 92191f873c1d10f75800d2dcbcee7819e3610733:src/Pages/dashboard/dashboard.jsx
 import {
   BarChart,
   Bar,
@@ -15,50 +20,38 @@ import {
   CircularProgressbarWithChildren,
   buildStyles,
 } from "react-circular-progressbar";
+<<<<<<< HEAD:src/Pages/dashboard.jsx
 import ChangingProgressProvider from "../Component/Support/ChangingProggresProvider";
 import Peringkat from "./data";
+=======
+import ChangingProgressProvider from "../../Component/ChangingProggresProvider";
+import Peringkat from "./peringkat"
+import Todolist from "./Todolist";
+>>>>>>> 92191f873c1d10f75800d2dcbcee7819e3610733:src/Pages/dashboard/dashboard.jsx
 const data = [
   {
-    name: "Page A",
+    name: "Risk..",
     Goal: 4000,
     Ma: 2400,
     amt: 2400,
   },
   {
-    name: "Page B",
+    name: "Marketing...",
     Goal: 3000,
     Ma: 1398,
     amt: 2210,
   },
   {
-    name: "Page C",
+    name: "Operational",
     Goal: 2000,
     Ma: 9800,
     amt: 2290,
   },
   {
-    name: "Page D",
+    name: "IT",
     Goal: 2780,
     Ma: 3908,
     amt: 2000,
-  },
-  {
-    name: "Page E",
-    Goal: 1890,
-    Ma: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    Goal: 2390,
-    Ma: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    Goal: 3490,
-    Ma: 4300,
-    amt: 2100,
   },
 ];
 const persen = 66;
@@ -86,6 +79,9 @@ const Dashboard = () => {
   const [row, setrow] = React.useState(true);
   return (
     <div className="pl-10 pr-5 pt-10 h-full w-auto">
+      <div>
+        <h1 className="text-5xl font-bold pb-4">Dashboard</h1>
+      </div>
       <div className="_periode flex justify-start pb-5">
         <div className="font-serif ">Periode :</div>
 
@@ -137,23 +133,23 @@ const Dashboard = () => {
             </div>
             <div className="container mx-auto">
               <div className="_periode  flex w-full  ">
-                <div className="text-center pl-5">Anda telah mencapai</div>
-                <div className="pl-2 text center">66%</div>
-                <div className="text-center">dari</div>
+               <div>
+                <p className="text-center">Anda telah mencapai 66% dari keseluruhan goal anda</p>
+               </div>
               </div>
-              <div className="container mx-auto">keseluruhan goal anda</div>
+             
             </div>
             <div className="container mx-auto grid grid-cols-2 gap-14 flex-auto w-60 h-7 pt-4">
               <div className="bg-slate-200 border-2 border-gray-400 rounded-2xl">
-                <div className="text-md  text-red-600">74.72%</div>
+                <div className="text-md  text-red-600 text-center">74.72%</div>
               </div>
               <div className="bg-slate-200 border-2 border-gray-400 rounded-2xl">
-                <div className="text-md  text-red-600">60.96%</div>
+                <div className="text-md  text-red-600 text-center">60.96%</div>
               </div>
             </div>
             <div className="container mx-auto grid grid-cols-2 gap-14 flex-auto w-60 h-7 pt-4">
-              <div className="text-sm">Rata-rata goal</div>
-              <div className="text-sm">Rata-rata goal</div>
+              <div className="text-sm text-center">Rata-rata goal</div>
+              <div className="text-sm text-center">Rata-rata goal</div>
             </div>
           </div>
         </div>
@@ -185,6 +181,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
+<<<<<<< HEAD:src/Pages/dashboard.jsx
       <Peringkat></Peringkat>
       {/* <div className='pt-20 pb-10 '>
         <div className=' bg-slate-200 rounded-lg w-full h-96  drop-shadow-xl  '>
@@ -242,6 +239,11 @@ const Dashboard = () => {
 
         </div>
       </div>/ */}
+=======
+              <Peringkat></Peringkat>
+              <Todolist></Todolist>
+              
+>>>>>>> 92191f873c1d10f75800d2dcbcee7819e3610733:src/Pages/dashboard/dashboard.jsx
     </div>
   );
 };
