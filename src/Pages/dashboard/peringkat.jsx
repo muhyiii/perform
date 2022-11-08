@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 // import axios from 'axios'
 import ReactPaginate from 'react-paginate';
-import profile from '../Images/profile.png';
+import profile from '../../Images/profile.png';
 
 
 
@@ -218,17 +218,18 @@ export default class peringkat extends Component {
             <div>
                 <div className='pt-20 pb-10 '>
                     <div className=' bg-slate-200 rounded-lg w-full h-96  drop-shadow-xl  '>
-                        <div className='w-52 mx-auto font-extrabold pt-5 pl-8'>Peringkat Teratas</div>
-                        <div className='grid grid-cols-2 gap-72 flex-auto w-full h-10 pt-4 pl-16 pr-14'>
-                            <div className=' pl-14 pr-20 text-center font-medium'>GOAL</div>
+                        <div className='w-96 mx-auto font-extrabold text-2xl pt-3 pl-20'>Peringkat Teratas</div>
+                        <div className='grid grid-cols-2 gap-72 flex-auto w-full h-10 pt-1 pl-16 pr-14'>
+                            <div className=' pl-24 pr-20 text-center font-medium'>GOAL</div>
                             <div className=' pl-14 pr-20 text-center font-medium'>MA</div>
                         </div>
                         <div>
 
-                            <div className='pl-12 pt-3 '>
-                                <div className='grid grid-cols-2 gap-x-44 gap-y-3 '>
+                            <div className='pl-14 pt-1 '>
+                                <div className='grid grid-cols-2 gap-x-44 gap-y-2  '>
                                     {this.state.postData}
                                     <ReactPaginate
+                                        className=''
                                         previousLabel={"prev"}
                                         nextLabel={"next"}
                                         breakLabel={"..."}
