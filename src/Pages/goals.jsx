@@ -1,4 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
+import Swal from "sweetalert2";
+
+// CommonJS
+
 import {
   MdViewModule,
   MdViewStream,
@@ -11,11 +16,15 @@ import {
   buildStyles,
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
-import ChangingProgressProvider from "../Component/ChangingProggresProvider";
-import AddGoals from "./SemiPage/addGoal";
+import ChangingProgressProvider from "../Component/Support/ChangingProggresProvider";
+import AddGoals from "./goals/addGoal";
+import ModalOption from "../Component/Page Component/ModalOption";
+import ColView from "../Component/Page Component/ColView";
+import RowView from "../Component/Page Component/RowView";
 
 const Goals = () => {
   const [addGoals, setAddGoals] = React.useState(false);
+
   const [data, setData] = React.useState([]);
 
   //////////////////////////////////////////////
@@ -39,13 +48,61 @@ const Goals = () => {
   // ];
 
   //////////////////////////////////////////////
+
+  const updateLocStorage = (id, status) => {
+    let rate = 0;
+    if (status === "done" || status === "held") {
+      rate = 100;
+    } else if (status === "procces") {
+      rate = 60;
+    }
+    for (let dataa of data) {
+      if (dataa.id === id) {
+        dataa.status = status;
+        dataa.rate = rate;
+      }
+    }
+    localStorage.setItem("dummyData", JSON.stringify(data));
+    setData(JSON.parse(localStorage.getItem("dummyData")));
+  };
+  const deleteLocStorage = (id) => {
+    let temp = data.filter((item) => item.id != id);
+    localStorage.setItem("dummyData", JSON.stringify(temp));
+    setData(JSON.parse(localStorage.getItem("dummyData")));
+  };
+
+  const [isChoosen, setIsChoosen] = React.useState(false);
+
+  const handleChange = (state, idd, statuss) => {
+    if (state === "isDelete") {
+      // if (isDel === true) {
+      //   setWiilDelete(true);
+      // }
+      setIsChoosen(!isChoosen);
+      if (idd || statuss) {
+        localStorage.setItem("someId", idd);
+        localStorage.setItem("someStatus", statuss);
+      } else {
+        setIsChoosen(!isChoosen);
+        localStorage.removeItem("someId");
+        localStorage.removeItem("someStatus");
+      }
+    }
+  };
+
   React.useEffect(() => {
     setData(JSON.parse(localStorage.getItem("dummyData")));
+  }, []);
+  React.useEffect(() => {
+    setData(JSON.parse(localStorage.getItem("dummyData")));
+    localStorage.removeItem("someId");
+    localStorage.removeItem("someStatus");
+    // setUpdated(JSON.parse(localStorage.getItem("dummyData")));
   }, [localStorage.getItem("dummyData")]);
 
-  const [row, setrow] = React.useState(true);
+  const [row, setRow] = React.useState(true);
   return (
-    <div className="p-10 relative  h-screen w-full   ">
+    <div className="p-10 relative  h-screen w-full capitalize  ">
       <AddGoals
         onClose={() => {
           setAddGoals(false);
@@ -72,15 +129,20 @@ const Goals = () => {
           />
           <MdOutlineCancel />
         </label>
-        <div className=" text-black  ">
+        <div className=" text-black  cursor-pointer ">
           <div
             className="rounded-xl border m-auto"
             title="change view"
             onClick={() => {
-              setrow(!row);
+              setRow(!row);
+              
             }}
           >
-            {row ? <MdViewModule size={30} /> : <MdViewStream size={30} />}
+            {row ? (
+              <MdViewModule size={30} />
+            ) : (
+              <MdViewStream size={30} />
+            )}
           </div>
         </div>
       </div>
@@ -94,147 +156,164 @@ const Goals = () => {
           Tambah Goals
         </button>
       </div>
-      <div className="my-5">
+      {isChoosen && (
+        <div className="text-white">
+          {/* <button
+            onClick={() => {
+              if (
+                localStorage.getItem("someStatus") === "to-do" ||
+                localStorage.getItem("someStatus") === "procces"
+              ) {
+                Swal.fire({
+                  title: "Are you sure?",
+                  text: "You can only update to the next stage",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Yes, update it!",
+                }).then(async (result) => {
+                  if (result.isConfirmed) {
+                    await Swal.fire({
+                      title: "Select value of status update",
+                      input: "select",
+                      inputOptions:
+                        localStorage.getItem("someStatus") !== "procces"
+                          ? {
+                              procces: "Procces",
+                              held: "Held",
+                              done: "Done",
+                            }
+                          : {
+                              held: "Held",
+                              done: "Done",
+                            },
+                      inputPlaceholder: "Select a status",
+                      showCancelButton: true,
+                      inputValidator: (value) => {
+                        return new Promise((resolve) => {
+                          if (
+                            value === "done" ||
+                            value === "held" ||
+                            value === "procces"
+                          ) {
+                            console.log(value);
+                            updateLocStorage(
+                              localStorage.getItem("someId"),
+                              value
+                            );
+                            localStorage.removeItem("someId");
+                            localStorage.removeItem("someStatus");
+                            setIsChoosen(false);
+                            Swal.fire(
+                              "Succesfull!",
+                              "Your status has been updated.",
+                              "success"
+                            );
+                          } else {
+                            resolve("Choose the next stage of your status");
+                          }
+                        });
+                      },
+                    });
+                  }
+                });
+              } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "Oops...",
+                  text: "You cannot update to stage before!",
+                });
+              }
+            }}
+            className="px-5 py-1 bg-blue-500 my-3 rounded-lg mx-3"
+          >
+            {" "}
+            Update
+          </button> */}
+          <button
+            onClick={() => {
+              Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  deleteLocStorage(localStorage.getItem("someId"));
+                  localStorage.removeItem("someId");
+                  localStorage.removeItem("someStatus");
+                  setIsChoosen(false);
+                  Swal.fire(
+                    "Deleted!",
+                    "Your file has been deleted.",
+                    "success"
+                  );
+                }
+              });
+            }}
+            className="px-5 py-1 bg-red-500 my-3 rounded-lg mx-3"
+          >
+            {" "}
+            Delete
+          </button>
+        </div>
+      )}
+      <div className=" w-full">
         {row ? (
-          <div className="grid grid-cols-12  ">
+          <div className="grid grid-cols-12">
             {data.map((e) => {
+              let deadline = new Date(e.asign).getDate();
+              let now = new Date().getDate();
+
+              console.log(now);
+              let remain = deadline - now;
+
               return (
-                <div
+                <RowView
+                  data={e}
                   key={e.id}
-                  className="col-span-4 shadow-md m-1 px-4 py-2 border rounded-xl"
-                >
-                  <div
-                    className="flex justify-between items-center"
-                    onClick={() => {}}
-                  >
-                    <div className="flex space-x-3 ">
-                      <input type="checkbox" name="" id="" />
-                      <div className="text-left ">
-                        <p>{e.nama}</p>
-                        <p className="text-xs text-gray-400">{e.role}</p>
-                      </div>
-                    </div>
-                    <p className="text-xs">{e.asign}</p>
-                  </div>
-                  <div className="text-lg grid grid-cols-11 items-center space-x-2 my-5">
-                    <div className="col-span-2">
-                      <ChangingProgressProvider values={[0, `${e.rate}`]}>
-                        {(percentage) => (
-                          <CircularProgressbarWithChildren
-                            value={percentage}
-                            strokeWidth={20}
-                            styles={buildStyles({
-                              // Rotation of path and trail, in number of turns (0-1)
-                              rotation: 0.25,
-
-                              // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                              strokeLinecap: "butt",
-
-                              // Text size
-
-                              // How long animation takes to go from one percentage to another, in seconds
-                              pathTransitionDuration: 0.5,
-
-                              // Can specify path transition in more detail, or remove it entirely
-                              // pathTransition: 'none',
-
-                              // Colors
-                              pathColor: `rgba(62, 152, 199, ${
-                                percentage / 100
-                              })`,
-
-                              trailColor: "#d6d6d6",
-                              backgroundColor: "#3e98c7",
-                            })}
-                          >
-                            <p className="text-[10px]">{e.rate}%</p>
-                          </CircularProgressbarWithChildren>
-                        )}
-                      </ChangingProgressProvider>
-                    </div>
-                    <p className="truncate col-span-9 text-ellipsis font-semibold ">
-                      {e.task}
-                    </p>
-                  </div>
-                  <div className="flex justify-between border-t-2 mt-2">
-                    <p>Status</p>
-                    <p>{e.status}</p>
-                  </div>
-                </div>
+                  id={e.id}
+                  nama={e.nama}
+                  role={e.role}
+                  rate={e.rate}
+                  asign={e.asign}
+                  status={e.status}
+                  task={e.task}
+                  remain={remain}
+                  updateLocStorage={updateLocStorage}
+                  handleChange={handleChange}
+                />
               );
             })}
           </div>
         ) : (
           <div>
-            {data?.map((e) => {
+            {data.map((e) => {
+              let deadline = new Date(e.asign).getDate();
+              let now = new Date().getDate();
+
+              console.log(now);
+              let remain = deadline - now;
+
               return (
-                <div
+                <ColView
+                  data={e}
                   key={e.id}
-                  className=" items-center shadow-md border p-4 grid grid-cols-11 m-3 rounded-lg h-24"
-                >
-                  <div className="grid grid-cols-6">
-                    <input type="checkbox" name="" id="" className="" />
-                    <div></div>
-                    <div className="col-span-3">
-                      <ChangingProgressProvider values={[0, `${e.rate}`]}>
-                        {(percentage) => (
-                          <CircularProgressbarWithChildren
-                            value={percentage}
-                            strokeWidth={20}
-                            styles={buildStyles({
-                              // Rotation of path and trail, in number of turns (0-1)
-                              rotation: 0.25,
-
-                              // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
-                              strokeLinecap: "butt",
-
-                              // Text size
-
-                              // How long animation takes to go from one percentage to another, in seconds
-                              pathTransitionDuration: 0.5,
-
-                              // Can specify path transition in more detail, or remove it entirely
-                              // pathTransition: 'none',
-
-                              // Colors
-                              pathColor: `rgba(62, 152, 199, ${
-                                percentage / 100
-                              })`,
-
-                              trailColor: "#d6d6d6",
-                              backgroundColor: "#3e98c7",
-                            })}
-                          >
-                            <p className="text-[10px]">{e.rate}%</p>
-                          </CircularProgressbarWithChildren>
-                        )}
-                      </ChangingProgressProvider>
-                    </div>
-                  </div>
-                  <div className=" col-span-5 space-y-3 text-ellipsis ">
-                    <p className="text-xl font-bold  truncate">{e.task}</p>
-
-                    <p className="text-xs">{e.asign}</p>
-                  </div>
-                  <div className="text-left col-start-7 col-span-2 ml-5 ">
-                    <p>Fudail Ramadhani</p>
-                    <p className="text-xs text-gray-400">{e.role}</p>
-                  </div>
-                  <div>
-                    <select
-                      id="countries"
-                      className="bg-gray-50 items-center border-gray-300 text-gray-900 text-sm rounded-lg outline-none   focus:border-blue-500  w-full "
-                    >
-                      <option value="done">Done</option>
-                      <option value="to-do">To Do</option>
-                      <option value="held">Held</option>
-                      <option value="procces">Procces</option>
-                    </select>
-                  </div>
-                  <div className="col-start-12">
-                    <BiDotsVerticalRounded size={25} />
-                  </div>
-                </div>
+                  id={e.id}
+                  nama={e.nama}
+                  role={e.role}
+                  rate={e.rate}
+                  asign={e.asign}
+                  status={e.status}
+                  task={e.task}
+                  remain={remain}
+                  updateLocStorage={updateLocStorage}
+                  deleteLocStorage={deleteLocStorage}
+                />
               );
             })}
           </div>

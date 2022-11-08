@@ -11,11 +11,7 @@ const AddGoals = (props) => {
     task: "",
     rate: 0,
   });
-  let rangeTime = {
-    start: new Date(),
-    deadline: new Date(),
-    key: "range",
-  };
+
 
   let dummyUser = [
     {
@@ -28,12 +24,12 @@ const AddGoals = (props) => {
     },
   ];
   React.useEffect(() => {
-    let dataDummy = localStorage.getItem("dataDummy");
+    let dataDummy = localStorage.getItem("dummyData");
     let datas = [];
     if (dataDummy === null) {
       localStorage.setItem("dummyData", JSON.stringify(datas));
     }
-  }, [0]);
+  }, []);
   ///////////////////////
   if (!props.addGoals) {
     return null;

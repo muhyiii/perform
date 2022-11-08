@@ -1,5 +1,5 @@
-import React, { PureComponent } from "react";
-import profile from '../Images/profile.png'
+import React from "react";
+import profile from "../Images/profile.png";
 import {
   BarChart,
   Bar,
@@ -15,8 +15,8 @@ import {
   CircularProgressbarWithChildren,
   buildStyles,
 } from "react-circular-progressbar";
-import ChangingProgressProvider from "../Component/ChangingProggresProvider";
-import Peringkat from "./data"
+import ChangingProgressProvider from "../Component/Support/ChangingProggresProvider";
+import Peringkat from "./data";
 const data = [
   {
     name: "Page A",
@@ -63,30 +63,24 @@ const data = [
 ];
 const persen = 66;
 
-
-
 const Dashboard = () => {
-  
-
   let dummy = [
     {
       nama: "Fudail Ramadhani",
-      presentase: "150%"
+      presentase: "150%",
     },
     {
       nama: "Fudail Ramadhani",
-      presentase: "150%"
+      presentase: "150%",
     },
     {
       nama: "Fudail Ramadhani",
-      presentase: "150%"
+      presentase: "150%",
     },
     {
       nama: "Fudail Ramadhani",
-      presentase: "150%"
+      presentase: "150%",
     },
-    
-
   ];
 
   const [row, setrow] = React.useState(true);
@@ -191,7 +185,7 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-              <Peringkat></Peringkat>
+      <Peringkat></Peringkat>
       {/* <div className='pt-20 pb-10 '>
         <div className=' bg-slate-200 rounded-lg w-full h-96  drop-shadow-xl  '>
           <div className='w-52 mx-auto font-extrabold pt-5 pl-8'>Peringkat Teratas</div>
@@ -253,4 +247,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

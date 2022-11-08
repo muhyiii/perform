@@ -4,7 +4,7 @@ import NotFound from "./Component/NotFound";
 import Dashboard from "./Pages/dashboard";
 import Goals from "./Pages/goals";
 import Body from "./Component/Body";
-import GoalsDetail from "./Pages/SemiPage/goalsDetail";
+import GoalsDetail from "./Pages/goals/goalsDetail";
 import Peringkat from "./Pages/data";
 
 function App() {
@@ -15,7 +15,7 @@ function App() {
            <Route index path="peringkat" element={<Peringkat />}></Route>
           <Route index path="dashboard" element={<Dashboard />}></Route>
           <Route path="goals" element={<Goals />}>
-            <Route path=":name" element={<GoalsDetail />} />
+            <Route path=":id" element={<GoalsDetail />} />
           </Route>
           <Route path="ma"></Route>
         </Route>
