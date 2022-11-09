@@ -12,7 +12,7 @@ const Body = () => {
           <img
             src={logo}
             alt="urun-ri.png"
-            className="w-60 m-auto"
+            className="w-25 "
             onClick={() => {
               navigate("dashboard");
             }}

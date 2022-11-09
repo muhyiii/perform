@@ -6,6 +6,7 @@ import Goals from "./Pages/goals";
 import Body from "./Component/Body";
 import GoalsDetail from "./Pages/SemiPage/goalsDetail";
 import Peringkat from "../src/Pages/peringkat";
+import Ma from "./Pages/ma";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
           <Route path="goals" element={<Goals />}>
             <Route path=":name" element={<GoalsDetail />} />
           </Route>
-          <Route path="ma"></Route>
+          <Route path="ma" element={<Ma/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>
