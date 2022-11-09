@@ -1,10 +1,7 @@
-<<<<<<< HEAD:src/Pages/dashboard.jsx
-import React from "react";
-import profile from "../Images/profile.png";
-=======
+
 import React, { PureComponent } from "react";
 // import profile from '../Images/profile.png'
->>>>>>> 92191f873c1d10f75800d2dcbcee7819e3610733:src/Pages/dashboard/dashboard.jsx
+
 import {
   BarChart,
   Bar,
@@ -20,14 +17,12 @@ import {
   CircularProgressbarWithChildren,
   buildStyles,
 } from "react-circular-progressbar";
-<<<<<<< HEAD:src/Pages/dashboard.jsx
-import ChangingProgressProvider from "../Component/Support/ChangingProggresProvider";
-import Peringkat from "./data";
-=======
-import ChangingProgressProvider from "../../Component/ChangingProggresProvider";
+
+
+import ChangingProgressProvider from "../../Component/Support/ChangingProggresProvider";
 import Peringkat from "./peringkat"
 import Todolist from "./Todolist";
->>>>>>> 92191f873c1d10f75800d2dcbcee7819e3610733:src/Pages/dashboard/dashboard.jsx
+
 const data = [
   {
     name: "Risk..",
@@ -181,69 +176,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-<<<<<<< HEAD:src/Pages/dashboard.jsx
       <Peringkat></Peringkat>
-      {/* <div className='pt-20 pb-10 '>
-        <div className=' bg-slate-200 rounded-lg w-full h-96  drop-shadow-xl  '>
-          <div className='w-52 mx-auto font-extrabold pt-5 pl-8'>Peringkat Teratas</div>
-          <div className='grid grid-cols-2 gap-72 flex-auto w-full h-10 pt-4 pl-16 pr-14'>
-            <div className=' pl-14 pr-20 text-center font-medium'>GOAL</div>
-            <div className=' pl-14 pr-20 text-center font-medium'>MA</div>
-          </div>
-          <div>
-            
-              <div className='pl-12 pt-3 '>
-                <div className='grid grid-cols-2 gap-x-44 gap-y-3 '>
-                {dummy.map((e) => (
-                  <div className='overflow-y-auto'>
-                  <div className="grid grid-cols-12 w-96 flex-auto h-14 bg-white rounded-xl drop-shadow-xl  ">
-                    
-                    <div className=' col-span-2 '>
-                      <img className='w-14 h-14 py-2 pl-3  ' src={profile} alt="" />
-                    </div>
-                    <div className=' col-span-6 pl-4 pt-3'>
-                      <p>{e.nama}</p>
-                      <div className='w-52 bg-green-400 h-3 rounded-2xl'></div>
-                    </div>
-                    <div className='col-span-4 py-2 pl-12 pt-6'>
-                      <div className='w-16 bg-green-200 h-6 rounded-lg'>
-                        <div className='mx-auto text-center font-serif text-green-600'>{e.presentase}</div>
-                      </div>
-                    </div>
-                  </div>
-                  </div>
-                  ))}
-                    {dummy.map((b) => (
-                  <div className="grid grid-cols-12 w-96 flex-auto h-14 bg-white rounded-xl drop-shadow-lg ">
-
-                    <div className=' col-span-2 '>
-                      <img className='w-14 h-14 py-2 pl-3  ' src={profile} alt="" />
-                    </div>
-                    <div className=' col-span-6 pl-4 pt-3'>
-                      <p>{b.nama}</p>
-                      <div className='w-52 bg-green-400 h-3 rounded-2xl'></div>
-                    </div>
-                    <div className='col-span-4 py-2 pl-12 pt-6'>
-                      <div className='w-16 bg-green-200 h-6 rounded-lg'>
-                        <div className='mx-auto text-center font-serif text-green-600'>{b.presentase}</div>
-                      </div>
-                    </div>
-                  </div>
-                   ))}
-                </div>/
-
-
-              </div>
-           
-          </div>
-
-        </div>
-      </div>/ */}
-=======
-              <Peringkat></Peringkat>
-              <Todolist></Todolist>
-              
->>>>>>> 92191f873c1d10f75800d2dcbcee7819e3610733:src/Pages/dashboard/dashboard.jsx
+      <Todolist></Todolist>
+     
     </div>
   );
 };
