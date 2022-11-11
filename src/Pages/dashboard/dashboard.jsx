@@ -17,12 +17,11 @@ import {
   CircularProgressbarWithChildren,
   buildStyles,
 } from "react-circular-progressbar";
-
-
 import ChangingProgressProvider from "../../Component/Support/ChangingProggresProvider";
 import Peringkat from "./peringkat"
 import Todolist from "./Todolist";
-
+// import Calendar from "./tanggal";
+// const [calendar, setCalendar] = React.useState(false);
 const data = [
   {
     name: "Risk..",
@@ -73,7 +72,7 @@ const Dashboard = () => {
 
   const [row, setrow] = React.useState(true);
   return (
-    <div className="pl-10 pr-5 pt-10 h-full w-auto">
+    <div className="p-10  h-full w-auto">
       <div>
         <h1 className="text-5xl font-bold pb-4">Dashboard</h1>
       </div>
@@ -81,6 +80,13 @@ const Dashboard = () => {
         <div className="font-serif ">Periode :</div>
 
         <div className="font-serif text-blue-500 bg-blue-50 ">oktober 2022</div>
+        {/* <Calendar>
+        onClose={() => {
+          setCalendar(false);
+        }}
+        calendar={calendar}
+        setCalendar={setCalendar}
+        </Calendar> */}
       </div>
 
       <div className="grid grid-cols-2 w-auto  flex-auto h-96  ">
@@ -182,5 +188,7 @@ const Dashboard = () => {
     </div>
   );
 };
+
+
 
 export default Dashboard;
