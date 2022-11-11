@@ -82,28 +82,25 @@ export default class todolist extends Component {
                             <div>
                                 <img className='w-20 h-20 py-2 pl-3 pt-2  ' src={Perkerjaan} alt="" />
                             </div>
-
                         </div>
                         <div className='col-span-4 '>
-                            <div className='namatugas font-medium text-lg pl-6 pt-3'>
+                            <div className='namatugas font-medium text-base pl-6 pt-2 '>
                                 <h3>
                                     {pd.nama}
                                 </h3>
                             </div>
-                            <div className=' pl-6 pt-1 flex'>
-                                <div className='w-20 h-6 flex bg-slate-400  rounded-xl'>
-                                    <p className='text-white text-center mx-auto'>
+                            <div className=' pl-6 pt-5 flex'>
+                                <div className='w-20 h-5 flex bg-slate-400  rounded-xl'>
+                                    <p className='text-white text-center mx-auto text-sm '>
                                         To Do
                                     </p>
                                 </div>
-
                             </div>
-
                             <div className=' col-span-1'>
                             </div>
                         </div>
                         <div>
-                            <div className='pl-36 pt-12 mx-auto flex'>
+                            <div className='pl-36 pt-8 mx-auto flex'>
 
                                 <img src={calendar} alt="" className='mx-auto w-5 h-5 flex ' />
                                 <div className='pl-2'>
@@ -114,8 +111,6 @@ export default class todolist extends Component {
                                 </div>
                             </div>
                         </div>
-
-
 
 
                     </div>
