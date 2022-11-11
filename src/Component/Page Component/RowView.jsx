@@ -28,21 +28,7 @@ const RowView = (props) => {
         text: response.data.messege,
       });
   };
-  const deleteGoal = async (id) => {
-    const response = await axios.delete(api + `/data/goals/${id}/delete`);
-    if (response.status === 200) {
-      Swal.fire("Succesfull!", response.data.messege, "success");
-      setTimeout(() => {
-        navigate(0);
-      }, 1000);
-    }
-    if (response.statusText !== "OK")
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: response.data.messege,
-      });
-  };
+
 
   return (
     <div className="col-span-4 relative ">
@@ -55,7 +41,7 @@ const RowView = (props) => {
             type="checkbox"
             name="goals"
             id=""
-            value={props.id}
+            value={props.goalId}
             onChange={props.handleChange}
             className="peer sr-only"
           />{" "}

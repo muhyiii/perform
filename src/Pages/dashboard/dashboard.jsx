@@ -1,12 +1,7 @@
-<<<<<<< HEAD
-import React, { PureComponent } from "react";
-// import profile from '../Images/profile.png'
-=======
 
 import React, { PureComponent } from "react";
 // import profile from '../Images/profile.png'
 
->>>>>>> fac37a7548d342ffbace830e0663d98d70db5255
 import {
   BarChart,
   Bar,
@@ -25,11 +20,7 @@ import {
 import ChangingProgressProvider from "../../Component/Support/ChangingProggresProvider";
 import Peringkat from "./peringkat"
 import Todolist from "./Todolist";
-<<<<<<< HEAD
-=======
-// import Calendar from "./tanggal";
-// const [calendar, setCalendar] = React.useState(false);
->>>>>>> fac37a7548d342ffbace830e0663d98d70db5255
+
 const data = [
   {
     name: "Risk..",
@@ -190,15 +181,9 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-<<<<<<< HEAD
-              <Peringkat></Peringkat>
-              <Todolist></Todolist>
-              
-=======
       <Peringkat></Peringkat>
       <Todolist></Todolist>
      
->>>>>>> fac37a7548d342ffbace830e0663d98d70db5255
     </div>
   );
 };

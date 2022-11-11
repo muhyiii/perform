@@ -17,69 +17,48 @@ import ColView from "../Component/Page Component/ColView";
 import RowView from "../Component/Page Component/RowView";
 import { api, getGoals } from "../Functions/api";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Goals = () => {
   const [addGoals, setAddGoals] = React.useState(false);
   const [data, setData] = React.useState([]);
-  const [isChoosen, setIsChoosen] = React.useState(false);
   const [row, setRow] = React.useState(true);
   const [multiId, setMultiId] = React.useState([]);
-  //////////////////////////////////////////////
-  // let dummy = [
-  //   {
-  //     nama: "Fudail Ramadhani",
-  //     role: "Magang",
-  //     asign: "12 November",
-  //     status: "Done",
-  //     task: "Membuat halaman HTML dengan baik dan benar",
-  //     rate: 60,
-  //   },
-  //   {
-  //     nama: "Fudail Ramadhanwi",
-  //     role: "Magang",
-  //     asign: "12 November",
-  //     status: "Done",
-  //     task: "Membuat halaman HTML dengan baik dan benar",
-  //     rate: 90,
-  //   },
-  // ];
+  const navigate = useNavigate();
 
-  //////////////////////////////////////////////
-
-  const deleteLocStorage = (id) => {
-    let temp = data.filter((item) => item.id != id);
-    localStorage.setItem("dummyData", JSON.stringify(temp));
-    setData(JSON.parse(localStorage.getItem("dummyData")));
-  };
-
-  const multiOption = (id) => {
-    console.log(id);
-    let temps = [];
-
-    let temp = data.filter((item) => item.id != id);
-    localStorage.setItem("dummyDasta", JSON.stringify(temp));
-    console.log("index", id);
-    console.log(temp);
-
-    // console.log(temps);
-
-    localStorage.setItem("multiId", "[]");
-    setData(JSON.parse(localStorage.getItem("dummyData")));
-    setIsChoosen(false);
-  };
-
+  //// BUAT MULTI ID
   const handleChange = (state) => {
     console.log(state.target.value);
     const { id, checked } = state.target;
 
     if (checked) {
       setMultiId((item) => [...item, state.target.value]);
-      setIsChoosen(true);
     } else {
       setMultiId((item) => [
         ...item.filter((count) => count != state.target.value),
       ]);
     }
+  };
+
+  //// DELETE MULTI GOALS
+  const deleteMultiGoals = async () => {
+    // console.log(id);
+    const response = await axios.post(api + "/data/goals/multiple/delete", {
+      multiId,
+    });
+    console.log(response);
+    if (response.status === 200) {
+      Swal.fire("Succesfull!", response.data.messege, "success");
+      setTimeout(() => {
+        navigate(0);
+      }, 1000);
+    }
+    if (response.statusText !== "OK")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: response.data.messege,
+      });
   };
   // console.log(multiId);
   const setArchive = (id) => {
@@ -98,7 +77,7 @@ const Goals = () => {
   /////
   React.useEffect(() => {
     getGoals().then((e) => setData(e));
-  }, [data === []]);
+  }, []);
 
   return (
     <div className="p-10 relative  h-screen w-full capitalize  ">
@@ -134,7 +113,6 @@ const Goals = () => {
             title="change view"
             onClick={() => {
               setRow(!row);
-              setIsChoosen(false);
             }}
           >
             {row ? <MdViewModule size={30} /> : <MdViewStream size={30} />}
@@ -151,7 +129,7 @@ const Goals = () => {
           Tambah Goals
         </button>
       </div>
-      {multiId.length >0 && (
+      {multiId.length > 0 && (
         <div className="text-white">
           {/* <button
             onClick={() => {
@@ -228,7 +206,7 @@ const Goals = () => {
           </button> */}
           <button
             onClick={() => {
-              return console.log(multiId);
+              // return console.log(multiId);
 
               Swal.fire({
                 title: "Are you sure?",
@@ -240,18 +218,12 @@ const Goals = () => {
                 confirmButtonText: "Yes, delete it!",
               }).then((result) => {
                 if (result.isConfirmed) {
-                  multiOption(JSON.parse(localStorage.getItem("multiId")));
-                  Swal.fire(
-                    "Deleted!",
-                    "Your file has been deleted.",
-                    "success"
-                  );
+                  deleteMultiGoals();
                 }
               });
             }}
             className="px-5 py-1 bg-red-500 my-3 rounded-lg mx-3"
           >
-            {" "}
             Delete
           </button>
         </div>
@@ -311,7 +283,6 @@ const Goals = () => {
                   remain={remain}
                   handleChange={handleChange}
                   setArchive={setArchive}
-                  deleteLocStorage={deleteLocStorage}
                 />
               );
             })}

@@ -1,110 +1,137 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
-// import Animasi from "../Images/animasi.mp4"
-import Background from "../../Images/background.png"
-// import Logo from "../Images/job.png"
-import Logo from "../../Images/logo.png"
+
+import Background from "../../Images/background.png";
+
+import Logo from "../../Images/logo.png";
 import Validation from "./Validation";
 import { Link } from "react-router-dom";
 
-
 export default function Register() {
-    const [values, setValues] = useState({
-        name: '',
-        password: ''
-    })
-    const [errors, setError] = useState({})
+  const [values, setValues] = useState({
+    username: "",
+    password: "",
+  });
+  const [errors, setError] = useState({});
 
-    function handleChange(e) {
-        setValues({ ...values, [e.target.name]: e.target.value })
+  function handleChange(e) {
+    setValues({
+      ...values,
+      [e.target.username]: e.target.value,
+      [e.target.password]: e.target.value,
+    });
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setError(Validation(values));
+  }
+
+  useEffect(() => {
+    if (
+      Object.keys(errors).length === 0 &&
+      values.username !== "" &&
+      values.password !== ""
+      
+    ) {
+      alert("Form Submited");
     }
-
-    function handleSubmit(e) {
-        e.preventDefault();
-        setError(Validation(values));
-    }
-
-    useEffect(() => {
-        if (Object.keys(errors).length === 0 && (values.name !== "" && values.password !== "")) {
-            alert("Form Submited");
-        }
-
-    }, [errors])
-    return (
-        <React.Fragment>
-            <div className="relative w-full h-full">
-                <img src={Background} alt="" className="h-screen w-screen" />
-                <div className="grid grid-cols-2 w-full h-screen flex-auto pl-10 pr-10 pt-12 pb-16 absolute top-0 bg-transparent  ">
-                    <div className="bg-white bg-opacity-90 rounded-l-2xl flex items-center justify-center">
-                        <img src={Logo} alt="" className="w-5/6 rounded-l-2xl " />
-                    </div>
-                    <div className="bg-white bg-opacity-90 rounded-r-2xl">
-
-                        <div className="grid grid-cols-2 flex-auto w-full pr-10 ">
-                            <div className="  ">
-                                <p className="text-center text-3xl font-extrabold pl-6 pt-20 mt-1">Hello,</p>
-                                <p className="text-center text-2xl font-bold pl-24  "> Welcome back</p>
-                            </div>
-
-                        </div>
-                        {/* //from */}
-                        <form action="" onSubmit={handleSubmit}>
-                            <div className="mx-auto pl-20 pt-5 ">
-
-
-                                <label className="mb-3 text-sm pr-3 pl-12">Username</label>
-                                <div className=" container pl-12 p-1">
-                                    <input
-                                        onChange={handleChange}
-                                        placeholder="Enter Username"
-                                        name="Username"
-                                        type="text"
-                                        className=" border-b-2 border-t-2 border-indigo-300 rounded-md h-8 outline-none pl-3 lg:w-3/4 text-sm bg-transparent shadow-md"
-                                    />
-                                    {errors.name && <p style={{ color: "red", fontSize: "13px" }}>{errors.name}</p>}
-                                </div>
-                                <div className="password pt-4">
-
-
-                                    <label className="mb-3 text-sm pr-3 pl-12 ">Password</label>
-                                    <div className=" pl-12 p-1 ">
-                                        <input
-                                            onChange={handleChange}
-                                            placeholder="Enter Password"
-                                            name="password"
-                                            type="password"
-                                            className=" border-b-2 border-t-2 border-indigo-300 rounded-md h-8 outline-none pl-3 lg:w-3/4 text-sm bg-transparent shadow-md"
-                                        />
-                                        {errors.password && <p style={{ color: "red", fontSize: "13px" }}>{errors.password}</p>}
-                                    </div>
-                                </div>
-
-
-                                {/* //button */}
-                                <div className="w-4/5 h-20 pt-10 pl-8 ">
-                                    <button type="submit" className="w-full h-10 bg-amber-300 rounded-lg">
-                                        Sign Up
-                                    </button>
-                                </div>
-
-                            </div>
-                        </form>
-                        <div className="flex w-4/5 pt-5 pl-32">
-                            <div className=" mx-auto flex">
-                                <p className="text-center">Already have an account?</p>
-                                <Link to={"/login"} className="text-red-400 pl-1">Sign In</Link>
-                            </div>
-                        </div>
-                    </div>
+  }, [errors]);
+  return (
+    <React.Fragment>
+      <div className=" w-screen h-screen bg-gradient-to-r overflow-hidden from-cyan-600 via-cyan-500 to-blue-400 relative flex justify-center items-center shadow-2xl  ">
+        {/* <img src={Background} alt="" className="h-screen w-screen " /> */}
+        <div className="z-0 h-40 w-40 -left-20 -top-20 opacity-40 bg-cyan-200  absolute rounded-full shadow-xl"></div>{" "}
+        <div className="z-0 h-40 w-40 -left-28 -bottom-10 rounded-lg ease-linear  rotate-12  opacity-40 bg-white absolute shadow-xl"></div>{" "}
+        <div className="z-0 h-40 w-40 -left-24 -bottom-14 rounded-lg ease-linear  rotate-12  opacity-40 bg-white absolute shadow-xl"></div>
+        <div className="z-10 h-60 w-40 right-28 -bottom-10 opacity-40 bg-white absolute rounded-full shadow-xl"></div>
+        <div className="z-0 h-40 w-60 left-32 top-14 opacity-40 bg-blue-400 mix-blend-multiply absolute rounded-full shadow-xl"></div>
+        <div className="z-0 h-40 w-40 left-48 top-14  opacity-40 bg-blue-600 skew-x-6 mix-blend-multiply absolute rounded-full shadow-xl"></div>
+        <div className="grid grid-cols-2 w-3/4  py-10  bg-white  rounded-lg  z-10 ">
+          <div className="  flex items-center justify-center">
+            <img src={Logo} alt="" className="" />
+          </div>
+          <div className=" rounded-r-2xl flex justify-center items-center ">
+            <div className=" w-4/5">
+              <div className="text-left mt-5">
+                <div className="  ">
+                  <p className=" text-6xl font-bold ">Hello,</p>
+                  <p className=" text-2xl font-bold   ">Welcome back</p>
                 </div>
+              </div>
+              {/* //from */}
+              <form action="" onSubmit={handleSubmit}>
+                <div className="space-y-5 mt-14 ">
+                  <label className="">
+                    <div className=" ">
+                      <input
+                        onChange={handleChange}
+                        placeholder="Enter your username"
+                        name="Username"
+                        type="text"
+                        className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
+                      />
+                      {errors.name && (
+                        <p style={{ color: "red", fontSize: "13px" }}>
+                          {errors.name}
+                        </p>
+                      )}
+                    </div>
+                  </label>{" "}
+                  <div className=" ">
+                    <label className=" ">
+                      <input
+                        onChange={handleChange}
+                        placeholder="Enter password"
+                        name="password"
+                        type="password"
+                        className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
+                      />
+                      {errors.password && (
+                        <p style={{ color: "red", fontSize: "13px" }}>
+                          {errors.password}
+                        </p>
+                      )}
+                    </label>
+                  </div>
+                  <div className=" ">
+                    <label className=" ">
+                      <input
+                        onChange={handleChange}
+                        placeholder="Enter confirmation password"
+                        name="passwordConfirmation"
+                        type="passwordConfirmation"
+                        className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
+                      />
+                      {errors.passwordConfirmation && (
+                        <p style={{ color: "red", fontSize: "13px" }}>
+                          {errors.passwordConfirmation}
+                        </p>
+                      )}
+                    </label>
+                  </div>
+                  {/* //button */}
+                </div>
+              </form>
+              <button
+                type="submit"
+                className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
+              >
+                Sign Up
+              </button>
+              <div className="flex text-center w-full justify-center mt-5 mb-10">
+                <p className="">Already have an account?</p>
+                <Link
+                  to={"/login"}
+                  className="text-red-400 pl-1 hover:text-red-500 duration-500 hover:transition-colors hover:font-semibold"
+                >
+                  Sign In
+                </Link>
+              </div>
             </div>
-
-
-
-        </React.Fragment>
-    );
+          </div>
+        </div>
+      </div>
+    </React.Fragment>
+  );
 }
-
-{/* <img src={Background} alt="" className="w-screen h-screen " />
-
-        <div className="  bg-black absolute right-9 left-9 mx-auto"></div> */}

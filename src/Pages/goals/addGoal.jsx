@@ -7,8 +7,6 @@ import { api, getUsers } from "../../Functions/api";
 
 const AddGoals = (props) => {
   let [users, setUsers] = React.useState([]);
-  let date = new Date();
-  console.log(date.getTime());
   let [data, setData] = React.useState({
     userId: 0,
     task: "",
