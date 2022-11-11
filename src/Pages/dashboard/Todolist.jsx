@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import ReactPaginate from 'react-paginate';
 import Perkerjaan from '../../Images/iconpekerjaan.png';
 import calendar from '../../Images/calendar.png';
+import Delete from '../../Images/delete.png'
 
 
 export default class todolist extends Component {
@@ -20,58 +21,79 @@ export default class todolist extends Component {
     }
 
     receivedData() {
-
+      
         const data = [
             {
                 "nama": "Migration Alibaba - AWS:Implementasi AWS DMS integrasi Database",
-                "created": "05-11-04"
+                "created": "05-11-04",
+                id: 1
             },
             {
                 "nama": "Migration Alibaba - AWS:Implementasi AWS DMS integrasi Database",
-                "created": "05-11-04"
+                "created": "05-11-04",
+                id: 2
             },
             {
                 "nama": "Migration Alibaba - AWS:Implementasi AWS DMS integrasi Database",
-                "created": "05-11-04"
+                "created": "05-11-04",
+                id: 3
             }, {
                 "nama": "Migration Alibaba - AWS:Implementasi AWS DMS integrasi Database",
-                "created": "05-11-04"
+                "created": "05-11-04",
+                id: 4
             },
             {
                 "nama": "Migration Alibaba - AWS:Implementasi AWS DMS integrasi Database",
-                "created": "05-11-04"
+                "created": "05-11-04",
+                id: 5
             },
             {
                 "nama": "Migration Alibaba - AWS:Implementasi AWS DMS integrasi Database",
-                "created": "05-11-04"
+                "created": "05-11-04",
+                id: 6
             },
             {
                 "nama": "Migration Alibaba - AWS:Implementasi AWS DMS integrasi Database",
-                "created": "05-11-04"
+                "created": "05-11-04",
+                id: 7
             },
             {
                 "nama": "Migration Alibaba - AWS:Implementasi AWS DMS integrasi Database",
-                "created": "05-11-04"
+                "created": "05-11-04",
+                id: 8
             },
             {
                 "nama": "Migration Alibaba - AWS:Implementasi AWS DMS integrasi Database",
-                "created": "05-11-04"
+                "created": "05-11-04",
+                id: 9
             },
             {
                 "nama": "Migration Alibaba - AWS:Implementasi AWS DMS integrasi Database",
-                "created": "05-11-04"
+                "created": "05-11-04",
+                id: 10
             },
             {
                 "nama": "Migration Alibaba - AWS:Implementasi AWS DMS integrasi Database",
-                "created": "05-11-04"
+                "created": "05-11-04",
+                id: 12
             },
             {
                 "nama": "Migration Alibaba - AWS:Implementasi AWS DMS integrasi Database",
-                "created": "05-11-04"
+                "created": "05-11-04",
+                id: 13
             }
         ];
 
-
+       const deleteList = (id) => {
+           
+            let data = this.state.data.filter(ninja => {
+              return ninja.id !== id
+            });
+            this.setState({
+              data: data
+            });
+          }
+    
         const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
         const postData = slice.map(pd =>
             <React.Fragment>
@@ -96,10 +118,9 @@ export default class todolist extends Component {
                                     </p>
                                 </div>
                             </div>
-                            <div className=' col-span-1'>
-                            </div>
+
                         </div>
-                        <div>
+                        <div className='flex'>
                             <div className='pl-36 pt-8 mx-auto flex'>
 
                                 <img src={calendar} alt="" className='mx-auto w-5 h-5 flex ' />
@@ -109,6 +130,11 @@ export default class todolist extends Component {
                                 <div className='pl-1'>
                                     {pd.created}
                                 </div>
+                            </div>
+                            <div className='w-8 h-20 pl-2'>
+                                <button className='pt-7' onClick={() => {deleteList(data.id)}}>
+                                    <img src={Delete} alt="" />
+                                </button>
                             </div>
                         </div>
 
