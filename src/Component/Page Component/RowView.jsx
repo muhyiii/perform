@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import {
   buildStyles,
@@ -5,34 +6,80 @@ import {
 } from "react-circular-progressbar";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import { api } from "../../Functions/api";
 import ChangingProgressProvider from "../Support/ChangingProggresProvider";
 
 const RowView = (props) => {
   const navigate = useNavigate();
+  const updateStatus = async (id, status) => {
+    const response = await axios.put(api + `/data/goals/${id}/update`, {
+      status: status,
+    });
+    if (response.status === 200) {
+      Swal.fire("Succesfull!", response.data.messege, "success");
+      setTimeout(() => {
+        navigate(0);
+      }, 1000);
+    }
+    if (response.statusText !== "OK")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: response.data.messege,
+      });
+  };
+  const deleteGoal = async (id) => {
+    const response = await axios.delete(api + `/data/goals/${id}/delete`);
+    if (response.status === 200) {
+      Swal.fire("Succesfull!", response.data.messege, "success");
+      setTimeout(() => {
+        navigate(0);
+      }, 1000);
+    }
+    if (response.statusText !== "OK")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: response.data.messege,
+      });
+  };
+
   return (
-    <label
-      className="col-span-4 relative "
-      onDoubleClick={() => {
-        navigate(`${props.id}`);
-      }}
-    >
-      <input
-        type="checkbox"
-        name="goals"
-        id=""
-        onChange={(e) => {
-          props.handleChange("isDelete", props.id, props.status);
-        }}
-        className="peer sr-only"
-      />
-      <div className="shadow-md m-1 px-4 py-2 border rounded-xl peer-checked:ring-blue-500 peer-checked:ring-2">
-        <div
-          className="flex justify-between items-center cursor-pointer"
+    <div className="col-span-4 relative ">
+      <div className="shadow-md m-1 px-4 py-2 border rounded-xl ">
+        <label
+          className="flex justify-between items-center cursor-pointer relative"
           onClick={() => {}}
         >
-          <div className="flex space-x-3 ">
+          <input
+            type="checkbox"
+            name="goals"
+            id=""
+            value={props.id}
+            onChange={props.handleChange}
+            className="peer sr-only"
+          />{" "}
+          <span className="absolute left-1/2 z-10 opacity-0 transition-all peer-checked:opacity-100">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="fill-blue-500 stroke-white"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="#2c3e50"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+              <circle cx="12" cy="12" r="9" />
+              <path d="M9 12l2 2l4 -4" />
+            </svg>
+          </span>
+          <div className="flex space-x-3  ">
             <div className="text-left ">
-              <p>{props.nama}</p>
+              <p>{props.name}</p>
               <p className="text-xs text-gray-400">{props.role}</p>
             </div>
           </div>
@@ -55,8 +102,13 @@ const RowView = (props) => {
                 : props.remain + " days remaining"
               : "Completed"}
           </p>
-        </div>
-        <div className="text-lg grid grid-cols-11 items-center space-x-2 my-5">
+        </label>
+        <div
+          className="text-lg grid grid-cols-11 items-center space-x-2 my-5 hover:cursor-pointer"
+          onClick={() => {
+            navigate(`${props.goalId}`);
+          }}
+        >
           <div className="col-span-2">
             <ChangingProgressProvider values={[0, `${props.rate}`]}>
               {(percentage) => (
@@ -101,7 +153,7 @@ const RowView = (props) => {
           <p
             className="cursor-pointer hover:font-semibold"
             onClick={() => {
-              if (props.status === "to-do" || props.status === "procces") {
+              if (props.status === "to-do" || props.status === "ongoing") {
                 Swal.fire({
                   title: "Are you sure?",
                   text: "You can only update to the next stage",
@@ -116,9 +168,9 @@ const RowView = (props) => {
                       title: "Select value of status update",
                       input: "select",
                       inputOptions:
-                        props.status !== "procces"
+                        props.status !== "ongoing"
                           ? {
-                              procces: "Procces",
+                              ongoing: "Ongoing",
                               held: "Held",
                               done: "Done",
                             }
@@ -133,15 +185,10 @@ const RowView = (props) => {
                           if (
                             value === "done" ||
                             value === "held" ||
-                            value === "procces"
+                            value === "ongoing"
                           ) {
                             console.log(value);
-                            props.updateLocStorage(props.id, value);
-                            Swal.fire(
-                              "Succesfull!",
-                              "Your status has been updated.",
-                              "success"
-                            );
+                            updateStatus(props.goalId, value);
                           } else {
                             resolve("Choose the next stage of your status");
                           }
@@ -163,7 +210,7 @@ const RowView = (props) => {
           </p>
         </div>
       </div>
-    </label>
+    </div>
   );
 };
 

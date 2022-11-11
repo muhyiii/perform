@@ -8,9 +8,29 @@ import Swal from "sweetalert2";
 import ModalOption from "./ModalOption";
 
 import ChangingProgressProvider from "../Support/ChangingProggresProvider";
+import { useNavigate } from "react-router-dom";
+import { api } from "../../Functions/api";
+import axios from "axios";
 
 const ColView = (props) => {
   const [isOption, setIsOption] = React.useState(false);
+  const navigate = useNavigate();
+  const updateStatus = async (id, status) => {
+    const response = await axios.put(api + `/data/goals/${id}/update`, {
+      status: status,
+    });
+    if (response.status === 200) {
+      Swal.fire("Succesfull!", response.data.messege, "success");
+      setTimeout(() => {
+        navigate(0);
+      }, 1000);
+    }
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: response.data.messege,
+    });
+  };
 
   return (
     <div
@@ -55,7 +75,12 @@ const ColView = (props) => {
           </ChangingProgressProvider>
         </div>
       </div>
-      <div className=" col-span-5 space-y-3 text-ellipsis ">
+      <div
+        className=" col-span-5 space-y-3 text-ellipsis "
+        onClick={() => {
+          navigate(`${props.goalId}`);
+        }}
+      >
         <p className="text-xl font-bold  truncate">{props.task}</p>
 
         <p
@@ -79,13 +104,13 @@ const ColView = (props) => {
         </p>
       </div>
       <div className="text-left col-start-7 col-span-2 ml-5 ">
-        <p>Fudail Ramadhani</p>
+        <p>{props.name}</p>
         <p className="text-xs text-gray-400">{props.role}</p>
       </div>
       <p
         className="cursor-pointer hover:font-semibold"
         onClick={() => {
-          if (props.status === "to-do" || props.status === "procces") {
+          if (props.status === "to-do" || props.status === "ongoing   ") {
             Swal.fire({
               title: "Are you sure?",
               text: "You can only update to the next stage",
@@ -100,9 +125,9 @@ const ColView = (props) => {
                   title: "Select value of status update",
                   input: "select",
                   inputOptions:
-                    props.status !== "procces"
+                    props.status !== "ongoing"
                       ? {
-                          procces: "Procces",
+                          ongoing: "Ongoing",
                           held: "Held",
                           done: "Done",
                         }
@@ -115,13 +140,7 @@ const ColView = (props) => {
                   inputValidator: (value) => {
                     return new Promise((resolve) => {
                       if (value !== props.status) {
-                        console.log(value);
-                        props.updateLocStorage(props.id, value);
-                        Swal.fire(
-                          "Succesfull!",
-                          "Your status has been updated.",
-                          "success"
-                        );
+                        updateStatus(props.goalId, value);
                       } else {
                         resolve("You can only update to next stage");
                       }
@@ -141,7 +160,7 @@ const ColView = (props) => {
       >
         {props.status}
       </p>
-      <div className="col-start-12 relative">
+      <div className="col-start-12 relative" >
         {" "}
         <BiDotsVerticalRounded
           className="hover:cursor-pointer"
@@ -154,8 +173,8 @@ const ColView = (props) => {
           onCloseOption={() => {
             setIsOption(false);
           }}
-          deleteLocStorage={props.deleteLocStorage}
-          id={props.id}
+          setArchive={props.setArchive}
+          goalId={props.goalId}
           isOption={isOption}
           setIsOption={setIsOption}
         />

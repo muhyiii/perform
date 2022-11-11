@@ -11,18 +11,19 @@ import {
   MdOutlineCancel,
 } from "react-icons/md";
 
-
-
 import AddGoals from "./goals/addGoal";
 
 import ColView from "../Component/Page Component/ColView";
 import RowView from "../Component/Page Component/RowView";
+import { api, getGoals } from "../Functions/api";
+import axios from "axios";
 
 const Goals = () => {
   const [addGoals, setAddGoals] = React.useState(false);
-
   const [data, setData] = React.useState([]);
-
+  const [isChoosen, setIsChoosen] = React.useState(false);
+  const [row, setRow] = React.useState(true);
+  const [multiId, setMultiId] = React.useState([]);
   //////////////////////////////////////////////
   // let dummy = [
   //   {
@@ -45,58 +46,60 @@ const Goals = () => {
 
   //////////////////////////////////////////////
 
-  const updateLocStorage = (id, status) => {
-    let rate = 0;
-    if (status === "done" || status === "held") {
-      rate = 100;
-    } else if (status === "procces") {
-      rate = 60;
-    }
-    for (let dataa of data) {
-      if (dataa.id === id) {
-        dataa.status = status;
-        dataa.rate = rate;
-      }
-    }
-    localStorage.setItem("dummyData", JSON.stringify(data));
-    setData(JSON.parse(localStorage.getItem("dummyData")));
-  };
   const deleteLocStorage = (id) => {
     let temp = data.filter((item) => item.id != id);
     localStorage.setItem("dummyData", JSON.stringify(temp));
     setData(JSON.parse(localStorage.getItem("dummyData")));
   };
 
-  const [isChoosen, setIsChoosen] = React.useState(false);
+  const multiOption = (id) => {
+    console.log(id);
+    let temps = [];
 
-  const handleChange = (state, idd, statuss) => {
-    if (state === "isDelete") {
-      // if (isDel === true) {
-      //   setWiilDelete(true);
-      // }
-      setIsChoosen(!isChoosen);
-      if (idd || statuss) {
-        localStorage.setItem("someId", idd);
-        localStorage.setItem("someStatus", statuss);
-      } else {
-        setIsChoosen(!isChoosen);
-        localStorage.removeItem("someId");
-        localStorage.removeItem("someStatus");
-      }
-    }
+    let temp = data.filter((item) => item.id != id);
+    localStorage.setItem("dummyDasta", JSON.stringify(temp));
+    console.log("index", id);
+    console.log(temp);
+
+    // console.log(temps);
+
+    localStorage.setItem("multiId", "[]");
+    setData(JSON.parse(localStorage.getItem("dummyData")));
+    setIsChoosen(false);
   };
 
-  React.useEffect(() => {
-    setData(JSON.parse(localStorage.getItem("dummyData")));
-  }, []);
-  React.useEffect(() => {
-    setData(JSON.parse(localStorage.getItem("dummyData")));
-    localStorage.removeItem("someId");
-    localStorage.removeItem("someStatus");
-    // setUpdated(JSON.parse(localStorage.getItem("dummyData")));
-  }, [localStorage.getItem("dummyData")]);
+  const handleChange = (state) => {
+    console.log(state.target.value);
+    const { id, checked } = state.target;
 
-  const [row, setRow] = React.useState(true);
+    if (checked) {
+      setMultiId((item) => [...item, state.target.value]);
+      setIsChoosen(true);
+    } else {
+      setMultiId((item) => [
+        ...item.filter((count) => count != state.target.value),
+      ]);
+    }
+  };
+  // console.log(multiId);
+  const setArchive = (id) => {
+    let archive = JSON.parse(localStorage.getItem("archiveDummy"));
+    let checkArchive = archive.find((item) => item.id == id);
+    if (checkArchive === undefined) {
+      let dataa = data.find((item) => item.id == id);
+      archive.push(dataa);
+      localStorage.setItem("archiveDummy", JSON.stringify(archive));
+    }
+    let remove = data.filter((item) => item.id != id);
+    console.log(archive);
+    localStorage.setItem("dummyData", JSON.stringify(remove));
+    setData(JSON.parse(localStorage.getItem("dummyData")));
+  };
+  /////
+  React.useEffect(() => {
+    getGoals().then((e) => setData(e));
+  }, [data === []]);
+
   return (
     <div className="p-10 relative  h-screen w-full capitalize  ">
       <AddGoals
@@ -131,14 +134,10 @@ const Goals = () => {
             title="change view"
             onClick={() => {
               setRow(!row);
-              
+              setIsChoosen(false);
             }}
           >
-            {row ? (
-              <MdViewModule size={30} />
-            ) : (
-              <MdViewStream size={30} />
-            )}
+            {row ? <MdViewModule size={30} /> : <MdViewStream size={30} />}
           </div>
         </div>
       </div>
@@ -152,7 +151,7 @@ const Goals = () => {
           Tambah Goals
         </button>
       </div>
-      {isChoosen && (
+      {multiId.length >0 && (
         <div className="text-white">
           {/* <button
             onClick={() => {
@@ -229,6 +228,8 @@ const Goals = () => {
           </button> */}
           <button
             onClick={() => {
+              return console.log(multiId);
+
               Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -239,10 +240,7 @@ const Goals = () => {
                 confirmButtonText: "Yes, delete it!",
               }).then((result) => {
                 if (result.isConfirmed) {
-                  deleteLocStorage(localStorage.getItem("someId"));
-                  localStorage.removeItem("someId");
-                  localStorage.removeItem("someStatus");
-                  setIsChoosen(false);
+                  multiOption(JSON.parse(localStorage.getItem("multiId")));
                   Swal.fire(
                     "Deleted!",
                     "Your file has been deleted.",
@@ -261,26 +259,28 @@ const Goals = () => {
       <div className=" w-full">
         {row ? (
           <div className="grid grid-cols-12">
-            {data.map((e) => {
+            {data?.map((e) => {
               let deadline = new Date(e.asign).getDate();
               let now = new Date().getDate();
 
-              console.log(now);
+              // console.log(now);
+              // console.log(e);
               let remain = deadline - now;
-
+              // console.log(e.user.name);
               return (
                 <RowView
                   data={e}
                   key={e.id}
                   id={e.id}
-                  nama={e.nama}
-                  role={e.role}
+                  name={e.users[0].name}
+                  role={e.users[0].role}
                   rate={e.rate}
-                  asign={e.asign}
-                  status={e.status}
+                  fromDate={e.fromDate}
+                  toDate={e.toDate}
                   task={e.task}
+                  goalId={e.goalId}
+                  status={e.status}
                   remain={remain}
-                  updateLocStorage={updateLocStorage}
                   handleChange={handleChange}
                 />
               );
@@ -300,14 +300,17 @@ const Goals = () => {
                   data={e}
                   key={e.id}
                   id={e.id}
-                  nama={e.nama}
-                  role={e.role}
+                  name={e.users[0].name}
+                  role={e.users[0].role}
                   rate={e.rate}
-                  asign={e.asign}
-                  status={e.status}
+                  fromDate={e.fromDate}
+                  toDate={e.toDate}
                   task={e.task}
+                  goalId={e.goalId}
+                  status={e.status}
                   remain={remain}
-                  updateLocStorage={updateLocStorage}
+                  handleChange={handleChange}
+                  setArchive={setArchive}
                   deleteLocStorage={deleteLocStorage}
                 />
               );
