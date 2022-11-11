@@ -4,7 +4,12 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily:{
+        'eveleth':['Eveleth Clean Regular'],
+        'questrial':["Questrial","sans-serif"],
+      }
+    },
   },
   plugins: [],
 }

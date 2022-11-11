@@ -4,15 +4,10 @@ import NotFound from "./Component/NotFound";
 import Dashboard from "./Pages/dashboard/dashboard";
 import Goals from "./Pages/goals";
 import Body from "./Component/Body";
-<<<<<<< HEAD
-import GoalsDetail from "./Pages/SemiPage/goalsDetail";
-import Peringkat from "../src/Pages/peringkat";
-import Ma from "./Pages/ma";
-=======
 import GoalsDetail from "./Pages/goals/goalsDetail";
 
 import Peringkat from "./Pages/dashboard/peringkat";
->>>>>>> 3189a27977d2117bb6d520abad7a604b8311cb48
+import Ma from "./Pages/ma";
 
 function App() {
   return (
