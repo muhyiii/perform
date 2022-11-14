@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const api = "http://localhost:2200";
+export const api = "http://192.168.1.48:2200";
 
 // USERS
 //// GET USERS ALL
