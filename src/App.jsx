@@ -11,6 +11,8 @@ import Login from "./Pages/auth/login";
 import Register from "./Pages/auth/register";
 import Ma from "./Pages/ma";
 
+
+
 function App() {
   return (
     <div className="relative  ">
@@ -22,7 +24,7 @@ function App() {
           <Route index path="dashboard" element={<Dashboard />}></Route>
           <Route path="goals/:id" element={<GoalsDetail />} />
           <Route path="goals" element={<Goals />}></Route>
-          <Route path="ma" element={<Ma />}></Route>
+          <Route path="ma" element={<Ma/>}></Route>
         </Route>
         <Route path="*" element={<NotFound />} />
       </Routes>

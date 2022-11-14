@@ -4,49 +4,68 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
 
-.Eveleth{
+.eveleth {
   font-family: 'Eveleth-Clean-Regular';
-  src: url('E:\codingReact\perform-1\src\Images\fonts\Eveleth Clean Regular.otf');
+  src: local('Eveleth-Clean-Regular'), url('./Images/fonts/Eveleth\ Clean\ Regular.otf') format('otf')
+}
+.bg-image{
+  background-image: url('./Images/background.png');
+  background-size: cover;
 }
 
 .poppins {
-    font-family: 'Poppins', sans-serif;
-  
+  font-family: 'Poppins', sans-serif;
+
 }
+
 /* fjdwdsjfgdnteruewwqjqksldfghjdsfgb  */
 .pagination {
   width: 350px;
- color: white;
- /* code di bawah ini akan membuat div berada di tengah-tengah */
- position: absolute;
- top: 93%;
- left: 52%;
- transform: translate(-50%, -50%);
+  color: white;
+  /* code di bawah ini akan membuat div berada di tengah-tengah */
+  position: absolute;
+  top: 93%;
+  left: 52%;
+  transform: translate(-50%, -50%);
 
-    margin: 10px auto;
-    display: flex;
-    list-style: none;
-    outline: none;
-  }
-  .pagination > .active > a{
-    background-color: #8db1b6 ;
-    border-color: #94b3b8 ;
-    color: #fff;
-  }
-  .pagination > li > a{
-    border: 1px solid #80aeb4 ;
-    padding: 5px 10px;
-    outline: none;
-    cursor: pointer;
-  }
-  .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
-    background-color: #6fbfca ;
-    border-color: #5b9ca5;
-    outline: none ;
-  }
-  .pagination > li > a, .pagination > li > span{
-    color: #89a8ac
-  }
-  .pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span{
-    border-radius: unset
-  }
+  margin: 10px auto;
+  display: flex;
+  list-style: none;
+  outline: none;
+}
+
+.pagination>.active>a {
+  background-color: #8db1b6;
+  border-color: #94b3b8;
+  color: #fff;
+}
+
+.pagination>li>a {
+  border: 1px solid #80aeb4;
+  padding: 5px 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+.pagination>.active>a,
+.pagination>.active>span,
+.pagination>.active>a:hover,
+.pagination>.active>span:hover,
+.pagination>.active>a:focus,
+.pagination>.active>span:focus {
+  background-color: #6fbfca;
+  border-color: #5b9ca5;
+  outline: none;
+}
+
+.pagination>li>a,
+.pagination>li>span {
+  color: #89a8ac
+}
+
+.pagination>li:first-child>a,
+.pagination>li:first-child>span,
+.pagination>li:last-child>a,
+.pagination>li:last-child>span {
+  border-radius: unset
+}
