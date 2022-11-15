@@ -1,5 +1,7 @@
+
 import React, { PureComponent } from "react";
 // import profile from '../Images/profile.png'
+
 import {
   BarChart,
   Bar,
@@ -18,6 +20,7 @@ import {
 import ChangingProgressProvider from "../../Component/Support/ChangingProggresProvider";
 import Peringkat from "./peringkat"
 import Todolist from "./Todolist";
+
 const data = [
   {
     name: "Risk..",
@@ -75,7 +78,11 @@ const Dashboard = () => {
       <div className="_periode flex justify-start pb-5">
         <div className="font-serif ">Periode :</div>
 
-        <div className="font-serif text-blue-500 bg-blue-50 ">oktober 2022</div>
+        <div className="">
+          <input type="month" 
+          className="font-serif text-blue-500 bg-blue-50"
+          />
+        </div>
         {/* <Calendar>
         onClose={() => {
           setCalendar(false);
