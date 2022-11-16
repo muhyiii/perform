@@ -1,41 +1,28 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
-
-import Background from "../../Images/background.png";
-
 import Logo from "../../Images/logo.png";
-import Validation from "./Validation";
 import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 export default function Login() {
-  const [values, setValues] = useState({
-    username: "",
-    password: "",
-  });
-  const [errors, setError] = useState({});
-
-  function handleChange(e) {
-    setValues({
-      ...values,
-      [e.target.username]: e.target.value,
-      [e.target.password]: e.target.value,
-    });
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    setError(Validation(values));
-  }
-
-  useEffect(() => {
-    if (
-      Object.keys(errors).length === 0 &&
-      values.username !== "" &&
-      values.password !== ""
-    ) {
-      alert("Form Submited");
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .min(2, "Mininum 2 characters")
+        .max(15, "Maximum 15 characters")
+        .required("Required!"),
+      password: Yup.string()
+        .min(8, "Minimum 8 characters")
+        .required("Required!"),
+    }),
+    onSubmit: values => {
+      alert(JSON.stringify(values, null, 2));
     }
-  }, [errors]);
+  });
   return (
     <React.Fragment>
       <div className=" w-screen h-screen bg-gradient-to-r overflow-hidden from-cyan-600 via-cyan-500 to-blue-400 relative flex justify-center items-center shadow-2xl  ">
@@ -59,50 +46,48 @@ export default function Login() {
                 </div>
               </div>
               {/* //from */}
-              <form action="" onSubmit={handleSubmit}>
+              <form action="" onSubmit={formik.handleSubmit}>
                 <div className="space-y-5 mt-14 ">
                   <label className="">
                     <div className=" ">
                       <input
-                        onChange={handleChange}
-                        placeholder="Enter your username"
-                        name="Username"
-                        type="text"
+                       onChange={formik.handleChange}
+                       placeholder="Enter Username"
+                       name="name"
+                       value={formik.values.username}
+                       type="text"
                         className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
                       />
-                      {errors.name && (
-                        <p style={{ color: "red", fontSize: "13px" }}>
-                          {errors.name}
-                        </p>
+                      {formik.errors.username && formik.touched.username && (
+                        <p className="text-red-400 h-2 text-sm">{formik.errors.username}</p>
                       )}
                     </div>
                   </label>{" "}
                   <div className=" ">
                     <label className=" ">
                       <input
-                        onChange={handleChange}
-                        placeholder="Enter password"
-                        name="password"
                         type="password"
+                        name="password"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
                         className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
                       />
-                      {errors.password && (
-                        <p style={{ color: "red", fontSize: "13px" }}>
-                          {errors.password}
-                        </p>
+                         {formik.errors.password && formik.touched.password && (
+                        <p className="text-red-400 h-2 text-sm">{formik.errors.password}</p>
                       )}
                     </label>
                   </div>
-                 
+
                   {/* //button */}
                 </div>
+                <button
+                  type="submit"
+                  className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
+                >
+                  Sign In
+                </button>
               </form>
-              <button
-                type="submit"
-                className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
-              >
-                Sign Up
-              </button>
+
               <div className="flex text-center w-full justify-center mt-5 mb-10">
                 <p className="">Already have an account?</p>
                 <Link
@@ -119,3 +104,7 @@ export default function Login() {
     </React.Fragment>
   );
 }
+
+
+
+

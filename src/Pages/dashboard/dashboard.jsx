@@ -79,7 +79,11 @@ const Dashboard = () => {
       <div className="_periode flex justify-start pb-5">
         <div className="font-serif ">Periode :</div>
 
-        <div className="font-serif text-blue-500 bg-blue-50 ">oktober 2022</div>
+        <div className="">
+          <input type="month" 
+          className="font-serif text-blue-500 "
+          />
+        </div>
         {/* <Calendar>
         onClose={() => {
           setCalendar(false);

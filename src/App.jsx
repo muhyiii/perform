@@ -5,17 +5,19 @@ import NotFound from "./Component/NotFound";
 import Dashboard from "./Pages/dashboard/dashboard";
 import Goals from "./Pages/goals";
 import Body from "./Component/Body";
-
 import GoalsDetail from "./Pages/goals/goalsDetail";
 import Login from "./Pages/auth/login";
 import Register from "./Pages/auth/register";
-import Ma from "./Pages/ma";
+import Ma from "./Pages/ma"
+import FromJabatan from "./Pages/auth/formjabatan";
+
 
 function App() {
   return (
     <div className="relative  ">
       <Routes>
-        <Route path="/register" element={<Register />}></Route>
+      <Route path="/register" element={<Register />}></Route>
+      <Route path="/formjabatan" element={<FromJabatan />}></Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/" element={<Body />}>
           {/* <Route index path="peringkat" element={<Peringkat />}></Route> */}
