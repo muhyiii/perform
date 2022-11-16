@@ -11,8 +11,6 @@ import Login from "./Pages/auth/login";
 import Register from "./Pages/auth/register";
 import Ma from "./Pages/ma";
 
-
-
 function App() {
   return (
     <div className="relative  ">
