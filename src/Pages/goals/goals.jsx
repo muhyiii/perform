@@ -11,31 +11,41 @@ import {
   MdOutlineCancel,
 } from "react-icons/md";
 
-import AddGoals from "./goals/addGoal";
+import AddGoals from "./addGoal";
 
-import ColView from "../Component/Page Component/ColView";
-import RowView from "../Component/Page Component/RowView";
-import { api, getGoals } from "../Functions/api";
+import ColView from "../../Component/Page Component/ColView";
+import RowView from "../../Component/Page Component/RowView";
+import { api, getGoals } from "../../Functions/api";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { functionGetGoals } from "../../redux/actions/goalsAction";
+import { functionGetUserAfterLogin } from "../../redux/actions/authAction";
 
 const Goals = () => {
   const [addGoals, setAddGoals] = React.useState(false);
   const [data, setData] = React.useState([]);
   const [row, setRow] = React.useState(true);
   const [multiId, setMultiId] = React.useState([]);
+  const [multiStatus, setMultiStatus] = React.useState([]);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   //// BUAT MULTI ID
   const handleChange = (state) => {
-    console.log(state.target.value);
+    const target = state.target.value;
+    const idData = target.split("|")[0];
+    const statusData = target.split("|")[1];
+    console.log(idData);
     const { id, checked } = state.target;
 
     if (checked) {
-      setMultiId((item) => [...item, state.target.value]);
+      setMultiId((item) => [...item, idData]);
+      setMultiStatus((item) => [...item, statusData]);
     } else {
-      setMultiId((item) => [
-        ...item.filter((count) => count != state.target.value),
+      setMultiId((item) => [...item.filter((count) => count != idData)]);
+      setMultiStatus((item) => [
+        ...item.filter((count) => count != statusData),
       ]);
     }
   };
@@ -60,6 +70,32 @@ const Goals = () => {
         text: response.data.messege,
       });
   };
+
+  //// UPDATE MULTI GOALS
+  const updateMultiGoals = async (value) => {
+    const payload = {
+      goalId: multiId,
+      status: value,
+    };
+    const response = await axios.post(
+      api + "/data/goals/multiple/update",
+      payload
+    );
+    console.log(response);
+    if (response.status === 200) {
+      Swal.fire("Succesfull!", response.data.messege, "success");
+      setTimeout(() => {
+        navigate(0);
+      }, 1000);
+    }
+    if (response.statusText !== "OK")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: response.data.messege,
+      });
+  };
+
   // console.log(multiId);
   const setArchive = (id) => {
     let archive = JSON.parse(localStorage.getItem("archiveDummy"));
@@ -74,9 +110,14 @@ const Goals = () => {
     localStorage.setItem("dummyData", JSON.stringify(remove));
     setData(JSON.parse(localStorage.getItem("dummyData")));
   };
+  const getData = async () => {
+    const response = await dispatch(functionGetGoals());
+    setData(response.data);
+    await dispatch(functionGetUserAfterLogin(1))
+  };
   /////
   React.useEffect(() => {
-    getGoals().then((e) => setData(e));
+    getData();
   }, []);
 
   return (
@@ -131,12 +172,12 @@ const Goals = () => {
       </div>
       {multiId.length > 0 && (
         <div className="text-white">
-          {/* <button
+          <button
             onClick={() => {
-              if (
-                localStorage.getItem("someStatus") === "to-do" ||
-                localStorage.getItem("someStatus") === "procces"
-              ) {
+              // return console.log(multiStatus);
+              let a = multiStatus.map((e) => e === "to-do" || e === "ongoing");
+
+              if (a) {
                 Swal.fire({
                   title: "Are you sure?",
                   text: "You can only update to the next stage",
@@ -151,14 +192,14 @@ const Goals = () => {
                       title: "Select value of status update",
                       input: "select",
                       inputOptions:
-                        localStorage.getItem("someStatus") !== "procces"
+                        localStorage.getItem("someStatus") !== "ongoing"
                           ? {
-                              procces: "Procces",
-                              held: "Held",
+                              ongoing: "Ongoing",
+                              hold: "Hold",
                               done: "Done",
                             }
                           : {
-                              held: "Held",
+                              hold: "Held",
                               done: "Done",
                             },
                       inputPlaceholder: "Select a status",
@@ -167,22 +208,10 @@ const Goals = () => {
                         return new Promise((resolve) => {
                           if (
                             value === "done" ||
-                            value === "held" ||
+                            value === "hold" ||
                             value === "procces"
                           ) {
-                            console.log(value);
-                            updateLocStorage(
-                              localStorage.getItem("someId"),
-                              value
-                            );
-                            localStorage.removeItem("someId");
-                            localStorage.removeItem("someStatus");
-                            setIsChoosen(false);
-                            Swal.fire(
-                              "Succesfull!",
-                              "Your status has been updated.",
-                              "success"
-                            );
+                            updateMultiGoals(value);
                           } else {
                             resolve("Choose the next stage of your status");
                           }
@@ -203,7 +232,7 @@ const Goals = () => {
           >
             {" "}
             Update
-          </button> */}
+          </button>
           <button
             onClick={() => {
               // return console.log(multiId);
@@ -232,13 +261,16 @@ const Goals = () => {
         {row ? (
           <div className="grid grid-cols-12">
             {data?.map((e) => {
-              let deadline = new Date(e.asign).getDate();
-              let now = new Date().getDate();
-
-              // console.log(now);
-              // console.log(e);
-              let remain = deadline - now;
-              // console.log(e.user.name);
+              let fromDate = new Date(e.fromDate).toLocaleDateString("id", {
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+              });
+              let toDate = new Date(e.toDate).toLocaleDateString("id", {
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+              });
               return (
                 <RowView
                   data={e}
@@ -252,7 +284,8 @@ const Goals = () => {
                   task={e.task}
                   goalId={e.goalId}
                   status={e.status}
-                  remain={remain}
+                  fromDateA={fromDate}
+                  toDateA={toDate}
                   handleChange={handleChange}
                 />
               );
@@ -261,12 +294,16 @@ const Goals = () => {
         ) : (
           <div>
             {data.map((e) => {
-              let deadline = new Date(e.asign).getDate();
-              let now = new Date().getDate();
-
-              console.log(now);
-              let remain = deadline - now;
-
+              let fromDate = new Date(e.fromDate).toLocaleDateString("id", {
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+              });
+              let toDate = new Date(e.toDate).toLocaleDateString("id", {
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+              });
               return (
                 <ColView
                   data={e}
@@ -280,7 +317,8 @@ const Goals = () => {
                   task={e.task}
                   goalId={e.goalId}
                   status={e.status}
-                  remain={remain}
+                  fromDateA={fromDate}
+                  toDateA={toDate}
                   handleChange={handleChange}
                   setArchive={setArchive}
                 />

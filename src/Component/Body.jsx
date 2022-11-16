@@ -9,7 +9,7 @@ const Body = () => {
     <div className="grid grid-cols-11 w-screen h-screen">
       <div className="bg-gray-900 group-hover:bg-gray-600 flex h-screen col-span-2">
         <div className="">
-          <div className="m-6">
+          <div className="m-6  hover:cursor-pointer">
             <img
               src={logo}
               alt="urun-ri.png"
@@ -67,6 +67,9 @@ const Body = () => {
       </div>
       <div className="col-span-9 overflow-auto relative ">
         <Scrollbars autoHide style={{ height: "100%" }}>
+          <div>
+            <h1></h1>
+          </div>
           <Outlet />
         </Scrollbars>
       </div>

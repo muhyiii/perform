@@ -1,25 +1,34 @@
-import axios from "axios";
+import axios from "./axiosClient";
 
 export const api = "http://localhost:2200";
 
 // USERS
+//// LOGIN
+export function login(values) {
+  return axios.post("/login-account", values);
+}
+//// REGISTER
+export function register(values) {
+  return axios.post("/register-account", values);
+}
+//// GET TOKEN
+export function getAuth() {
+  return axios.get("/get-token");
+}
 //// GET USERS ALL
-export const getUsers = async () => {
-  const users = await axios.get(api + "/data/users");
+export function getUsers(id) {
+  return axios.get(`/data/users/${id}`);
   //   console.log("dataUsers", users.data.data);
-  return users.data.data;
-};
+}
 
 // GOALS
 //// GET GOALS ALL
-export const getGoals = async () => {
-  const goals = await axios.get(api + "/data/goals");
-  //   console.log("dataUsers", goals.data.data);
-  return goals.data.data;
-};
+export function getGoals() {
+  return axios.get("/data/goals");
+}
 //// GET GOAL BY ID
 export const getGoalById = async (userId) => {
   const goal = await axios.get(api + `/data/goals/${userId}`);
-  console.log('dataGoal',goal.data.data);
+  console.log("dataGoal", goal.data.data);
   return goal.data.data;
 };

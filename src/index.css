@@ -9,7 +9,7 @@
   src: local('Eveleth-Clean-Regular'), url('./Images/fonts/Eveleth\ Clean\ Regular.otf') format('otf')
 }
 .bg-image{
-  background-image: url('./Images/background.png');
+  background-image: url('./Images/image.png');
   background-size: cover;
 }
 
