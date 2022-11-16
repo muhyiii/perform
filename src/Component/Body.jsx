@@ -18,10 +18,10 @@ const Body = () => {
                 navigate("dashboard");
               }}
             />
-            <p className="font-eveleth text-center text-gray-200 text-2xl ">
+            <p className="font-eveleth text-center text-gray-200 text-2xl tracking-wide">
               URUN-RI
             </p>
-            <p className="font-questrial text-center text-blue-500 text-sm ">Bangun Negeri</p>
+            <p className="font-questrial text-center text-cyan-700 text-sm ">Bangun Negeri</p>
           </div>
 
           <nav className="text-yellow-50 text-xl font-semibold pl-14">

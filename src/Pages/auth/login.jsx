@@ -132,6 +132,7 @@ export default function Login() {
                   </div>
                   {/* //button */}
                 </div>
+              
               </form>
               <button
                 type="button"
@@ -148,7 +149,7 @@ export default function Login() {
                 }}
                 className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
               >
-                Sign Up
+                Sign In
               </button>
               <div className="flex text-center w-full justify-center mt-5 mb-10">
                 <p className="">Already have an account?</p>
@@ -166,3 +167,7 @@ export default function Login() {
     </React.Fragment>
   );
 }
+
+
+
+

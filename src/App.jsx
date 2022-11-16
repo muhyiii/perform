@@ -10,8 +10,9 @@ import GoalsDetail from "./Pages/goals/goalsDetail";
 import Login from "./Pages/auth/login";
 import Register from "./Pages/auth/register";
 import Ma from "./Pages/measured/ma";
+import FromJabatan from "./Pages/auth/formjabatan";
 
-const ProtectedRoute = ({ user}) => {
+const ProtectedRoute = ({ user }) => {
   if (!user) {
     return <Navigate to="/" replace />;
   }
@@ -26,7 +27,8 @@ function App() {
       <Routes>
         {" "}
         <Route path="/" exact element={<Login />}>
-          <Route index path="login" element={<Login />} />
+          <Route index path="login" element={<Login />} />{" "}
+          <Route path="formjabatan" element={<FromJabatan />}></Route>
           <Route path="register" element={<Register />} />
         </Route>
         <Route element={<ProtectedRoute user={user} />}>

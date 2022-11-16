@@ -1,4 +1,3 @@
-
 import React, { PureComponent } from "react";
 // import profile from '../Images/profile.png'
 
@@ -18,9 +17,10 @@ import {
   buildStyles,
 } from "react-circular-progressbar";
 import ChangingProgressProvider from "../../Component/Support/ChangingProggresProvider";
-import Peringkat from "./peringkat"
+import Peringkat from "./peringkat";
 import Todolist from "./Todolist";
-
+// import Calendar from "./tanggal";
+// const [calendar, setCalendar] = React.useState(false);
 const data = [
   {
     name: "Risk..",
@@ -78,7 +78,9 @@ const Dashboard = () => {
       <div className="_periode flex justify-start pb-5">
         <div className="font-serif ">Periode :</div>
 
-        <div className="font-serif text-blue-500 bg-blue-50 ">oktober 2022</div>
+        <div className="">
+          <input type="month" className="font-serif text-blue-500 " />
+        </div>
         {/* <Calendar>
         onClose={() => {
           setCalendar(false);
@@ -133,11 +135,12 @@ const Dashboard = () => {
             </div>
             <div className="container mx-auto">
               <div className="_periode  flex w-full  ">
-               <div>
-                <p className="text-center">Anda telah mencapai 66% dari keseluruhan goal anda</p>
-               </div>
+                <div>
+                  <p className="text-center">
+                    Anda telah mencapai 66% dari keseluruhan goal anda
+                  </p>
+                </div>
               </div>
-             
             </div>
             <div className="container mx-auto grid grid-cols-2 gap-14 flex-auto w-60 h-7 pt-4">
               <div className="bg-slate-200 border-2 border-gray-400 rounded-2xl">
@@ -183,11 +186,8 @@ const Dashboard = () => {
       </div>
       <Peringkat></Peringkat>
       <Todolist></Todolist>
-     
     </div>
   );
 };
-
-
 
 export default Dashboard;
