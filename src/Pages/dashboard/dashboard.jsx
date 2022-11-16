@@ -81,7 +81,7 @@ const Dashboard = () => {
 
         <div className="">
           <input type="month" 
-          className="font-serif text-blue-500 bg-blue-50"
+          className="font-serif text-blue-500 "
           />
         </div>
         {/* <Calendar>

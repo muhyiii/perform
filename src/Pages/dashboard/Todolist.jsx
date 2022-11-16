@@ -94,8 +94,9 @@ export default class todolist extends Component {
             });
           }
     
-        const slice = data.slice(this.state.offset, this.state.offset + this.state.perPage)
-        const postData = slice.map(pd =>
+        const slice = data.deleteList.slice(this.state.offset, this.state.offset + this.state.perPage)
+        const postData = slice.map(
+            pd =>
             <React.Fragment>
                 <div className='overflow-y-auto'>
 
@@ -111,7 +112,7 @@ export default class todolist extends Component {
                                     {pd.nama}
                                 </h3>
                             </div>
-                            <div className=' pl-6 pt-5 flex'>
+                            <div className=' pl-6 pt-2 flex'>
                                 <div className='w-20 h-5 flex bg-slate-400  rounded-xl'>
                                     <p className='text-white text-center mx-auto text-sm '>
                                         To Do
@@ -120,7 +121,7 @@ export default class todolist extends Component {
                             </div>
 
                         </div>
-                        <div className='flex'>
+                        <div className='flex col-span-1'>
                             <div className='pl-36 pt-8 mx-auto flex'>
 
                                 <img src={calendar} alt="" className='mx-auto w-5 h-5 flex ' />
@@ -132,7 +133,10 @@ export default class todolist extends Component {
                                 </div>
                             </div>
                             <div className='w-8 h-20 pl-2'>
-                                <button className='pt-7' onClick={() => {deleteList(data.id)}}>
+                                {/* <button className='pt-7' onClick={() => {deleteList(data.id)}}>
+                                    <img src={Delete} alt="" />
+                                </button> */}
+                                  <button className='pt-7' >
                                     <img src={Delete} alt="" />
                                 </button>
                             </div>

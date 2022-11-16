@@ -16,12 +16,8 @@ function App() {
   return (
     <div className="relative  ">
       <Routes>
-<<<<<<< HEAD
       <Route path="/register" element={<Register />}></Route>
       <Route path="/formjabatan" element={<FromJabatan />}></Route>
-=======
-        <Route path="/register" element={<Register />}></Route>
->>>>>>> a3c4fbb5c6b22ed93c25acf87484954dc8b18039
         <Route path="/login" element={<Login />}></Route>
         <Route path="/" element={<Body />}>
           {/* <Route index path="peringkat" element={<Peringkat />}></Route> */}
