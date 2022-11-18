@@ -10,6 +10,7 @@ const AddGoals = (props) => {
   let [data, setData] = React.useState({
     userId: 0,
     task: "",
+    description: "",
     fromDate: "",
     toDate: "",
   });
@@ -97,6 +98,20 @@ const AddGoals = (props) => {
 
             <div className="mb-3">
               <p className="text-sm pl-2">Task</p>
+              <input
+                type="text"
+                className="border rounded-md w-full py-2 outline-none px-2 placeholder:italic "
+                placeholder="Input description here"
+                onChange={(e) => {
+                  setData({
+                    ...data,
+                    task: e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <div className="mb-3">
+              <p className="text-sm pl-2">Description</p>
               <textarea
                 type="text"
                 className="border rounded-md w-full py-2 outline-none px-2 placeholder:italic "
@@ -104,7 +119,7 @@ const AddGoals = (props) => {
                 onChange={(e) => {
                   setData({
                     ...data,
-                    task: e.target.value,
+                    description: e.target.value,
                   });
                 }}
               />

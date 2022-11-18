@@ -29,7 +29,6 @@ const RowView = (props) => {
       });
   };
 
-
   return (
     <div className="col-span-4 relative ">
       <div className="shadow-md m-1 px-4 py-2 border rounded-xl ">
@@ -41,7 +40,7 @@ const RowView = (props) => {
             type="checkbox"
             name="goals"
             id=""
-            value={props.goalId}
+            value={props.goalId + "|" + props.status}
             onChange={props.handleChange}
             className="peer sr-only"
           />{" "}
@@ -69,24 +68,10 @@ const RowView = (props) => {
               <p className="text-xs text-gray-400">{props.role}</p>
             </div>
           </div>
-          <p
-            className={`text-xs lowercase ${
-              props.status === "to-do" || props.status === "procces"
-                ? props.remain === 0
-                  ? "text-red-500"
-                  : props.remain === 1
-                  ? "text-yellow-500"
-                  : "text-blue-500"
-                : "text-black capitalize"
-            } font-semibold`}
-          >
-            {props.status === "to-do" || props.status === "procces"
-              ? props.remain === 0
-                ? "last today"
-                : props.remain === 1
-                ? "tomorrow is last"
-                : props.remain + " days remaining"
-              : "Completed"}
+          <p className={`text-xs capitalize font-semibold`}>
+            {props.rate == 100
+              ? "Completed"
+              : props.fromDateA + " - " + props.toDateA}
           </p>
         </label>
         <div

@@ -1,28 +1,67 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+
 import Logo from "../../Images/logo.png";
-import { Link } from "react-router-dom";
-import { useFormik } from "formik";
-import * as Yup from "yup";
+import Validation from "./Validation";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
+import axios from "axios";
+import { api } from "../../Functions/api";
+import Swal from "sweetalert2";
+import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+import { UserContext } from "../../App";
+import { useDispatch } from "react-redux";
+import { functionLogin } from "../../redux/actions/authAction";
 
 export default function Login() {
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-    },
-    validationSchema: Yup.object({
-      username: Yup.string()
-        .min(2, "Mininum 2 characters")
-        .max(15, "Maximum 15 characters")
-        .required("Required!"),
-      password: Yup.string()
-        .min(8, "Minimum 8 characters")
-        .required("Required!"),
-    }),
-    onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
-    }
+  // const { user, setUser } = useContext(UserContext);
+  const [value, setValues] = useState({
+    username: "",
+    password: "",
   });
+  const [errors, setError] = useState({});
+  const [show, setShow] = useState(false);
+  function handleChange(e) {
+    setValues({
+      ...value,
+      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value,
+    });
+  }
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleSubmit = async () => {
+    const response = await dispatch(functionLogin(value));
+    console.log(response.status );
+    if (response.status === "Success") {
+      Swal.fire("Succesfull!", response.messege, "success");
+      setTimeout(() => {
+        return navigate("/acc/dashboard");
+      }, 500);
+    }
+    if (response.status !== "Success")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: response.data.messege,
+      });
+  };
+  // useEffect(() => {
+  //   if (
+  //     Object.keys(errors).length === 0 &&
+  //     value.username === "" &&
+  //     value.password === ""
+  //   ) {
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Error...",
+  //       text: "Please fill the input requirement.",
+  //     });
+  //   }
+  // }, [errors]);
   return (
     <React.Fragment>
       <div className=" w-screen h-screen bg-gradient-to-r overflow-hidden from-cyan-600 via-cyan-500 to-blue-400 relative flex justify-center items-center shadow-2xl  ">
@@ -46,48 +85,72 @@ export default function Login() {
                 </div>
               </div>
               {/* //from */}
-              <form action="" onSubmit={formik.handleSubmit}>
+              <form action="">
                 <div className="space-y-5 mt-14 ">
-                  <label className="">
-                    <div className=" ">
+                  {" "}
+                  <div className="  ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm">
+                    <label className="">
                       <input
-                       onChange={formik.handleChange}
-                       placeholder="Enter Username"
-                       name="name"
-                       value={formik.values.username}
-                       type="text"
-                        className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
+                        onChange={handleChange}
+                        placeholder="Enter your username"
+                        name="username"
+                        id="username"
+                        type="text"
+                        className="outline-none w-full bg-transparent bg-none"
                       />
-                      {formik.errors.username && formik.touched.username && (
-                        <p className="text-red-400 h-2 text-sm">{formik.errors.username}</p>
-                      )}
-                    </div>
-                  </label>{" "}
-                  <div className=" ">
-                    <label className=" ">
-                      <input
-                        type="password"
-                        name="password"
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
-                      />
-                         {formik.errors.password && formik.touched.password && (
-                        <p className="text-red-400 h-2 text-sm">{formik.errors.password}</p>
-                      )}
-                    </label>
+                    </label>{" "}
+                    {errors.username && (
+                      <p style={{ color: "red", fontSize: "13px" }}>
+                        {errors.username}
+                      </p>
+                    )}
                   </div>
-
+                  <div className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm ">
+                    <label className="flex items-center justify-center">
+                      <input
+                        onChange={handleChange}
+                        placeholder="Enter password"
+                        id="password"
+                        name="password"
+                        type={show ? "text" : "password"}
+                        prefix=""
+                        className="outline-none w-full bg-transparent bg-none"
+                      />
+                      <div onClick={() => setShow(!show)}>
+                        {show ? (
+                          <AiOutlineEye size={22} />
+                        ) : (
+                          <AiOutlineEyeInvisible size={22} />
+                        )}
+                      </div>
+                    </label>
+                    {errors.password && (
+                      <p style={{ color: "red", fontSize: "13px" }}>
+                        {errors.password}
+                      </p>
+                    )}
+                  </div>
                   {/* //button */}
                 </div>
-                <button
-                  type="submit"
-                  className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
-                >
-                  Sign In
-                </button>
+              
               </form>
-
+              <button
+                type="button"
+                onClick={() => {
+                  if (value.password !== "" && value.username !== "")
+                    handleSubmit();
+                  if (value.password === "" || value.username === "") {
+                    Swal.fire({
+                      icon: "error",
+                      title: "Error...",
+                      text: "Please fill the input requirement.",
+                    });
+                  }
+                }}
+                className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
+              >
+                Sign In
+              </button>
               <div className="flex text-center w-full justify-center mt-5 mb-10">
                 <p className="">Already have an account?</p>
                 <Link

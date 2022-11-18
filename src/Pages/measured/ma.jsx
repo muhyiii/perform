@@ -2,12 +2,12 @@ import React from "react";
 import { VscFilter, VscFilterFilled } from "react-icons/vsc";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { FaUserCircle } from "react-icons/fa";
-import ChangingProgressProvider from "../Component/Support/ChangingProggresProvider";
+import ChangingProgressProvider from "../../Component/Support/ChangingProggresProvider";
 import {
   CircularProgressbarWithChildren,
   buildStyles,
 } from "react-circular-progressbar";
-import "../App.css";
+import "../measured/ma";
 
 const Ma = () => {
   let a = [1, 2, 3, 4, 5, 2, 2, 2, 2, 2, 2, 2, 12, 2, 1, 12, 12];

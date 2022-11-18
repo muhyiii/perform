@@ -83,24 +83,10 @@ const ColView = (props) => {
       >
         <p className="text-xl font-bold  truncate">{props.task}</p>
 
-        <p
-          className={`text-xs lowercase ${
-            props.status === "to-do" || props.status === "procces"
-              ? props.remain === 0
-                ? "text-red-500"
-                : props.remain === 1
-                ? "text-yellow-500"
-                : "text-blue-500"
-              : "text-black capitalize"
-          } font-semibold`}
-        >
-          {props.status === "to-do" || props.status === "procces"
-            ? props.remain === 0
-              ? "last today"
-              : props.remain === 1
-              ? "tomorrow is last"
-              : props.remain + " days remaining"
-            : "Completed"}
+        <p className={`text-xs capitalize font-semibold`}>
+          {props.rate == 100
+            ? "Completed"
+            : props.fromDateA + " - " + props.toDateA}
         </p>
       </div>
       <div className="text-left col-start-7 col-span-2 ml-5 ">
@@ -128,11 +114,11 @@ const ColView = (props) => {
                     props.status !== "ongoing"
                       ? {
                           ongoing: "Ongoing",
-                          held: "Held",
+                          hold: "Hold",
                           done: "Done",
                         }
                       : {
-                          held: "Held",
+                          hold: "Hold",
                           done: "Done",
                         },
                   inputPlaceholder: "Select a status",
@@ -160,7 +146,7 @@ const ColView = (props) => {
       >
         {props.status}
       </p>
-      <div className="col-start-12 relative" >
+      <div className="col-start-12 relative">
         {" "}
         <BiDotsVerticalRounded
           className="hover:cursor-pointer"

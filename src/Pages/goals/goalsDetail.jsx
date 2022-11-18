@@ -12,6 +12,11 @@ const GoalsDetail = () => {
   let { id } = useParams();
   const [user, setUser] = React.useState({});
   const navigate = useNavigate();
+  const options = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
   /// DEFINE TO BE BETTER
   // let toDate = new Date(goal.toDate);
   // console.log(toDate);
@@ -23,14 +28,20 @@ const GoalsDetail = () => {
       setUser(e.users[0]);
     });
   }, [id]);
-
+  let fromDate = new Date(goal.fromDate).toLocaleDateString("id", options);
+  let toDate = new Date(goal.toDate).toLocaleDateString("id", options);
   return (
     <div className="grid grid-cols-12  w-full p-10 space-x-5 h-screen ">
       <div className=" col-span-3  space-y-5 ">
         <div className="  ">
           <h1 className="text-5xl font-bold ">
             {" "}
-            <span className="hover:cursor-pointer hover:text-blue-700 " onClick={()=>{navigate(-1)}}>
+            <span
+              className="hover:cursor-pointer hover:text-blue-700 "
+              onClick={() => {
+                navigate(-1);
+              }}
+            >
               Goal
             </span>{" "}
             Detail
@@ -85,7 +96,13 @@ const GoalsDetail = () => {
       <div className="col-span-9  bg-gray-400 mr-5 rounded-lg p-5 capitalize">
         <div className="flex justify-between">
           <h1 className="text-2xl font-semibold">{goal.task}</h1>
-          <p>{goal.toDate}</p>
+          <p className="font-semibold">
+            from <span className="">{fromDate}</span> to{" "}
+            <span className="text-red-700 font-bold">{toDate}</span>
+          </p>
+        </div>
+        <div>
+          <p>{goal.description}</p>
         </div>
       </div>
     </div>

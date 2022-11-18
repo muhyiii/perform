@@ -21,12 +21,13 @@ const NotFound = () => {
             </div>
             <a
               href="#"
-              class="block mt-1 text-lg leading-tight font-medium text-black hover:underline text-[30px] font-bold"
+              class="block mt-1 text-lg leading-tight  text-black hover:underline text-[30px] font-bold"
             >
               Something's Wrong here...
             </a>
             <p class="mt-2 text-slate-500">
-            We Can't Find your Looking For, Check out our Help Center or head back to Login
+              We Can't Find your Looking For, Check out our Help Center or head
+              back to Login
             </p>
             <div className="pt-8 ">
               <button class="my-10 mr-5 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">

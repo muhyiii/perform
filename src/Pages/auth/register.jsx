@@ -5,12 +5,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 export default function Register() {
-
   const formik = useFormik({
     initialValues: {
       username: "",
       password: "",
-      confirm_password: ""
+      confirm_password: "",
     },
     validationSchema: Yup.object({
       username: Yup.string()
@@ -22,22 +21,20 @@ export default function Register() {
         .required("Required!"),
       confirm_password: Yup.string()
         .oneOf([Yup.ref("password")], "Password's not match")
-        .required("Required!")
+        .required("Required!"),
     }),
-    onSubmit: values => {
-      alert(JSON.stringify(values, null, 2));
-    }
   });
   return (
+    // from-cyan-600 via-cyan-500 to-blue-400
     <React.Fragment>
-      <div className=" w-screen h-screen bg-gradient-to-r overflow-hidden from-cyan-600 via-cyan-500 to-blue-400 relative flex justify-center items-center shadow-2xl  ">
+      <div className=" w-screen h-screen bg-gradient-to-r overflow-hidden bg-image  relative flex justify-center items-center shadow-2xl  ">
         {/* <img src={Background} alt="" className="h-screen w-screen " /> */}
-        <div className="z-0 h-40 w-40 -left-20 -top-20 opacity-40 bg-cyan-200  absolute rounded-full shadow-xl"></div>{" "}
+        {/* <div className="z-0 h-40 w-40 -left-20 -top-20 opacity-40 bg-cyan-200  absolute rounded-full shadow-xl"></div>{" "}
         <div className="z-0 h-40 w-40 -left-28 -bottom-10 rounded-lg ease-linear  rotate-12  opacity-40 bg-white absolute shadow-xl"></div>{" "}
         <div className="z-0 h-40 w-40 -left-24 -bottom-14 rounded-lg ease-linear  rotate-12  opacity-40 bg-white absolute shadow-xl"></div>
         <div className="z-10 h-60 w-40 right-28 -bottom-10 opacity-40 bg-white absolute rounded-full shadow-xl"></div>
         <div className="z-0 h-40 w-60 left-32 top-14 opacity-40 bg-blue-400 mix-blend-multiply absolute rounded-full shadow-xl"></div>
-        <div className="z-0 h-40 w-40 left-48 top-14  opacity-40 bg-blue-600 skew-x-6 mix-blend-multiply absolute rounded-full shadow-xl"></div>
+        <div className="z-0 h-40 w-40 left-48 top-14  opacity-40 bg-blue-600 skew-x-6 mix-blend-multiply absolute rounded-full shadow-xl"></div> */}
         <div className="grid grid-cols-2 w-3/4  py-10  bg-white  rounded-lg  z-10 ">
           <div className="  flex items-center justify-center">
             <img src={Logo} alt="" className="" />
@@ -56,15 +53,17 @@ export default function Register() {
                   <label className="">
                     <div className=" ">
                       <input
-                     onChange={formik.handleChange}
-                     placeholder="Enter Username"
-                     name="name"
-                     value={formik.values.username}
-                     type="text"
+                        onChange={formik.handleChange}
+                        placeholder="Enter Username"
+                        name="name"
+                        value={formik.values.username}
+                        type="text"
                         className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
                       />
                       {formik.errors.username && formik.touched.username && (
-                        <p className="text-red-400 h-2 text-sm">{formik.errors.username}</p>
+                        <p className="text-red-400 h-2 text-sm">
+                          {formik.errors.username}
+                        </p>
                       )}
                     </div>
                   </label>{" "}
@@ -78,7 +77,9 @@ export default function Register() {
                         className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
                       />
                       {formik.errors.password && formik.touched.password && (
-                        <p className="text-red-400 h-2 text-sm">{formik.errors.password}</p>
+                        <p className="text-red-400 h-2 text-sm">
+                          {formik.errors.password}
+                        </p>
                       )}
                     </label>
                   </div>
@@ -91,9 +92,12 @@ export default function Register() {
                         onChange={formik.handleChange}
                         className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
                       />
-                      {formik.errors.confirm_password && formik.touched.confirm_password && (
-                        <p className="text-red-400 h-2 text-sm">{formik.errors.confirm_password}</p>
-                      )}
+                      {formik.errors.confirm_password &&
+                        formik.touched.confirm_password && (
+                          <p className="text-red-400 h-2 text-sm">
+                            {formik.errors.confirm_password}
+                          </p>
+                        )}
                     </label>
                   </div>
                   {/* //button */}
