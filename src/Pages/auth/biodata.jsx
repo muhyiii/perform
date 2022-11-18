@@ -3,46 +3,103 @@ import { Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import Profile from "../../Images/profile.png";
+import { functionRegisterBiodata } from "../../redux/actions/authAction";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import axios from "axios";
+import { api } from "../../Functions/api";
 
-const RegisterBiodata = () => {
+const Biodata = () => {
   const [selectedImage, setSelectedImage] = useState();
+  const [image, setImage] = useState();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // This function will be triggered when the file field change
-  const imageChange = (e) => {
+  const imageChange = async (e, setFieldValue) => {
     if (e.target.files && e.target.files.length > 0) {
-      setSelectedImage(e.target.files[0]);
+      const fileImage = e.target.files[0];
+      setSelectedImage(fileImage);
+      // setImageBase("image", fileImage);
+      setInitialValues({ ...initialValues, image: fileImage });
     }
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    alert(URL.createObjectURL(selectedImage));
+  const setImageBase = (img) => {
+    const read = new FileReader(img);
+    read.readAsDataURL(img);
+    read.onloadend = () => {
+      setImage(read.result);
+      setInitialValues({ ...initialValues, image: image });
+    };
   };
+  // const onSubmit = (e) => {
+  //   e.preventDefault();
+  //   alert(URL.createObjectURL(selectedImage));
+  // };
 
   // This function will be triggered when the "Remove This Image" button is clicked
   const removeSelectedImage = () => {
     setSelectedImage();
   };
-
-  const formik = useFormik({
-    initialValues: {
-      name: "",
-      role: "",
-      position: "",
-      image: "",
-      birthday: "",
-    },
-    validationSchema: Yup.object({
-      name: Yup.string().required("Required!"),
-      role: Yup.string().required("Required!"),
-      position: Yup.string().required("Required!"),
-      image: Yup.string().required("Required!"),
-      birthday: Yup.string().required("Required!"),
-    }),
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
+  const SUPPORTED_FORMATS = [
+    "image/jpg",
+    "image/jpeg",
+    "image/gif",
+    "image/png",
+  ];
+  const [initialValues, setInitialValues] = React.useState({
+    name: "",
+    role: "",
+    position: "",
+    birthday: "",
   });
+
+  // const schema = Yup.object({
+  //   name: Yup.string().required("Name is required!"),
+  //   role: Yup.string().required("Role is required!"),
+  //   position: Yup.string().required("Position is also required!"),
+  //   // image: Yup.mixed()
+  //   //   .nullable()
+  //   //   .required("A file is required")
+  //   //   .test(
+  //   //     "fileFormat",
+  //   //     "Unsupported Format",
+  //   //     (value) => value && SUPPORTED_FORMATS.includes(value.type)
+  //   //   ),
+  //   birthday: Yup.string().required("Required!"),
+  // });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("image", selectedImage);
+    formData.append("name", initialValues.name);
+    formData.append("role", initialValues.role);
+    formData.append("position", initialValues.position);
+    formData.append("birthday", initialValues.birthday);
+    // console.log(formData);
+    // const response = await axios.post(
+    //   api + `/register-account/continue/${localStorage.getItem("id")}`,
+    //   formData,
+    //   {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data ",
+    //     },
+    //   }
+    // );
+    // return console.log(data);
+
+    const response = await dispatch(functionRegisterBiodata(formData));
+    console.log(response);
+    // return;
+    if (response.status === "Success") {
+      Swal.fire("Succesfull!", response.messege, "success");
+      setTimeout(() => {
+        navigate("/acc/dashboard");
+      }, 500);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -106,7 +163,7 @@ const RegisterBiodata = () => {
               </div>
               <div className="mt-5">
                 <p>
-                  URUN-RI as a Sharia-based Securities Crowdfunding Organizer
+                  URUN-RI as a Sharia-based Securities Crowfunding Organizer
                   presents a positive ecosystem in the interaction of Issuers
                   and Investors, by following OJK rules and sharia principles
                 </p>
@@ -114,25 +171,27 @@ const RegisterBiodata = () => {
             </div>
           </div>
 
-          <div className="col-span-2 shadow-2xl rounded-bl-3xl shadow-slate-500 bg-white mt-8 ml-5 w-full rounded-r-3xl">
-            <form action="" onSubmit={formik.handleSubmit}>
+          <div className="col-span-2 shadow-2xl rounded-bl-3xl shadow-slate-500 bg-white bottom-7 py-10 px-10 rounded-r-3xl  absolute right-32 w-2/6">
+            <form action="" onSubmit={handleSubmit}>
               <div className="space-y-5 mt-2 pl-9">
                 <label className="text-sm text-slate-600 ml-1 mb-1">
                   Name
                   <div className=" ">
                     <input
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        setInitialValues({
+                          ...initialValues,
+                          name: e.target.value,
+                        });
+                      }}
                       placeholder="Enter name"
                       name="name"
-                      value={formik.values.name}
                       type="text"
-                      className=" ring-slate-400 ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md   outline-none py-2  w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
+                      className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md   outline-none py-2  w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
                     />
-                    {formik.errors.name && formik.touched.name && (
-                      <p className="text-red-400 h-2 text-xs">
-                        {formik.errors.name}
-                      </p>
-                    )}
+                    {/* {errors.name && touched.name && (
+                      <p className="text-red-400 h-2 text-xs">{errors.name}</p>
+                    )} */}
                   </div>
                 </label>
               </div>
@@ -141,18 +200,20 @@ const RegisterBiodata = () => {
                   Role
                   <div className=" ">
                     <input
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        setInitialValues({
+                          ...initialValues,
+                          role: e.target.value,
+                        });
+                      }}
                       placeholder="Enter role"
-                      name="name"
-                      value={formik.values.role}
+                      name="role"
                       type="text"
-                      className=" ring-slate-400 ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
+                      className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
                     />
-                    {formik.errors.role && formik.touched.role && (
-                      <p className="text-red-400 h-2 text-xs">
-                        {formik.errors.role}
-                      </p>
-                    )}
+                    {/* {errors.role && touched.role && (
+                      <p className="text-red-400 h-2 text-xs">{errors.role}</p>
+                    )} */}
                   </div>
                 </label>
               </div>
@@ -161,18 +222,22 @@ const RegisterBiodata = () => {
                   Position
                   <div className=" ">
                     <input
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        setInitialValues({
+                          ...initialValues,
+                          position: e.target.value,
+                        });
+                      }}
                       placeholder="Enter position"
-                      name="name"
-                      value={formik.values.position}
+                      name="position"
                       type="text"
-                      className=" ring-slate-400 ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
+                      className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
                     />
-                    {formik.errors.position && formik.touched.position && (
+                    {/* {errors.position && touched.position && (
                       <p className="text-red-400 h-2 text-xs">
-                        {formik.errors.position}
+                        {errors.position}
                       </p>
-                    )}
+                    )} */}
                   </div>
                 </label>
               </div>
@@ -182,18 +247,22 @@ const RegisterBiodata = () => {
                   Birthday
                   <div className=" ">
                     <input
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        setInitialValues({
+                          ...initialValues,
+                          birthday: e.target.value,
+                        });
+                      }}
                       placeholder="Enter birthday"
                       name="birthday"
-                      value={formik.values.birthday}
                       type="date"
-                      className=" ring-slate-400 ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
+                      className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
                     />
-                    {formik.errors.birthday && formik.touched.birthday && (
+                    {/* {errors.birthday && touched.birthday && (
                       <p className="text-red-400 h-2 text-xs">
-                        {formik.errors.birthday}
+                        {errors.birthday}
                       </p>
-                    )}
+                    )} */}
                   </div>
                 </label>
               </div>
@@ -202,36 +271,44 @@ const RegisterBiodata = () => {
                   Image
                   <div className=" ">
                     <input
-                      onChange={imageChange}
-                      accept="image/*"
+                      onChange={(e) => {
+                        imageChange(e);
+                        // console.log(initialValues);
+                      }}
+                      // accept="image/*"
                       placeholder="Upload File"
                       name="image"
-                      value={formik.values.image}
                       type="file"
                       className="  placeholder:capitalize  rounded-md  outline-none py-2  w-11/12 text-base bg-transparent"
                     />
 
-                    {formik.errors.image && formik.touched.image && (
-                      <p className="text-red-400 h-2 text-xs">
-                        {formik.errors.image}
-                      </p>
-                    )}
+                    {/* {errors.image && touched.image && (
+                      <p className="text-red-400 h-2 text-xs">{errors.image}</p>
+                    )} */}
                   </div>
                 </label>
-                {selectedImage && (
-                  <div style={styles.preview}>
-                    <img
-                      src={URL.createObjectURL(selectedImage)}
-                      style={styles.image}
-                      alt="Thumb"
-                      className="w-56 h-24"
-                    />
-                  </div>
-                )}
+                <div className="h-28 mt-5">
+                  {" "}
+                  {selectedImage ? (
+                    <div style={styles.preview}>
+                      <img
+                        src={URL.createObjectURL(selectedImage)}
+                        style={styles.image}
+                        alt="Thumb"
+                        className=" h-24"
+                      />
+                    </div>
+                  ) : (
+                    <p className="">Preview is here</p>
+                  )}
+                </div>
               </div>
               <div className="pl-10">
                 <button
                   type="submit"
+                  // onClick={()=>{
+                  //   handleSubmit()
+                  // }}
                   className="touch-pinch-zoom py-2 w-11/12 bg-amber-300 rounded-md mt-5 mb-5 hover:bg-amber-400 transition-all duration-500 ease-in"
                 >
                   Create Account
@@ -244,15 +321,15 @@ const RegisterBiodata = () => {
     </React.Fragment>
   );
 };
-export default RegisterBiodata;
+export default Biodata;
 
 const styles = {
-  preview: {
-    marginTop: 50,
-    display: "flex",
-    flexDirection: "column",
-  },
-  image: { maxWidth: "100%", maxHeight: 320 },
+  // preview: {
+  //   marginTop: 50,
+  //   display: "flex",
+  //   flexDirection: "column",
+  // },
+  // image: { maxWidth: "100%", maxHeight: 320 },
   delete: {
     cursor: "pointer",
     padding: 15,

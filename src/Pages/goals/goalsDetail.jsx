@@ -3,30 +3,35 @@ import {
   buildStyles,
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
+import { useDispatch } from "react-redux";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import ChangingProgressProvider from "../../Component/Support/ChangingProggresProvider";
 import { getGoalById } from "../../Functions/api";
+import { functionGetGoalsById } from "../../redux/actions/goalsAction";
 
 const GoalsDetail = () => {
   const [goal, setGoal] = React.useState({});
   let { id } = useParams();
   const [user, setUser] = React.useState({});
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const options = {
     year: "numeric",
     month: "short",
     day: "numeric",
   };
-  /// DEFINE TO BE BETTER
-  // let toDate = new Date(goal.toDate);
-  // console.log(toDate);
+  const getGoalById = async () => {
+    const response = await dispatch(functionGetGoalsById(id));
+    if (response.status === "Success") {
+      console.log(response.data);
+      setGoal(response.data);
+
+      setUser(response.data.users[0]);
+    }
+  };
   React.useEffect(() => {
     // console.log(id);
-    getGoalById(id).then((e) => {
-      console.log(e);
-      setGoal(e);
-      setUser(e.users[0]);
-    });
+    getGoalById();
   }, [id]);
   let fromDate = new Date(goal.fromDate).toLocaleDateString("id", options);
   let toDate = new Date(goal.toDate).toLocaleDateString("id", options);

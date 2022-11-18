@@ -1,0 +1,333 @@
+.Instagram_post__1 {
+	transform-box: fill-box;
+	transform-origin: 50% 50%
+}
+
+.parent {
+	position: relative;
+	width: 1080px;
+	height: 1080px;
+}
+
+.polygon-20 {
+	position: absolute;
+	width: 450px;
+	height: 450px;
+	left: 325.35px;
+	top: 455px;
+
+	background: rgba(255, 214, 0, 0.95);
+}
+
+.polygon-21 {
+	position: absolute;
+	width: 450px;
+	height: 450px;
+	left: 325px;
+	top: 350px;
+
+	background: rgba(25, 118, 210, 0.85);
+}
+
+.blue {
+	position: absolute;
+	width: 150px;
+	height: 150px;
+	left: 352.45px;
+	top: 772.55px;
+	border-radius: 100%;
+	background: #1597E5;
+	transform: rotate(120deg);
+}
+
+.orange {
+	position: absolute;
+	width: 150px;
+	height: 150px;
+	left: 512.55px;
+	top: 202.45px;
+	border-radius: 100%;
+	background: rgba(255, 214, 0, 0.95);
+	transform: rotate(-120deg);
+}
+
+
+
+
+
+
+
+
+
+
+
+.Rectangle_82 {
+	animation: 1.5s linear 0s 1 normal forwards running Rectangle_82;
+	transform-box: fill-box;
+	transform-origin: 50% 50%
+}
+
+@keyframes Rectangle_82 {
+	0% {
+		transform: translateY(0px) rotate(0deg);
+		width: 600px;
+		height: 150px;
+		background-color: rgba(217, 217, 217, 1);
+		;
+	}
+
+	20% {
+		transform: rotate(0deg);
+		border-radius: 0px;
+	}
+
+	60% {
+		transform: rotate(-40deg);
+		border-radius: 180px;
+	}
+
+	80% {
+		transform: translateY(199.5px);
+		width: 600px;
+		height: 150px;
+		border-radius: 0px;
+	}
+
+	26.67% {
+		transform: translateY(-199.5px);
+		width: 300px;
+		height: 300px;
+		background-color: rgba(217, 217, 217, 1);
+		;
+	}
+
+	53.33% {
+		transform: translateY(0px);
+		width: 300px;
+		height: 300px;
+		background-color: rgba(217, 217, 217, 1);
+		;
+	}
+
+	46.67% {
+		transform: rotate(-140deg);
+	}
+}
+
+.Polygon_20 {
+	animation: 1.5s linear 0s 1 normal forwards running Polygon_20;
+	transform-box: fill-box;
+	transform-origin: 50% 50%
+}
+
+@keyframes Polygon_20 {
+	0% {
+		transform: translateY(0px) rotate(0deg);
+		border-radius: 0px;
+	}
+
+	18% {
+		border-radius: 100px;
+	}
+
+	100% {
+		transform: translateY(280px) rotate(-180deg);
+	}
+
+	33.33% {
+		transform: translateY(-280px) rotate(-180deg);
+	}
+
+	66.67% {
+		transform: translateY(0px) rotate(0deg);
+		border-radius: 0px;
+	}
+
+	9.33% {
+		border-radius: 100px;
+	}
+
+	26.67% {
+		border-radius: 0px;
+	}
+
+	75.33% {
+		border-radius: 100px;
+	}
+
+	83.33% {
+		border-radius: 100px;
+	}
+
+	93.33% {
+		border-radius: 0px;
+	}
+}
+
+.Polygon_21 {
+	animation: 1.5s linear 0s 1 normal forwards running Polygon_21;
+	transform-box: fill-box;
+	transform-origin: 50% 50%
+}
+
+@keyframes Polygon_21 {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	100% {
+		transform: rotate(-180deg);
+	}
+
+	33.33% {
+		transform: rotate(-180deg);
+	}
+
+	66.67% {
+		transform: rotate(0deg);
+	}
+}
+
+.yellow {
+	animation: 1.5s linear 0s 1 normal forwards running yellow;
+	transform-box: fill-box;
+	transform-origin: 50% 50%
+}
+
+@keyframes yellow {
+	0% {
+		transform: translateY(0px) translateX(0px) rotate(0deg);
+		width: 150px;
+	}
+
+	50% {
+		width: 250px;
+	}
+
+	100% {
+		transform: translateY(-700px) translateX(290px);
+		width: 150px;
+	}
+
+	33.33% {
+		transform: translateY(700px) translateX(310px) rotate(-60deg);
+		width: 150px;
+	}
+
+	66.67% {
+		transform: translateY(0px) translateX(-600px) rotate(300deg);
+		width: 150px;
+	}
+
+	16.67% {
+		width: 250px;
+	}
+
+	83.33% {
+		width: 250px;
+	}
+
+	31.33% {
+		transform: rotate(0deg);
+	}
+
+	64.67% {
+		transform: rotate(0deg);
+	}
+}
+
+.blu {
+	animation: 1.5s linear 0s 1 normal forwards running blu;
+	transform-box: fill-box;
+	transform-origin: 50% 50%
+}
+
+@keyframes blu {
+	0% {
+		transform: translateX(0px) translateY(0px) rotate(0deg);
+		width: 150px;
+	}
+
+	50% {
+		width: 250px;
+	}
+
+	84% {
+		width: 250px;
+	}
+
+	100% {
+		transform: translateX(310px) translateY(700px);
+		width: 150px;
+	}
+
+	33.33% {
+		transform: translateX(-600px) translateY(0px) rotate(300deg);
+		width: 150px;
+	}
+
+	66.67% {
+		transform: translateX(290px) translateY(-700px) rotate(-240deg);
+		width: 150px;
+	}
+
+	16.67% {
+		width: 250px;
+	}
+
+	31.33% {
+		transform: rotate(0deg);
+	}
+
+	64.67% {
+		transform: rotate(0deg);
+	}
+}
+
+.blu {
+	animation: 1.5s linear 0s 1 normal forwards running blu;
+	transform-box: fill-box;
+	transform-origin: 50% 50%
+}
+
+@keyframes blu {
+	0% {
+		transform: translateX(0px) translateY(0px) rotate(0deg);
+		width: 150px;
+	}
+
+	50% {
+		width: 250px;
+	}
+
+	100% {
+		transform: translateX(-600px) translateY(0px);
+		width: 150px;
+	}
+
+	33.33% {
+		transform: translateX(290px) translateY(-700px) rotate(-240deg);
+		width: 150px;
+	}
+
+	66.67% {
+		transform: translateX(310px) translateY(700px) rotate(-60deg);
+		width: 150px;
+	}
+
+	16.67% {
+		width: 250px;
+	}
+
+	83.33% {
+		width: 250px;
+	}
+
+	31.33% {
+		transform: rotate(0deg);
+	}
+
+	64.67% {
+		transform: rotate(0deg);
+	}
+}

@@ -16,7 +16,7 @@ export function authProcess(state = initialState, action) {
       isAuth: true,
     };
   }
-  if (action.type === "getUser") {
+  if (action.type === "GetUser") {
     return {
       ...state,
       id: action.id,

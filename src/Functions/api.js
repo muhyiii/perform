@@ -1,7 +1,7 @@
 import axios from "axios";
 import axioss from "./axiosClient";
 
-export const api = "http://192.168.1.48:2200";
+export const api = "http://localhost:2200";
 
 // USERS
 //// LOGIN
@@ -12,12 +12,19 @@ export function login(values) {
 export function register(values) {
   return axioss.post("/register-account", values);
 }
-//// GET TOKEN
+//// REGISTER BIODATA
+export function registerBiodata(values) {
+  return axioss.post(
+    `/register-account/continue/${localStorage.getItem("id" )}`,
+    values
+  );
+}
+//// GET TOKEN    
 export function getAuth() {
   return axioss.get("/get-token");
 }
 //// GET USERS ALL
-export function getUsers(id) {
+export function getUser(id) {
   return axioss.get(`/data/users/${id}`);
   //   console.log("dataUsers", users.data.data);
 }
@@ -29,7 +36,5 @@ export function getGoals() {
 }
 //// GET GOAL BY ID
 export const getGoalById = async (userId) => {
-  const goal = await axios.get(api + `/data/goals/${userId}`);
-  console.log("dataGoal", goal.data.data);
-  return goal.data.data;
+  return axioss.get(`/data/goals/${userId}`);
 };

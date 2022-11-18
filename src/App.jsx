@@ -10,14 +10,21 @@ import GoalsDetail from "./Pages/goals/goalsDetail";
 import Login from "./Pages/auth/login";
 import Register from "./Pages/auth/register";
 import Ma from "./Pages/measured/ma";
-import FromJabatan from "./Pages/auth/formjabatan";
+import FromJabatan from "./Pages/auth/biodata";
+import Biodata from "./Pages/auth/biodata";
+import EmptyPage from "./Component/Support/Empty";
+import { useSelector } from "react-redux";
+import Loading from "./Component/Loading";
+import Loadings from "./Component/Loading";
 
 const ProtectedRoute = ({ user }) => {
+  const loading = useSelector((state) => state.loadingState.isLoading);
   if (!user) {
     return <Navigate to="/" replace />;
+  } else {
+    // if (loading === true) return <Loading />;
+    return <Outlet />;
   }
-
-  return <Outlet />;
 };
 
 function App() {
@@ -26,11 +33,13 @@ function App() {
     <div className="relative  ">
       <Routes>
         {" "}
-        <Route path="/" exact element={<Login />}>
-          <Route index path="login" element={<Login />} />{" "}
-          <Route path="formjabatan" element={<FromJabatan />}></Route>
-          <Route path="register" element={<Register />} />
-        </Route>
+        <Route path="/" element={<EmptyPage />}>
+          {" "}
+        </Route>{" "}
+        <Route path="/load" element={<Loadings />} />
+        <Route index path="/login" element={<Login />} />{" "}
+        <Route path="/register" element={<Register />} />{" "}
+        <Route path="/add-biodata" element={<Biodata />} />
         <Route element={<ProtectedRoute user={user} />}>
           <Route path="/acc" element={<Body />}>
             {/* <Route index path="peringkat" element={<Peringkat />}></Route> */}

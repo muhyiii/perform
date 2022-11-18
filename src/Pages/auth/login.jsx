@@ -1,18 +1,17 @@
 import React, { useState, useContext } from "react";
 
 import Logo from "../../Images/logo.png";
-import Validation from "./Validation";
+
 import {
   Link,
-  useLocation,
+
   useNavigate,
-  useNavigation,
+
 } from "react-router-dom";
-import axios from "axios";
-import { api } from "../../Functions/api";
+
 import Swal from "sweetalert2";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-import { UserContext } from "../../App";
+
 import { useDispatch } from "react-redux";
 import { functionLogin } from "../../redux/actions/authAction";
 
@@ -35,11 +34,12 @@ export default function Login() {
   const navigate = useNavigate();
   const handleSubmit = async () => {
     const response = await dispatch(functionLogin(value));
-    console.log(response.status );
+    navigate("/acc/dashboard");
+    // console.log(response.status );
     if (response.status === "Success") {
       Swal.fire("Succesfull!", response.messege, "success");
       setTimeout(() => {
-        return navigate("/acc/dashboard");
+        return;
       }, 500);
     }
     if (response.status !== "Success")
@@ -69,7 +69,8 @@ export default function Login() {
         <div className="z-0 h-40 w-40 -left-20 -top-20 opacity-40 bg-cyan-200  absolute rounded-full shadow-xl"></div>{" "}
         <div className="z-0 h-40 w-40 -left-28 -bottom-10 rounded-lg ease-linear  rotate-12  opacity-40 bg-white absolute shadow-xl"></div>{" "}
         <div className="z-0 h-40 w-40 -left-24 -bottom-14 rounded-lg ease-linear  rotate-12  opacity-40 bg-white absolute shadow-xl"></div>
-        <div className="z-10 h-60 w-40 right-28 -bottom-10 opacity-40 bg-white absolute rounded-full shadow-xl"></div>
+        <div className="z-10 h-60 w-40 right-28 -bottom-10 opacity-40 bg-white absolute rounded-full shadow-xl"></div>{" "}
+        <div className="z-10 h-60 w-40 right-32 -bottom-10 opacity-40 bg-white absolute rounded-full shadow-xl"></div>
         <div className="z-0 h-40 w-60 left-32 top-14 opacity-40 bg-blue-400 mix-blend-multiply absolute rounded-full shadow-xl"></div>
         <div className="z-0 h-40 w-40 left-48 top-14  opacity-40 bg-blue-600 skew-x-6 mix-blend-multiply absolute rounded-full shadow-xl"></div>
         <div className="grid grid-cols-2 w-3/4  py-10  bg-white  rounded-lg  z-10 ">
@@ -132,7 +133,6 @@ export default function Login() {
                   </div>
                   {/* //button */}
                 </div>
-              
               </form>
               <button
                 type="button"
@@ -152,7 +152,7 @@ export default function Login() {
                 Sign In
               </button>
               <div className="flex text-center w-full justify-center mt-5 mb-10">
-                <p className="">Already have an account?</p>
+                <p className="">Don't have an account?</p>
                 <Link
                   to={"/register"}
                   className="text-red-400 pl-1 hover:text-red-500 duration-500 hover:transition-colors hover:font-semibold"
@@ -167,7 +167,3 @@ export default function Login() {
     </React.Fragment>
   );
 }
-
-
-
-

@@ -1,19 +1,54 @@
-import { getAuth, getUsers, login, register } from "../../Functions/api";
+import {
+  getAuth,
+  getUser,
+  getUsers,
+  login,
+  register,
+  registerBiodata,
+} from "../../Functions/api";
 import { syncToken } from "../../Functions/axiosClient";
 import jwt_decode from "jwt-decode";
-// export function authRegister(payload) {
-//   return async (dispatch) => {
-//     try {
-//       const response = await register(payload);
-//       const data = response.data;
-//       dispatch(registerHandle(data));
-//       localStorage.setItem("token", data.token);
-//       return data;
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   };
-// }
+export function functionRegister(payload) {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      const response = await register(payload);
+      const data = response.data;
+      console.log(data);
+      localStorage.setItem("id", data.data);
+      dispatch({
+        type: "LoadingStop",
+      });
+      return data;
+    } catch (err) {
+      console.log(err);
+      dispatch({
+        type: "LoadingStop",
+      });
+    }
+  };
+}
+export function functionRegisterBiodata(payload) {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    console.log(payload);
+    try {
+      const response = await registerBiodata(payload);
+      console.log(response);
+      const data = response.data;
+      localStorage.setItem("token", data.token);
+      dispatch({
+        type: "LoadingStop",
+      });
+      return data;
+    } catch (err) {
+      console.log(err.response);
+      dispatch({
+        type: "LoadingStop",
+      });
+    }
+  };
+}
 
 export function functionLogin(payload) {
   return async (dispatch) => {
@@ -31,7 +66,7 @@ export function functionLogin(payload) {
       dispatch({
         type: "LoadingStop",
       });
-      console.log(err);
+      console.log(err.response);
       let data = err.response.data;
       return data;
     }
@@ -75,18 +110,21 @@ export function functionGetUserAfterLogin(id) {
   return async (dispatch) => {
     dispatch({ type: "Loading" });
     try {
-      const response = await getUsers(1);
+      const response = await getUser(id);
+      console.log(id);
+      console.log(response);
       const data = response.data;
       dispatch({
         type: "LoadingStop",
       });
-      dataHandle(data);
-      console.log(data);
+      // dispatch(dataHandle(data));
+      // console.log(data);
       return data;
     } catch (err) {
       dispatch({
         type: "LoadingStop",
       });
+      console.log(err);
       let data = err.response.data;
       return data;
     }
@@ -118,12 +156,12 @@ const loginHandle = (data) => {
 };
 
 const dataHandle = (data) => {
-  console.log(data.data.name);
+  console.log(data?.data?.name);
   return {
-    type: "getUser",
+    type: "GetUser",
     name: data?.data?.name,
     username: data?.data?.username,
     role: data?.data?.role,
-    position: data?.data?.username,
+    position: data?.data?.position,
   };
 };

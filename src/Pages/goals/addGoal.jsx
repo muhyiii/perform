@@ -35,7 +35,7 @@ const AddGoals = (props) => {
         navigate(0);
       }
       setTimeout(() => {
-        getUsers().then((e) => setUsers(e));
+        // getUsers().then((e) => setUsers(e));
       }, 1000);
     } catch (error) {
       console.log(error);
@@ -48,7 +48,7 @@ const AddGoals = (props) => {
   };
 
   React.useEffect(() => {
-    getUsers().then((e) => setUsers(e));
+    // getUsers().then((e) => setUsers(e));
   }, []);
   ///////////////////////
   if (!props.addGoals) {

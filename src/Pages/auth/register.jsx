@@ -1,40 +1,57 @@
 import React, { useState } from "react";
 import Logo from "../../Images/logo.png";
-import { Link } from "react-router-dom";
-import { useFormik } from "formik";
+import { Link, useNavigate } from "react-router-dom";
+import { Formik, useFormik } from "formik";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+import { functionRegister } from "../../redux/actions/authAction";
+import Swal from "sweetalert2";
+
+const validateSchema = Yup.object({
+  username: Yup.string()
+    .min(2, "Mininum 2 characters")
+    .max(15, "Maximum 15 characters")
+    .required("Required!"),
+  password: Yup.string().min(8, "Minimum 8 characters").required("Required!"),
+  confirm_password: Yup.string()
+    .oneOf([Yup.ref("password")], "Password's not match")
+    .required("Required!"),
+});
 
 export default function Register() {
-  const formik = useFormik({
-    initialValues: {
-      username: "",
-      password: "",
-      confirm_password: "",
-    },
-    validationSchema: Yup.object({
-      username: Yup.string()
-        .min(2, "Mininum 2 characters")
-        .max(15, "Maximum 15 characters")
-        .required("Required!"),
-      password: Yup.string()
-        .min(8, "Minimum 8 characters")
-        .required("Required!"),
-      confirm_password: Yup.string()
-        .oneOf([Yup.ref("password")], "Password's not match")
-        .required("Required!"),
-    }),
-  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmationPassword, setShowConfirmationPassword] =
+    useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  // const handleSubmit = async (values) => {
+  //   console.log(values);
+  //   const response = await dispatch(functionRegister(values));
+  //   if (response.status === "Success") {
+  //     Swal.fire("Succesfull!", response.messege, "success");
+  //     setTimeout(() => {
+  //       navigate("add-biodata");
+  //     }, 500);
+  //   }
+  // };
+
+  const initialValues = {
+    username: "",
+    password: "",
+    confirm_password: "",
+  };
+
   return (
-    // from-cyan-600 via-cyan-500 to-blue-400
     <React.Fragment>
-      <div className=" w-screen h-screen bg-gradient-to-r overflow-hidden bg-image  relative flex justify-center items-center shadow-2xl  ">
+      <div className=" w-screen h-screen bg-gradient-to-r overflow-hidden from-cyan-600 via-cyan-500 to-blue-400 relative flex justify-center items-center shadow-2xl  ">
         {/* <img src={Background} alt="" className="h-screen w-screen " /> */}
-        {/* <div className="z-0 h-40 w-40 -left-20 -top-20 opacity-40 bg-cyan-200  absolute rounded-full shadow-xl"></div>{" "}
+        <div className="z-0 h-40 w-40 -left-20 -top-20 opacity-40 bg-cyan-200  absolute rounded-full shadow-xl"></div>{" "}
         <div className="z-0 h-40 w-40 -left-28 -bottom-10 rounded-lg ease-linear  rotate-12  opacity-40 bg-white absolute shadow-xl"></div>{" "}
         <div className="z-0 h-40 w-40 -left-24 -bottom-14 rounded-lg ease-linear  rotate-12  opacity-40 bg-white absolute shadow-xl"></div>
         <div className="z-10 h-60 w-40 right-28 -bottom-10 opacity-40 bg-white absolute rounded-full shadow-xl"></div>
         <div className="z-0 h-40 w-60 left-32 top-14 opacity-40 bg-blue-400 mix-blend-multiply absolute rounded-full shadow-xl"></div>
-        <div className="z-0 h-40 w-40 left-48 top-14  opacity-40 bg-blue-600 skew-x-6 mix-blend-multiply absolute rounded-full shadow-xl"></div> */}
+        <div className="z-0 h-40 w-40 left-48 top-14  opacity-40 bg-blue-600 skew-x-6 mix-blend-multiply absolute rounded-full shadow-xl"></div>
         <div className="grid grid-cols-2 w-3/4  py-10  bg-white  rounded-lg  z-10 ">
           <div className="  flex items-center justify-center">
             <img src={Logo} alt="" className="" />
@@ -48,67 +65,127 @@ export default function Register() {
                 </div>
               </div>
               {/* //from */}
-              <form action="" onSubmit={formik.handleSubmit}>
-                <div className="space-y-5 mt-14 ">
-                  <label className="">
-                    <div className=" ">
-                      <input
-                        onChange={formik.handleChange}
-                        placeholder="Enter Username"
-                        name="name"
-                        value={formik.values.username}
-                        type="text"
-                        className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
-                      />
-                      {formik.errors.username && formik.touched.username && (
-                        <p className="text-red-400 h-2 text-sm">
-                          {formik.errors.username}
-                        </p>
-                      )}
-                    </div>
-                  </label>{" "}
-                  <div className=" ">
-                    <label className=" ">
-                      <input
-                        type="password"
-                        name="password"
-                        value={formik.values.password}
-                        onChange={formik.handleChange}
-                        className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
-                      />
-                      {formik.errors.password && formik.touched.password && (
-                        <p className="text-red-400 h-2 text-sm">
-                          {formik.errors.password}
-                        </p>
-                      )}
-                    </label>
-                  </div>
-                  <div className=" ">
-                    <label className=" ">
-                      <input
-                        type="confirm_password"
-                        name="confirm_password"
-                        value={formik.values.confirm_password}
-                        onChange={formik.handleChange}
-                        className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
-                      />
-                      {formik.errors.confirm_password &&
-                        formik.touched.confirm_password && (
-                          <p className="text-red-400 h-2 text-sm">
-                            {formik.errors.confirm_password}
-                          </p>
-                        )}
-                    </label>
-                  </div>
-                  {/* //button */}
-                </div>
-                <button
-                  type="submit"
-                  className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
+              <div>
+                <Formik
+                  initialValues={{
+                    username: "",
+                    password: "",
+                    confirm_password: "",
+                  }}
+                  onSubmit={async(values) => {
+                    const response = await dispatch(functionRegister(values));
+                    console.log(response);
+                      if (response.status === "Success") {
+                        Swal.fire("Succesfull!", response.messege, "success");
+                        setTimeout(() => {
+                          navigate("/add-biodata");
+                        }, 500);
+                      }
+                    
+                  }}
+                  validationSchema={validateSchema}
                 >
-                  Sign Up
-                </button>
-              </form>
+                  {({
+                    values,
+                    errors,
+                    touched,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                    isSubmitting,
+                    /* and other goodies */
+                  }) => (
+                    <form action="" onSubmit={handleSubmit}>
+                      <div className="space-y-5 mt-14 ">
+                        <label className="">
+                          <div className=" ">
+                            <input
+                              onChange={handleChange}
+                              placeholder="Enter your username"
+                              name="username"
+                              value={values.username}
+                              type="text"
+                              className=" ring-black ring-1  invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
+                            />
+                            {errors.username && touched.username && (
+                              <p className="text-red-400 h-2 text-sm">
+                                {errors.username}
+                              </p>
+                            )}
+                          </div>
+                        </label>{" "}
+                        <div className=" rounded-sm">
+                          <label className=" flex items-center focus-within:ring-2 ring-black ring-1 rounded-sm  invalid:ring-red-500 invalid:ring-2     outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm  ">
+                            <input
+                              type={showPassword ? "text" : "password"}
+                              placeholder="Enter your password"
+                              name="password"
+                              value={values.password}
+                              onChange={handleChange}
+                              className="w-full outline-none bg-transparent"
+                            />{" "}
+                            <div onClick={() => setShowPassword(!showPassword)}>
+                              {showPassword ? (
+                                <AiOutlineEye size={22} />
+                              ) : (
+                                <AiOutlineEyeInvisible size={22} />
+                              )}
+                            </div>
+                          </label>{" "}
+                          {errors.password && touched.password && (
+                            <p className="text-red-400 h-2 text-sm">
+                              {errors.password}
+                            </p>
+                          )}
+                        </div>
+                        <div className=" rounded-sm">
+                          <label className=" flex items-center focus-within:ring-2 ring-black ring-1 rounded-sm  invalid:ring-red-500 invalid:ring-2     outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm  ">
+                            <input
+                              type={
+                                showConfirmationPassword ? "text" : "password"
+                              }
+                              placeholder="Enter confirmation password"
+                              name="confirm_password"
+                              value={values.confirm_password}
+                              onChange={handleChange}
+                              className="w-full outline-none bg-transparent"
+                            />{" "}
+                            <div
+                              onClick={() =>
+                                setShowConfirmationPassword(
+                                  !showConfirmationPassword
+                                )
+                              }
+                            >
+                              {showConfirmationPassword ? (
+                                <AiOutlineEye size={22} />
+                              ) : (
+                                <AiOutlineEyeInvisible size={22} />
+                              )}
+                            </div>
+                          </label>{" "}
+                          {errors.confirm_password &&
+                            touched.confirm_password && (
+                              <p className="text-red-400 h-2 text-sm">
+                                {errors.confirm_password}
+                              </p>
+                            )}
+                        </div>
+                        {/* //button */}
+                      </div>
+                      <button
+                        // to={"/registerbiodata"}
+                        // onClick={handleSubmit}
+                        // disabled={isSubmitting}
+                        type="submit"
+                        className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
+                      >
+                        Sign Up
+                      </button>
+                    </form>
+                  )}
+                </Formik>
+              </div>
 
               <div className="flex text-center w-full justify-center mt-5 mb-10">
                 <p className="">Already have an account?</p>

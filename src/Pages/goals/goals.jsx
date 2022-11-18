@@ -113,7 +113,7 @@ const Goals = () => {
   const getData = async () => {
     const response = await dispatch(functionGetGoals());
     setData(response.data);
-    await dispatch(functionGetUserAfterLogin(1))
+    // const res = await dispatch(functionGetUserAfterLogin(1));
   };
   /////
   React.useEffect(() => {
