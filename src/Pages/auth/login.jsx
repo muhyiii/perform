@@ -2,26 +2,21 @@ import React, { useState, useContext } from "react";
 
 import Logo from "../../Images/logo.png";
 
-import {
-  Link,
-
-  useNavigate,
-
-} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Swal from "sweetalert2";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 
 import { useDispatch } from "react-redux";
 import { functionLogin } from "../../redux/actions/authAction";
+import { replace } from "formik";
 
 export default function Login() {
-  // const { user, setUser } = useContext(UserContext);
   const [value, setValues] = useState({
     username: "",
     password: "",
   });
-  const [errors, setError] = useState({});
+
   const [show, setShow] = useState(false);
   function handleChange(e) {
     setValues({
@@ -34,10 +29,16 @@ export default function Login() {
   const navigate = useNavigate();
   const handleSubmit = async () => {
     const response = await dispatch(functionLogin(value));
-    navigate("/acc/dashboard");
+
     // console.log(response.status );
     if (response.status === "Success") {
-      Swal.fire("Succesfull!", response.messege, "success");
+      Swal.fire({
+        title: "Succesfull!",
+        text: response.messege,
+        icon: "success",
+        timer: 1000,
+      });
+      navigate("/acc/dashboard", { replace: true });
       setTimeout(() => {
         return;
       }, 500);
@@ -47,21 +48,10 @@ export default function Login() {
         icon: "error",
         title: "Oops...",
         text: response.data.messege,
+        timer: 2000,
       });
   };
-  // useEffect(() => {
-  //   if (
-  //     Object.keys(errors).length === 0 &&
-  //     value.username === "" &&
-  //     value.password === ""
-  //   ) {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Error...",
-  //       text: "Please fill the input requirement.",
-  //     });
-  //   }
-  // }, [errors]);
+
   return (
     <React.Fragment>
       <div className=" w-screen h-screen bg-gradient-to-r overflow-hidden from-cyan-600 via-cyan-500 to-blue-400 relative flex justify-center items-center shadow-2xl  ">
@@ -100,11 +90,6 @@ export default function Login() {
                         className="outline-none w-full bg-transparent bg-none"
                       />
                     </label>{" "}
-                    {errors.username && (
-                      <p style={{ color: "red", fontSize: "13px" }}>
-                        {errors.username}
-                      </p>
-                    )}
                   </div>
                   <div className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm ">
                     <label className="flex items-center justify-center">
@@ -125,11 +110,6 @@ export default function Login() {
                         )}
                       </div>
                     </label>
-                    {errors.password && (
-                      <p style={{ color: "red", fontSize: "13px" }}>
-                        {errors.password}
-                      </p>
-                    )}
                   </div>
                   {/* //button */}
                 </div>

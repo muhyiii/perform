@@ -18,13 +18,12 @@ import Loading from "./Component/Loading";
 import Loadings from "./Component/Loading";
 
 const ProtectedRoute = ({ user }) => {
-  const loading = useSelector((state) => state.loadingState.isLoading);
+  const loading = useSelector((state) => state.auth?.isLoading);
   if (!user) {
     return <Navigate to="/" replace />;
-  } else {
-    // if (loading === true) return <Loading />;
-    return <Outlet />;
   }
+  if (loading) return <Loadings />;
+  return <Outlet />;
 };
 
 function App() {
@@ -36,7 +35,7 @@ function App() {
         <Route path="/" element={<EmptyPage />}>
           {" "}
         </Route>{" "}
-        <Route path="/load" element={<Loadings />} />
+        {/* <Route path="/load" element={<Loadings />} /> */}
         <Route index path="/login" element={<Login />} />{" "}
         <Route path="/register" element={<Register />} />{" "}
         <Route path="/add-biodata" element={<Biodata />} />

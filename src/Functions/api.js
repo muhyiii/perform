@@ -15,15 +15,19 @@ export function register(values) {
 //// REGISTER BIODATA
 export function registerBiodata(values) {
   return axioss.post(
-    `/register-account/continue/${localStorage.getItem("id" )}`,
+    `/register-account/continue/${localStorage.getItem("id")}`,
     values
   );
 }
-//// GET TOKEN    
+//// GET TOKEN
 export function getAuth() {
   return axioss.get("/get-token");
 }
 //// GET USERS ALL
+export function getUsers() {
+  return axioss.get("/data/users");
+}
+//// GET THIS USER
 export function getUser(id) {
   return axioss.get(`/data/users/${id}`);
   //   console.log("dataUsers", users.data.data);

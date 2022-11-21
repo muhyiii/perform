@@ -3,7 +3,7 @@ import { authProcess, loadingProcess } from "./authReducers";
 
 export const allReducers = combineReducers({
   auth: authProcess,
-  loadingState: loadingProcess,
+  // loadingState: loadingProcess,
 
   // auth: namaReducer,
 });

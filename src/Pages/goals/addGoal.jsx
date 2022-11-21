@@ -1,12 +1,15 @@
 import axios from "axios";
 import React from "react";
 import { CgClose } from "react-icons/cg";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { api, getUsers } from "../../Functions/api";
+import { functionGetUsers } from "../../redux/actions/authAction";
 
 const AddGoals = (props) => {
   let [users, setUsers] = React.useState([]);
+  const dispatch = useDispatch();
   let [data, setData] = React.useState({
     userId: 0,
     task: "",
@@ -47,8 +50,15 @@ const AddGoals = (props) => {
     }
   };
 
+  const getDataUsers = async () => {
+    const response = await dispatch(functionGetUsers());
+    if (response.status === "Success") {
+      setUsers(response.data);
+    }
+  };
+
   React.useEffect(() => {
-    // getUsers().then((e) => setUsers(e));
+    getDataUsers();
   }, []);
   ///////////////////////
   if (!props.addGoals) {
@@ -76,7 +86,7 @@ const AddGoals = (props) => {
             <div className="mb-3">
               <p className="text-sm pl-2">Name</p>
               <select
-                className="border rounded-md w-full py-2 outline-none px-2 "
+                className="border rounded-md w-full py-2 outline-none px-2  capitalize"
                 name=""
                 id=""
                 onChange={(e, index) => {

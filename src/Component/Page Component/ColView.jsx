@@ -146,6 +146,7 @@ const ColView = (props) => {
       >
         {props.status}
       </p>
+      <p>{props.value}.00</p>
       <div className="col-start-12 relative">
         {" "}
         <BiDotsVerticalRounded

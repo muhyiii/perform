@@ -1,10 +1,11 @@
 import axios from "axios";
+import { api } from "./api";
 
 const headers = {
   Accept: "application/json",
 };
 const axiosClient = axios.create({
-  baseURL: "http://localhost:2200",
+  baseURL: api,
   Authorization: `Bearer ${localStorage.getItem("token")}`,
   headers,
 });

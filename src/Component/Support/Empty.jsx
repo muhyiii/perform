@@ -5,7 +5,8 @@ const EmptyPage = () => {
   const navigate = useNavigate();
   //   React.useEffect(() => navigate("/login"), []);
   setTimeout(() => {
-    navigate("/login");
+    if (localStorage.getItem("token")) return navigate("/acc/dashboard");
+    return navigate("/login");
   }, 1000);
   return <div></div>;
 };

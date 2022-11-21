@@ -6,6 +6,7 @@ const initialState = {
   position: "",
   token: "",
   isAuth: false,
+  isLoading: false,
 };
 
 export function authProcess(state = initialState, action) {
@@ -39,24 +40,36 @@ export function authProcess(state = initialState, action) {
       isAuth: false,
     };
   }
-
-  return state;
-}
-const loadingState = {
-  isLoading: false,
-};
-export function loadingProcess(load = loadingState, act) {
-  if (act.type === "Loading") {
+  if (action.type === "Loading") {
     return {
-      ...load,
+      ...state,
       isLoading: true,
     };
   }
-  if (act.type === "LoadingStop") {
+  if (action.type === "LoadingStop") {
     return {
-      ...load,
+      ...state,
       isLoading: false,
     };
   }
-  return load;
+
+  return state;
 }
+// const loadingState = {
+//   isLoading: false,
+// };
+// export function loadingProcess(load = loadingState, act) {
+//   if (act.type === "Loading") {
+//     return {
+//       ...load,
+//       isLoading: true,
+//     };
+//   }
+//   if (act.type === "LoadingStop") {
+//     return {
+//       ...load,
+//       isLoading: false,
+//     };
+//   }
+//   return load;
+// }

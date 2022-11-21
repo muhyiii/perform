@@ -12,7 +12,6 @@ import { api } from "../../Functions/api";
 
 const Biodata = () => {
   const [selectedImage, setSelectedImage] = useState();
-  const [image, setImage] = useState();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -21,55 +20,14 @@ const Biodata = () => {
     if (e.target.files && e.target.files.length > 0) {
       const fileImage = e.target.files[0];
       setSelectedImage(fileImage);
-      // setImageBase("image", fileImage);
-      setInitialValues({ ...initialValues, image: fileImage });
     }
   };
-
-  const setImageBase = (img) => {
-    const read = new FileReader(img);
-    read.readAsDataURL(img);
-    read.onloadend = () => {
-      setImage(read.result);
-      setInitialValues({ ...initialValues, image: image });
-    };
-  };
-  // const onSubmit = (e) => {
-  //   e.preventDefault();
-  //   alert(URL.createObjectURL(selectedImage));
-  // };
-
-  // This function will be triggered when the "Remove This Image" button is clicked
-  const removeSelectedImage = () => {
-    setSelectedImage();
-  };
-  const SUPPORTED_FORMATS = [
-    "image/jpg",
-    "image/jpeg",
-    "image/gif",
-    "image/png",
-  ];
   const [initialValues, setInitialValues] = React.useState({
     name: "",
     role: "",
     position: "",
     birthday: "",
   });
-
-  // const schema = Yup.object({
-  //   name: Yup.string().required("Name is required!"),
-  //   role: Yup.string().required("Role is required!"),
-  //   position: Yup.string().required("Position is also required!"),
-  //   // image: Yup.mixed()
-  //   //   .nullable()
-  //   //   .required("A file is required")
-  //   //   .test(
-  //   //     "fileFormat",
-  //   //     "Unsupported Format",
-  //   //     (value) => value && SUPPORTED_FORMATS.includes(value.type)
-  //   //   ),
-  //   birthday: Yup.string().required("Required!"),
-  // });
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -78,25 +36,31 @@ const Biodata = () => {
     formData.append("role", initialValues.role);
     formData.append("position", initialValues.position);
     formData.append("birthday", initialValues.birthday);
-    // console.log(formData);
-    // const response = await axios.post(
-    //   api + `/register-account/continue/${localStorage.getItem("id")}`,
-    //   formData,
-    //   {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data ",
-    //     },
-    //   }
-    // );
-    // return console.log(data);
 
+    if (
+      initialValues.name === "" ||
+      initialValues.role === "" ||
+      initialValues.position === "" ||
+      initialValues.birthday === ""
+    ) {
+      Swal.fire({
+        icon: "error",
+        title: "Error...",
+        text: "Please fill the input requirement.",
+        timer: 2000,
+      });
+    }
     const response = await dispatch(functionRegisterBiodata(formData));
     console.log(response);
-    // return;
     if (response.status === "Success") {
-      Swal.fire("Succesfull!", response.messege, "success");
+      Swal.fire({
+        title: "Succesfull!",
+        text: response.messege,
+        icon: "success",
+        timer: 500,
+      });
       setTimeout(() => {
-        navigate("/acc/dashboard");
+        navigate("/acc/dashboard", { replace: true });
       }, 500);
     }
   };
@@ -189,9 +153,6 @@ const Biodata = () => {
                       type="text"
                       className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md   outline-none py-2  w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
                     />
-                    {/* {errors.name && touched.name && (
-                      <p className="text-red-400 h-2 text-xs">{errors.name}</p>
-                    )} */}
                   </div>
                 </label>
               </div>
@@ -211,9 +172,6 @@ const Biodata = () => {
                       type="text"
                       className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
                     />
-                    {/* {errors.role && touched.role && (
-                      <p className="text-red-400 h-2 text-xs">{errors.role}</p>
-                    )} */}
                   </div>
                 </label>
               </div>
@@ -233,11 +191,6 @@ const Biodata = () => {
                       type="text"
                       className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
                     />
-                    {/* {errors.position && touched.position && (
-                      <p className="text-red-400 h-2 text-xs">
-                        {errors.position}
-                      </p>
-                    )} */}
                   </div>
                 </label>
               </div>
@@ -258,11 +211,6 @@ const Biodata = () => {
                       type="date"
                       className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
                     />
-                    {/* {errors.birthday && touched.birthday && (
-                      <p className="text-red-400 h-2 text-xs">
-                        {errors.birthday}
-                      </p>
-                    )} */}
                   </div>
                 </label>
               </div>
@@ -281,19 +229,15 @@ const Biodata = () => {
                       type="file"
                       className="  placeholder:capitalize  rounded-md  outline-none py-2  w-11/12 text-base bg-transparent"
                     />
-
-                    {/* {errors.image && touched.image && (
-                      <p className="text-red-400 h-2 text-xs">{errors.image}</p>
-                    )} */}
                   </div>
                 </label>
                 <div className="h-28 mt-5">
                   {" "}
                   {selectedImage ? (
-                    <div style={styles.preview}>
+                    <div>
                       <img
                         src={URL.createObjectURL(selectedImage)}
-                        style={styles.image}
+                        // style={styles.image}
                         alt="Thumb"
                         className=" h-24"
                       />
@@ -306,9 +250,6 @@ const Biodata = () => {
               <div className="pl-10">
                 <button
                   type="submit"
-                  // onClick={()=>{
-                  //   handleSubmit()
-                  // }}
                   className="touch-pinch-zoom py-2 w-11/12 bg-amber-300 rounded-md mt-5 mb-5 hover:bg-amber-400 transition-all duration-500 ease-in"
                 >
                   Create Account
@@ -322,19 +263,3 @@ const Biodata = () => {
   );
 };
 export default Biodata;
-
-const styles = {
-  // preview: {
-  //   marginTop: 50,
-  //   display: "flex",
-  //   flexDirection: "column",
-  // },
-  // image: { maxWidth: "100%", maxHeight: 320 },
-  delete: {
-    cursor: "pointer",
-    padding: 15,
-    background: "red",
-    color: "white",
-    border: "none",
-  },
-};

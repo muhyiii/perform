@@ -120,7 +120,7 @@ const RowView = (props) => {
           </p>
         </div>
         <div className="flex justify-between border-t-2 mt-2">
-          <p>Status</p>
+          {props.value}.00
           <p
             className="cursor-pointer hover:font-semibold"
             onClick={() => {

@@ -5,6 +5,7 @@ export function functionGetGoals() {
     dispatch({ type: "Loading" });
     try {
       const response = await getGoals();
+      console.log(response);
       const data = response.data;
 
       dispatch({
@@ -14,7 +15,7 @@ export function functionGetGoals() {
       return data;
     } catch (err) {
       dispatch({
-        type: "loadingEnd",
+        type: "LoadingStop",
       });
       let data = err.response.data;
       return data;
@@ -36,7 +37,7 @@ export function functionGetGoalsById(id) {
       return data;
     } catch (err) {
       dispatch({
-        type: "loadingEnd",
+        type: "LoadingStop",
       });
       let data = err.response.data;
       return data;

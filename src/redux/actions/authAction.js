@@ -130,6 +130,30 @@ export function functionGetUserAfterLogin(id) {
     }
   };
 }
+export function functionGetUsers() {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      const response = await getUsers();
+      // console.log();
+      console.log(response.data);
+      const data = response.data;
+      dispatch({
+        type: "LoadingStop",
+      });
+      // dispatch(dataHandle(data));
+      // console.log(data);
+      return data;
+    } catch (err) {
+      dispatch({
+        type: "LoadingStop",
+      });
+      console.log(err);
+      let data = err.response.data;
+      return data;
+    }
+  };
+}
 
 const isloadingStart = () => {
   return {

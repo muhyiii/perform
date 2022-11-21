@@ -2,29 +2,11 @@ import React from "react";
 import Scrollbars from "react-custom-scrollbars-2";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import logo from ".././Images/LOGO2.png";
-import jwt_decode from "jwt-decode";
-import { functionGetUserAfterLogin } from "../redux/actions/authAction";
-import { useDispatch } from "react-redux";
-import { clearToken } from "../Functions/axiosClient";
+
 
 const Body = () => {
   const navigate = useNavigate();
-  const decodedToken = jwt_decode(localStorage.getItem("token"));
-  const dispatch = useDispatch();
-  const [user, setUser] = React.useState({});
-  const getDataUser = async () => {
-    console.log(decodedToken);
-    const response = await dispatch(functionGetUserAfterLogin(decodedToken.id));
-    if (response.status === "Success") {
-      console.log();
-      setUser(response.data);
-    
-    }
-  };
 
-  React.useEffect(() => {
-    getDataUser();
-  }, [0]);
 
   return (
     <div className="grid grid-cols-11 w-screen h-screen">
@@ -99,16 +81,9 @@ const Body = () => {
           </button>
         </div>
       </div>
-      <div className="col-span-9 overflow-auto relative ">
+      <div className="col-span-9 overflow-auto relative h-screen  ">
         <Scrollbars autoHide style={{ height: "100%" }}>
-          <div className="bg-white shadow-lg text-lg font-semibold py-3 space-x-2  text-right px-10 capitalize flex items-center justify-end">
-            <img
-              src={user.image }
-              className="h-7 w-7 rounded-full"
-              alt="profilePhoto"
-            />
-            <h1>{user.name}</h1>
-          </div>
+          
           <Outlet />
         </Scrollbars>
       </div>

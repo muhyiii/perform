@@ -1,46 +1,36 @@
 import React, { useState } from "react";
 import Logo from "../../Images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import { Formik, useFormik } from "formik";
+import { Formik, replace, useFormik } from "formik";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { functionRegister } from "../../redux/actions/authAction";
 import Swal from "sweetalert2";
+import Loadings from "../../Component/Loading";
 
 const validateSchema = Yup.object({
   username: Yup.string()
     .min(2, "Mininum 2 characters")
     .max(15, "Maximum 15 characters")
-    .required("Required!"),
-  password: Yup.string().min(8, "Minimum 8 characters").required("Required!"),
+    .required("You must fill this requirement!"),
+  password: Yup.string()
+    .min(8, "Minimum 8 characters")
+    .required("Password is needed!"),
   confirm_password: Yup.string()
     .oneOf([Yup.ref("password")], "Password's not match")
-    .required("Required!"),
+    .required("You must fill confirmation password!"),
 });
 
 export default function Register() {
+  const [isLoading, setIsLoading] = React.useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmationPassword, setShowConfirmationPassword] =
     useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const handleSubmit = async (values) => {
-  //   console.log(values);
-  //   const response = await dispatch(functionRegister(values));
-  //   if (response.status === "Success") {
-  //     Swal.fire("Succesfull!", response.messege, "success");
-  //     setTimeout(() => {
-  //       navigate("add-biodata");
-  //     }, 500);
-  //   }
-  // };
 
-  const initialValues = {
-    username: "",
-    password: "",
-    confirm_password: "",
-  };
+  if (isLoading) return <Loadings />;
 
   return (
     <React.Fragment>
@@ -60,8 +50,8 @@ export default function Register() {
             <div className=" w-4/5">
               <div className="text-left mt-5">
                 <div className="  ">
-                  <p className=" text-6xl font-bold ">Hello,</p>
-                  <p className=" text-2xl font-bold   ">Welcome back</p>
+                  <p className=" text-6xl font-bold">Hello,</p>
+                  <p className=" text-2xl font-bold">Welcome back</p>
                 </div>
               </div>
               {/* //from */}
@@ -72,16 +62,22 @@ export default function Register() {
                     password: "",
                     confirm_password: "",
                   }}
-                  onSubmit={async(values) => {
+                  onSubmit={async (values) => {
+                    setIsLoading(true);
                     const response = await dispatch(functionRegister(values));
                     console.log(response);
-                      if (response.status === "Success") {
-                        Swal.fire("Succesfull!", response.messege, "success");
-                        setTimeout(() => {
-                          navigate("/add-biodata");
-                        }, 500);
-                      }
-                    
+                    if (response.status === "Success") {
+                      Swal.fire({
+                        title: "Succesfull!",
+                        text: response.messege,
+                        icon: "success",
+                        timer: 1000,
+                      });
+                      setIsLoading(false);
+                      setTimeout(() => {
+                        navigate("/add-biodata", { replace: true });
+                      }, 1000);
+                    }
                   }}
                   validationSchema={validateSchema}
                 >
@@ -174,9 +170,6 @@ export default function Register() {
                         {/* //button */}
                       </div>
                       <button
-                        // to={"/registerbiodata"}
-                        // onClick={handleSubmit}
-                        // disabled={isSubmitting}
                         type="submit"
                         className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
                       >
