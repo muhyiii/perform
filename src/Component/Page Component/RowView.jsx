@@ -6,7 +6,8 @@ import {
 } from "react-circular-progressbar";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { api } from "../../Functions/api";
+import { api } from "../../Functions/axiosClient";
+
 import ChangingProgressProvider from "../Support/ChangingProggresProvider";
 
 const RowView = (props) => {

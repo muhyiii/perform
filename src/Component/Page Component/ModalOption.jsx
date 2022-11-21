@@ -3,7 +3,8 @@ import Swal from "sweetalert2";
 import { IoTrashOutline, IoArchiveOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { api } from "../../Functions/api";
+import { api } from "../../Functions/axiosClient";
+
 
 const ModalOption = (props) => {
   const navigate = useNavigate();

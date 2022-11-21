@@ -16,10 +16,11 @@ import AddGoals from "./addGoal";
 import axios from "axios";
 import ColView from "../../Component/Page Component/ColView";
 import RowView from "../../Component/Page Component/RowView";
-import { api } from "../../Functions/api";
+
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { functionGetGoals } from "../../redux/actions/goalsAction";
+import { api } from "../../Functions/axiosClient";
 
 const Goals = () => {
   const [addGoals, setAddGoals] = React.useState(false);

@@ -57,7 +57,7 @@ const Biodata = () => {
         title: "Succesfull!",
         text: response.messege,
         icon: "success",
-        timer: 500,
+        timer: 1000,
       });
       setTimeout(() => {
         navigate("/acc/dashboard", { replace: true });

@@ -4,7 +4,8 @@ import { CgClose } from "react-icons/cg";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { api, getUsers } from "../../Functions/api";
+import { api } from "../../Functions/axiosClient";
+
 import { functionGetUsers } from "../../redux/actions/authAction";
 
 const AddGoals = (props) => {

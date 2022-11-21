@@ -1,6 +1,6 @@
 import axios from "axios";
-import { api } from "./api";
 
+export const api = "http://localhost:2200";
 const headers = {
   Accept: "application/json",
 };

@@ -9,8 +9,9 @@ import ModalOption from "./ModalOption";
 
 import ChangingProgressProvider from "../Support/ChangingProggresProvider";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../Functions/api";
+
 import axios from "axios";
+import { api } from "../../Functions/axiosClient";
 
 const ColView = (props) => {
   const [isOption, setIsOption] = React.useState(false);

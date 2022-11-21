@@ -1,7 +1,7 @@
 import axios from "axios";
 import axioss from "./axiosClient";
 
-export const api = "http://localhost:2200";
+
 
 // USERS
 //// LOGIN
