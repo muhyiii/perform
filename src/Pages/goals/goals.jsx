@@ -114,7 +114,7 @@ const Goals = () => {
   if (isLoading) return <Loadings />;
 
   return (
-    <div className="relative overflow-hidden h-screen">
+    <div className="relative h-screen">
       <User />
       <div className="p-10    w-full capitalize  ">
         {" "}
