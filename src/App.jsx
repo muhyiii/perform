@@ -22,7 +22,7 @@ const ProtectedRoute = ({ user }) => {
   if (!user) {
     return <Navigate to="/" replace />;
   }
-  if (loading) return <Loadings />;
+  // if (loading) return <Loadings />;
   return <Outlet />;
 };
 

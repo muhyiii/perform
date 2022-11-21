@@ -1,8 +1,6 @@
 import axios from "axios";
 import axioss from "./axiosClient";
 
-
-
 // USERS
 //// LOGIN
 export function login(values) {
@@ -34,6 +32,10 @@ export function getUser(id) {
 }
 
 // GOALS
+//// ADD GOAL
+export function addGoal(values) {
+  return axioss.post("/add-goal".values);
+}
 //// GET GOALS ALL
 export function getGoals() {
   return axioss.get("/data/goals");

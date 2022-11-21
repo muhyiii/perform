@@ -123,6 +123,7 @@ const Goals = () => {
             setAddGoals(false);
           }}
           addGoals={addGoals}
+          getData={getData}
           setAddGoals={setAddGoals}
         ></AddGoals>
         <div>

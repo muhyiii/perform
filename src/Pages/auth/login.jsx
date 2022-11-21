@@ -38,17 +38,17 @@ export default function Login() {
         icon: "success",
         timer: 1000,
       });
-      navigate("/acc/dashboard", { replace: true });
+
       setTimeout(() => {
-        return;
-      }, 500);
+        navigate("/acc/dashboard", { replace: true });
+      }, 1000);
     }
     if (response.status !== "Success")
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: response.data.messege,
-        timer: 2000,
+        timer: 3000,
       });
   };
 

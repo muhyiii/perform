@@ -47,7 +47,7 @@ const Biodata = () => {
         icon: "error",
         title: "Error...",
         text: "Please fill the input requirement.",
-        timer: 2000,
+        timer: 3000,
       });
     }
     const response = await dispatch(functionRegisterBiodata(formData));
@@ -61,7 +61,7 @@ const Biodata = () => {
       });
       setTimeout(() => {
         navigate("/acc/dashboard", { replace: true });
-      }, 500);
+      }, 1000);
     }
   };
 
