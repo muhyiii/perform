@@ -1,11 +1,7 @@
-import axios from "axios";
 import React from "react";
 import { CgClose } from "react-icons/cg";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { api } from "../../Functions/axiosClient";
-
 import { functionGetUsers } from "../../redux/actions/authAction";
 import { functionAddGoal } from "../../redux/actions/goalsAction";
 
@@ -20,8 +16,6 @@ const AddGoals = (props) => {
     fromDate: "",
     toDate: "",
   });
-  const navigate = useNavigate();
-
   // SUBMIT
   const sendData = async () => {
     console.log(data);
@@ -48,7 +42,7 @@ const AddGoals = (props) => {
         Swal.fire({
           position: "center",
           icon: "success",
-          title: response.data.messege,
+          title: response.messege,
           showConfirmButton: false,
           timer: 1000,
         });

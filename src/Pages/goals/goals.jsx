@@ -320,6 +320,7 @@ const Goals = () => {
                     fromDateA={fromDate}
                     toDateA={toDate}
                     handleChange={handleChange}
+                    getData={getData}
                   />
                 );
               })}

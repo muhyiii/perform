@@ -161,7 +161,7 @@ const ColView = (props) => {
           onCloseOption={() => {
             setIsOption(false);
           }}
-          setArchive={props.setArchive}
+          getData={props.getData}
           goalId={props.goalId}
           isOption={isOption}
           setIsOption={setIsOption}

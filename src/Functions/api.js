@@ -34,7 +34,7 @@ export function getUser(id) {
 // GOALS
 //// ADD GOAL
 export function addGoal(values) {
-  return axioss.post("/add-goal".values);
+  return axioss.post("/add-goal", values);
 }
 //// GET GOALS ALL
 export function getGoals() {
@@ -43,4 +43,8 @@ export function getGoals() {
 //// GET GOAL BY ID
 export const getGoalById = async (userId) => {
   return axioss.get(`/data/goals/${userId}`);
+};
+//// DELETE GOAL BY ID
+export const deleteGoalById = async (goalId) => {
+  return axioss.delete(`/data/goals/${goalId}/delete`);
 };

@@ -4,23 +4,32 @@ import { IoTrashOutline, IoArchiveOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api } from "../../Functions/axiosClient";
-
+import { useDispatch } from "react-redux";
+import { functionDeleteGoal } from "../../redux/actions/goalsAction";
 
 const ModalOption = (props) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const deleteGoal = async (id) => {
-    const response = await axios.delete(api + `/data/goals/${id}/delete`);
-    if (response.status === 200) {
-      Swal.fire("Succesfull!", response.data.messege, "success");
+    const response = await dispatch(functionDeleteGoal(id));
+    if (response.status === "Success") {
+      Swal.fire({
+        title: "Succesfull!",
+        text: response.messege,
+        icon: "success",
+        timer: 1000,
+      });
+
       setTimeout(() => {
         navigate(0);
       }, 1000);
     }
-    if (response.statusText !== "OK")
+    if (response.status !== "Success")
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: response.data.messege,
+        text: response.messege,
+        timer: 3000,
       });
   };
   if (!props.isOption) {
