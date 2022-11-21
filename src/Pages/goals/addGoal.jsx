@@ -19,45 +19,43 @@ const AddGoals = (props) => {
   // SUBMIT
   const sendData = async () => {
     console.log(data);
-    try {
-      if (
-        data.description === "" ||
-        data.fromDate === "" ||
-        data.toDate === "" ||
-        data.task === "" ||
-        data.userId === ""
-      ) {
-        Swal.fire({
-          icon: "error",
-          title: "Error...",
-          text: "Please fill the input requirement.",
-          timer: 3000,
-        });
-      }
 
-      const response = await dispatch(functionAddGoal(data));
-      console.log(response);
-      if (response.status === "Success") {
-        props.onClose();
-        Swal.fire({
-          position: "center",
-          icon: "success",
-          title: response.messege,
-          showConfirmButton: false,
-          timer: 1000,
-        });
-        setData({});
-        await dispatch(props.getData());
-      }
-    } catch (error) {
-      console.log(error);
+    if (
+      data.description === "" ||
+      data.fromDate === "" ||
+      data.toDate === "" ||
+      data.task === "" ||
+      data.userId === ""
+    ) {
       Swal.fire({
         icon: "error",
-        title: "Oops...",
-        text: error,
+        title: "Error...",
+        text: "Please fill the input requirement.",
         timer: 3000,
       });
     }
+
+    const response = await dispatch(functionAddGoal(data));
+    console.log(response);
+    if (response.status === "Success") {
+      props.onClose();
+      Swal.fire({
+        position: "center",
+        icon: "success",
+        title: response.messege,
+        showConfirmButton: false,
+        timer: 1000,
+      });
+      setData({});
+      await dispatch(props.getData());
+    }
+    if (response.status !== "Success")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: response.messege,
+        timer: 3000,
+      });
   };
 
   const getDataUsers = async () => {

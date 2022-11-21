@@ -48,3 +48,7 @@ export const getGoalById = async (userId) => {
 export const deleteGoalById = async (goalId) => {
   return axioss.delete(`/data/goals/${goalId}/delete`);
 };
+//// UPDATE GOAL BY ID
+export const updateGoalById = async (goalId, payload) => {
+  return axioss.put(`/data/goals/${goalId}/update`, { status: payload });
+};

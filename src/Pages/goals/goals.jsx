@@ -285,6 +285,7 @@ const Goals = () => {
                     status={e.status}
                     fromDateA={fromDate}
                     toDateA={toDate}
+                    getData={getData}
                     handleChange={handleChange}
                   />
                 );
@@ -319,7 +320,6 @@ const Goals = () => {
                     status={e.status}
                     fromDateA={fromDate}
                     toDateA={toDate}
-                    handleChange={handleChange}
                     getData={getData}
                   />
                 );

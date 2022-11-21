@@ -14,14 +14,14 @@ export function functionRegister(payload) {
     try {
       const response = await register(payload);
       const data = response.data;
-      console.log(data);
+      // console.log(data);
       localStorage.setItem("id", data.data);
       dispatch({
         type: "LoadingStop",
       });
       return data;
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       dispatch({
         type: "LoadingStop",
       });
@@ -31,10 +31,10 @@ export function functionRegister(payload) {
 export function functionRegisterBiodata(payload) {
   return async (dispatch) => {
     dispatch({ type: "Loading" });
-    console.log(payload);
+    // console.log(payload);
     try {
       const response = await registerBiodata(payload);
-      console.log(response);
+      // console.log(response);
       const data = response.data;
       localStorage.setItem("token", data.token);
       dispatch({
@@ -42,7 +42,7 @@ export function functionRegisterBiodata(payload) {
       });
       return data;
     } catch (err) {
-      console.log(err.response);
+      // console.log(err.response);
       dispatch({
         type: "LoadingStop",
       });
@@ -66,7 +66,7 @@ export function functionLogin(payload) {
       dispatch({
         type: "LoadingStop",
       });
-      console.log(err.response);
+      // console.log(err.response);
       let data = err.response.data;
       return data;
     }
@@ -92,15 +92,15 @@ export function authMe() {
       });
       return data;
     } catch (err) {
-      console.log(err);
-      console.log("masuk sini");
+      // console.log(err);
+      // console.log("masuk sini");
 
       dispatch({
         type: "loadingEnd",
       });
 
       let data = err?.response?.data;
-      console.log(err);
+      // console.log(err);
       return data;
     }
   };
@@ -111,8 +111,8 @@ export function functionGetUserAfterLogin(id) {
     dispatch({ type: "Loading" });
     try {
       const response = await getUser(id);
-      console.log(id);
-      console.log(response);
+      // console.log(id);
+      // console.log(response);
       const data = response.data;
       dispatch({
         type: "LoadingStop",
@@ -124,7 +124,7 @@ export function functionGetUserAfterLogin(id) {
       dispatch({
         type: "LoadingStop",
       });
-      console.log(err);
+      // console.log(err);
       let data = err.response.data;
       return data;
     }
@@ -136,7 +136,7 @@ export function functionGetUsers() {
     try {
       const response = await getUsers();
       // console.log();
-      console.log(response.data);
+      // console.log(response.data);
       const data = response.data;
       dispatch({
         type: "LoadingStop",
@@ -148,7 +148,7 @@ export function functionGetUsers() {
       dispatch({
         type: "LoadingStop",
       });
-      console.log(err);
+      // console.log(err);
       let data = err.response.data;
       return data;
     }

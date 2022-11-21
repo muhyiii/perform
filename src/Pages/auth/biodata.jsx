@@ -200,6 +200,8 @@ const Biodata = () => {
                   Birthday
                   <div className=" ">
                     <input
+                      max={"2005-12-31"}
+                      min={'1970-01-01'}
                       onChange={(e) => {
                         setInitialValues({
                           ...initialValues,

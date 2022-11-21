@@ -35,7 +35,7 @@ function App() {
         <Route path="/" element={<EmptyPage />}>
           {" "}
         </Route>{" "}
-        {/* <Route path="/load" element={<Loadings />} /> */}
+        <Route path="/load" element={<Loadings />} />
         <Route index path="/login" element={<Login />} />{" "}
         <Route path="/register" element={<Register />} />{" "}
         <Route path="/add-biodata" element={<Biodata />} />
@@ -43,7 +43,7 @@ function App() {
           <Route path="/acc" element={<Body />}>
             {/* <Route index path="peringkat" element={<Peringkat />}></Route> */}
             <Route index exact path="dashboard" element={<Dashboard />}></Route>
-
+         
             <Route path="goals">
               <Route index element={<Goals />} />{" "}
               <Route path=":id" element={<GoalsDetail />} />

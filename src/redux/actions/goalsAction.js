@@ -3,6 +3,7 @@ import {
   deleteGoalById,
   getGoalById,
   getGoals,
+  updateGoalById,
 } from "../../Functions/api";
 
 export function functionGetGoals() {
@@ -86,6 +87,28 @@ export function functionDeleteGoal(id) {
       dispatch({
         type: "LoadingStop",
       });
+      let data = err.response.data;
+      return data;
+    }
+  };
+}
+export function functionUpdateGoal( id, status ) {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      // console.log(status);
+      const response = await updateGoalById( id, status );
+      const data = response.data;
+      dispatch({
+        type: "LoadingStop",
+      });
+      console.log(id,status);
+      return data;
+    } catch (err) {
+      dispatch({
+        type: "LoadingStop",
+      });
+      console.log(err);
       let data = err.response.data;
       return data;
     }

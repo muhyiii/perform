@@ -9,28 +9,36 @@ import ModalOption from "./ModalOption";
 
 import ChangingProgressProvider from "../Support/ChangingProggresProvider";
 import { useNavigate } from "react-router-dom";
-
-import axios from "axios";
-import { api } from "../../Functions/axiosClient";
+import { useDispatch } from "react-redux";
+import { functionUpdateGoal } from "../../redux/actions/goalsAction";
 
 const ColView = (props) => {
   const [isOption, setIsOption] = React.useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const updateStatus = async (id, status) => {
-    const response = await axios.put(api + `/data/goals/${id}/update`, {
-      status: status,
-    });
-    if (response.status === 200) {
-      Swal.fire("Succesfull!", response.data.messege, "success");
+    const payload = { status: status };
+    console.log(status);
+    const response = await dispatch(functionUpdateGoal( id, status ));
+    console.log(response);
+    if (response.status === "Success") {
+      Swal.fire({
+        title: "Succesfull!",
+        text: response.messege,
+        icon: "success",
+        timer: 1000,
+      });
       setTimeout(() => {
-        navigate(0);
+        props.getData();
       }, 1000);
     }
-    Swal.fire({
-      icon: "error",
-      title: "Oops...",
-      text: response.data.messege,
-    });
+    if (response.status !== "Success") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: response.messege,
+      });
+    }
   };
 
   return (
@@ -47,25 +55,12 @@ const ColView = (props) => {
                 value={percentage}
                 strokeWidth={20}
                 styles={buildStyles({
-                  // Rotation of path and trail, in number of turns (0-1)
                   rotation: 0.25,
-
-                  // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
                   strokeLinecap: "butt",
-
-                  // Text size
-
-                  // How long animation takes to go from one percentage to another, in seconds
                   pathTransitionDuration: 0.5,
-
-                  // Can specify path transition in more detail, or remove it entirely
-                  // pathTransition: 'none',
-
-                  // Colors
                   pathColor: `rgba(${percentage / 100}, 152, 199  ,${
                     percentage / 100
                   })`,
-
                   trailColor: "#d6d6d6",
                   backgroundColor: "#3e98c7",
                 })}
@@ -83,7 +78,6 @@ const ColView = (props) => {
         }}
       >
         <p className="text-xl font-bold  truncate">{props.task}</p>
-
         <p className={`text-xs capitalize font-semibold`}>
           {props.rate == 100
             ? "Completed"
@@ -97,7 +91,7 @@ const ColView = (props) => {
       <p
         className="cursor-pointer hover:font-semibold"
         onClick={() => {
-          if (props.status === "to-do" || props.status === "ongoing   ") {
+          if (props.status === "to-do" || props.status === "ongoing") {
             Swal.fire({
               title: "Are you sure?",
               text: "You can only update to the next stage",

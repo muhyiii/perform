@@ -143,11 +143,11 @@ const RowView = (props) => {
                         props.status !== "ongoing"
                           ? {
                               ongoing: "Ongoing",
-                              held: "Held",
+                              hold: "Hold",
                               done: "Done",
                             }
                           : {
-                              held: "Held",
+                              hold: "Hold",
                               done: "Done",
                             },
                       inputPlaceholder: "Select a status",
@@ -156,7 +156,7 @@ const RowView = (props) => {
                         return new Promise((resolve) => {
                           if (
                             value === "done" ||
-                            value === "held" ||
+                            value === "Hold" ||
                             value === "ongoing"
                           ) {
                             console.log(value);
