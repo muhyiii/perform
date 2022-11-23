@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import Swal from "sweetalert2";
-
+import { motion } from "framer-motion";
 // CommonJS
 
 import {
   MdViewModule,
   MdViewStream,
   MdSearch,
+  MdOutlineFilterAlt,
   MdOutlineCancel,
 } from "react-icons/md";
 import User from "../../Component/User";
@@ -19,7 +20,10 @@ import RowView from "../../Component/Page Component/RowView";
 
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { functionGetGoals } from "../../redux/actions/goalsAction";
+import {
+  functionGetGoals,
+  functionGetGoalsByUserNow,
+} from "../../redux/actions/goalsAction";
 import { api } from "../../Functions/axiosClient";
 
 const Goals = () => {
@@ -29,6 +33,8 @@ const Goals = () => {
   const [multiId, setMultiId] = React.useState([]);
   const [multiStatus, setMultiStatus] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isFilter, setIsFilter] = React.useState(false);
+  const [isAll, setIsAll] = React.useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -38,6 +44,7 @@ const Goals = () => {
     const idData = target.split("|")[0];
     const statusData = target.split("|")[1];
     console.log(idData);
+    console.log(multiStatus, multiId);
     const { id, checked } = state.target;
 
     if (checked) {
@@ -78,10 +85,11 @@ const Goals = () => {
       goalId: multiId,
       status: value,
     };
-    const response = await axios.post(
-      api + "/data/goals/multiple/update",
-      payload
-    );
+    console.log(payload);
+    const response = await axios.post(api + "/data/goals/multiple/update", {
+      goalId: multiId,
+      status: value,
+    });
     console.log(response);
     if (response.status === 200) {
       Swal.fire("Succesfull!", response.data.messege, "success");
@@ -101,15 +109,23 @@ const Goals = () => {
     setIsLoading(true);
     const response = await dispatch(functionGetGoals());
     if (response.status === "Success") {
-      setData(response.data);
+      setData(response.data.rows);
       setIsLoading(false);
     }
-    // const res = await dispatch(functionGetUserAfterLogin(1));
   };
+  const getAsUser = async () => {
+    setIsLoading(true);
+    const response = await dispatch(functionGetGoalsByUserNow());
+    if (response.status === "Success") {
+      setData(response.data.rows);
+      setIsLoading(false);
+    }
+  };
+
   /////
   React.useEffect(() => {
-    getData();
-  }, []);
+    isAll ? getData() : getAsUser();
+  }, [isAll]);
 
   if (isLoading) return <Loadings />;
 
@@ -129,53 +145,92 @@ const Goals = () => {
         <div>
           <h1 className="text-5xl font-bold ">Goals</h1>
         </div>
-        <div className="flex  px-3 my-5 justify-between text-black border-b-2 pb-5 shadow-md">
-          <label
-            htmlFor=""
-            title="search data"
-            className="ring hover:ring-1 ring-gray-300 border-none focus-within:ring-2 focus-within:ring-gray-300 px-3 border rounded-md flex items-center"
-          >
-            <MdSearch />
-            <input
-              type="text"
-              title="search data"
-              placeholder="Search.."
-              className="outline-none font-semibold placeholder-gray-400 bg-none text-base placeholder:text-sm  px-3 py-1 w-full group-focus:border "
-            />
-            <MdOutlineCancel />
-          </label>
-          <div className=" text-black  cursor-pointer ">
-            <div
-              className="rounded-xl border m-auto"
-              title="change view"
-              onClick={() => {
-                setRow(!row);
-              }}
-            >
-              {row ? <MdViewModule size={30} /> : <MdViewStream size={30} />}
+        <div className="shadow-md border-b-2  my-3 pb-2  ">
+          <div className="flex  px-3 justify-between text-black ">
+            <div className="flex items-center space-x-4">
+              <label
+                htmlFor=""
+                title="search data"
+                className="ring hover:ring-1 ring-gray-300 border-none focus-within:ring-2 focus-within:ring-gray-300 px-3 border rounded-md flex items-center"
+              >
+                <MdSearch />
+                <input
+                  type="text"
+                  title="search data"
+                  placeholder="Search.."
+                  className="outline-none font-semibold placeholder-gray-400 bg-none text-base placeholder:text-sm  px-3 py-1 w-full group-focus:border "
+                />
+                <MdOutlineCancel />
+              </label>
+              {/* <div>
+                <motion.button
+                          whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+                  onClick={() => setIsFilter(!isFilter)}
+                  className={`flex items-center font-semibold space-x-2 bg-white ring-1 ${
+                    isFilter && "ring-[#4284f5] ring-2"
+                  } px-2 py-1 rounded`}
+                >
+                  <h1>filter</h1>
+                  <MdOutlineFilterAlt size={25} />
+                </motion.button>
+              </div> */}
+            </div>
+
+            <div className=" text-black  cursor-pointer ">
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                className="rounded-xl border m-auto"
+                title="change view"
+                onClick={() => {
+                  setRow(!row);
+                }}
+              >
+                {row ? <MdViewModule size={30} /> : <MdViewStream size={30} />}
+              </motion.div>
             </div>
           </div>
+          {/* {isFilter && ( */}
+          <div className="mx-4 mt-4 text-base font-semibold">
+            {" "}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className={`bg-white ring-1 ring-blue-400 px-2 rounded ${
+                isAll && "ring-2 bg-blue-400 text-white"
+              }`}
+              onClick={() => {
+                setIsAll(!isAll);
+              }}
+            >
+              Show All
+            </motion.button>
+          </div>
+          {/* )} */}
         </div>
         <div>
-          <button
+          <motion.button
+            whileHover={{ scale: 0.95 }}
+            whileTap={{ scale: 0.9 }}
             onClick={() => {
               setAddGoals(!addGoals);
             }}
-            className="w-full bg-slate-500 py-1 rounded-md mx-3 font-semibold"
+            className="w-full bg-[#4284f5] py-1 mb-1  rounded-md text-center text-white  font-semibold hover:shadow-md hover:ring-[#4284f5] hover:ring-1"
           >
             Tambah Goals
-          </button>
+          </motion.button>
         </div>
         {multiId.length > 0 && (
           <div className="text-white">
-            <button
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => {
-                // return console.log(multiStatus);
-                let a = multiStatus.map(
+                let a = multiStatus.findIndex(
                   (e) => e === "to-do" || e === "ongoing"
                 );
 
-                if (a) {
+                if (a === 0) {
                   Swal.fire({
                     title: "Are you sure?",
                     text: "You can only update to the next stage",
@@ -189,17 +244,11 @@ const Goals = () => {
                       await Swal.fire({
                         title: "Select value of status update",
                         input: "select",
-                        inputOptions:
-                          localStorage.getItem("someStatus") !== "ongoing"
-                            ? {
-                                ongoing: "Ongoing",
-                                hold: "Hold",
-                                done: "Done",
-                              }
-                            : {
-                                hold: "Hold",
-                                done: "Done",
-                              },
+                        inputOptions: {
+                          ongoing: "Ongoing",
+                          hold: "Hold",
+                          done: "Done",
+                        },
                         inputPlaceholder: "Select a status",
                         showCancelButton: true,
                         inputValidator: (value) => {
@@ -222,7 +271,7 @@ const Goals = () => {
                   Swal.fire({
                     icon: "error",
                     title: "Oops...",
-                    text: "You cannot update to stage before!",
+                    text: "You cannot update to stage before, cause one of your choice is done or held",
                   });
                 }
               }}
@@ -230,8 +279,10 @@ const Goals = () => {
             >
               {" "}
               Update
-            </button>
-            <button
+            </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               onClick={() => {
                 // return console.log(multiId);
 
@@ -252,7 +303,7 @@ const Goals = () => {
               className="px-5 py-1 bg-red-500 my-3 rounded-lg mx-3"
             >
               Delete
-            </button>
+            </motion.button>
           </div>
         )}
         <div className=" w-full">

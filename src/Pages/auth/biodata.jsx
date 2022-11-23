@@ -9,9 +9,12 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { api } from "../../Functions/api";
+import { Player } from "@lottiefiles/react-lottie-player";
+import Loadings from "../../Component/Loading";
 
 const Biodata = () => {
   const [selectedImage, setSelectedImage] = useState();
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -30,6 +33,7 @@ const Biodata = () => {
   });
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
     const formData = new FormData();
     formData.append("image", selectedImage);
     formData.append("name", initialValues.name);
@@ -59,16 +63,32 @@ const Biodata = () => {
         icon: "success",
         timer: 1000,
       });
+      setIsLoading(false);
       setTimeout(() => {
         navigate("/acc/dashboard", { replace: true });
       }, 1000);
     }
+    setIsLoading(false);
   };
 
   return (
     <React.Fragment>
-      <div className=" w-screen h-screen bg-gradient-to-r overflow-hidden from-cyan-600 via-cyan-500 to-blue-400 relative flex justify-center items-center shadow-2xl  ">
+      <div className=" w-screen h-screen  bg-gradient-to-r overflow-hidden from-cyan-600 via-cyan-500 to-blue-400 relative flex justify-center items-center shadow-2xl  ">
         {/* <img src={Background} alt="" className="h-screen w-screen " /> */}
+        {isLoading && (
+          <div className="absolute z-50 h-screen flex items-center backdrop-blur-sm w-full justify-center">
+            <div className=" ">
+              <Player
+                autoplay
+                loop
+                src={
+                  "https://lottie.host/3425dfb9-3688-4154-8741-ce55a06174ea/d70t0oUroc.json"
+                }
+                style={{ height: "100px", width: "100px" }}
+              ></Player>
+            </div>
+          </div>
+        )}
         <div className="z-0 h-40 w-40 -left-20 -top-20 opacity-40 bg-cyan-200  absolute rounded-full shadow-xl"></div>{" "}
         <div className="z-0 h-40 w-40 -left-28 -bottom-10 rounded-lg ease-linear  rotate-12  opacity-40 bg-white absolute shadow-xl"></div>{" "}
         <div className="z-0 h-40 w-40 -left-24 -bottom-14 rounded-lg ease-linear  rotate-12  opacity-40 bg-white absolute shadow-xl"></div>
@@ -201,7 +221,7 @@ const Biodata = () => {
                   <div className=" ">
                     <input
                       max={"2005-12-31"}
-                      min={'1970-01-01'}
+                      min={"1970-01-01"}
                       onChange={(e) => {
                         setInitialValues({
                           ...initialValues,
@@ -254,7 +274,7 @@ const Biodata = () => {
                   type="submit"
                   className="touch-pinch-zoom py-2 w-11/12 bg-amber-300 rounded-md mt-5 mb-5 hover:bg-amber-400 transition-all duration-500 ease-in"
                 >
-                  Create Account
+                  {isLoading ? "Loadings..." : "Create Account"}
                 </button>
               </div>
             </form>

@@ -1,12 +1,11 @@
 import React from "react";
+import { motion } from "framer-motion";
 import Scrollbars from "react-custom-scrollbars-2";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import logo from ".././Images/LOGO2.png";
 
-
 const Body = () => {
   const navigate = useNavigate();
-
 
   return (
     <div className="grid grid-cols-11 w-screen h-screen">
@@ -31,41 +30,40 @@ const Body = () => {
 
           <nav className="text-yellow-50 text-xl font-semibold pl-14">
             <ul>
-              <li>
+              <motion.li whileHover={{ x: 10, }}>
                 <NavLink
                   to="dashboard"
                   className={({ isActive }) =>
-                    isActive ? "text-2xl underline" : undefined
+                    isActive ? "text-2xl underline pb-1" : undefined
                   }
                 >
                   Dashboard
                 </NavLink>
-              </li>
-              <li>
+              </motion.li>
+              <motion.li>
                 <br />
                 <hr />
-              </li>
-              <li>
+              </motion.li>
+              <motion.li whileHover={{ x: 10, scaleY: 1 }}>
                 <NavLink
                   to="goals"
                   className={({ isActive }) =>
-                    isActive ? "text-2xl underline" : undefined
+                    isActive ? "text-2xl underline pb-1" : undefined
                   }
                 >
                   Goals
                 </NavLink>
-              </li>
-              <li>
-                <NavLink to="ma">
-                  {({ isActive }) => (
-                    <span
-                      className={isActive ? "text-2xl underline" : undefined}
-                    >
-                      Measured Activity
-                    </span>
-                  )}
+              </motion.li>
+              <motion.li whileHover={{ x: 10, scaleY: 1 }}>
+                <NavLink
+                  to="ma"
+                  className={({ isActive }) =>
+                    isActive ? "text-2xl underline pb-1" : undefined
+                  }
+                >
+                  Measured Activity
                 </NavLink>
-              </li>
+              </motion.li>
             </ul>
           </nav>
           <button
@@ -83,7 +81,6 @@ const Body = () => {
       </div>
       <div className="col-span-9 overflow-auto relative h-screen  ">
         <Scrollbars autoHide style={{ height: "100%" }}>
-          
           <Outlet />
         </Scrollbars>
       </div>

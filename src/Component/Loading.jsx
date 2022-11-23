@@ -9,9 +9,9 @@ const Loadings = () => {
         autoplay
         loop
         src={
-          "https://lottie.host/3425dfb9-3688-4154-8741-ce55a06174ea/d70t0oUroc.json"
+          "https://lottie.host/?file=4351b23b-2d38-40a2-9629-588ef5f62eb9/CXYQvvSQef.json"
         }
-        style={{ height: "300px", width: "300px" }}
+        style={{ height: "200px", width: "200px" }}
       ></Player>
     </div>
 

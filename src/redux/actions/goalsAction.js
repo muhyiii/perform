@@ -1,8 +1,10 @@
+import jwtDecode from "jwt-decode";
 import {
   addGoal,
   deleteGoalById,
   getGoalById,
   getGoals,
+  getGoalsByUserNow,
   updateGoalById,
 } from "../../Functions/api";
 
@@ -11,6 +13,30 @@ export function functionGetGoals() {
     dispatch({ type: "Loading" });
     try {
       const response = await getGoals();
+      console.log(response);
+      const data = response.data;
+
+      dispatch({
+        type: "LoadingStop",
+      });
+      console.log(data);
+      return data;
+    } catch (err) {
+      dispatch({
+        type: "LoadingStop",
+      });
+      let data = err.response.data;
+      return data;
+    }
+  };
+}
+export function functionGetGoalsByUserNow() {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      var decoded = jwtDecode(localStorage.getItem("token"));
+      console.log(decoded);
+      const response = await getGoalsByUserNow(decoded.id);
       console.log(response);
       const data = response.data;
 
@@ -92,17 +118,17 @@ export function functionDeleteGoal(id) {
     }
   };
 }
-export function functionUpdateGoal( id, status ) {
+export function functionUpdateGoal(id, status) {
   return async (dispatch) => {
     dispatch({ type: "Loading" });
     try {
       // console.log(status);
-      const response = await updateGoalById( id, status );
+      const response = await updateGoalById(id, status);
       const data = response.data;
       dispatch({
         type: "LoadingStop",
       });
-      console.log(id,status);
+      console.log(id, status);
       return data;
     } catch (err) {
       dispatch({

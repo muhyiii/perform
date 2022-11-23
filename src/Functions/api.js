@@ -40,6 +40,10 @@ export function addGoal(values) {
 export function getGoals() {
   return axioss.get("/data/goals");
 }
+//// GET GOALS ALL BY USER NOW
+export function getGoalsByUserNow(id) {
+  return axioss.get(`/data/goals/user/${id}`);
+}
 //// GET GOAL BY ID
 export const getGoalById = async (userId) => {
   return axioss.get(`/data/goals/${userId}`);
