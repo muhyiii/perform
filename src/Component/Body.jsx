@@ -9,7 +9,7 @@ const Body = () => {
 
   return (
     <div className="grid grid-cols-11 w-screen h-screen">
-      <div className="bg-gray-900 group-hover:bg-gray-600 flex h-screen col-span-2">
+      <div className="bg-gray-900 z-50 group-hover:bg-gray-600 flex h-screen col-span-2">
         <div className="">
           <div className="m-6  hover:cursor-pointer">
             <img
@@ -30,7 +30,7 @@ const Body = () => {
 
           <nav className="text-yellow-50 text-xl font-semibold pl-14">
             <ul>
-              <motion.li whileHover={{ x: 10, }}>
+              <motion.li whileHover={{ x: 10 }}>
                 <NavLink
                   to="dashboard"
                   className={({ isActive }) =>
@@ -47,6 +47,7 @@ const Body = () => {
               <motion.li whileHover={{ x: 10, scaleY: 1 }}>
                 <NavLink
                   to="goals"
+                  state={{ isAddGoal: false }}
                   className={({ isActive }) =>
                     isActive ? "text-2xl underline pb-1" : undefined
                   }
@@ -57,6 +58,7 @@ const Body = () => {
               <motion.li whileHover={{ x: 10, scaleY: 1 }}>
                 <NavLink
                   to="ma"
+                  state={{ isAddMA: false }}
                   className={({ isActive }) =>
                     isActive ? "text-2xl underline pb-1" : undefined
                   }

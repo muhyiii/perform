@@ -30,20 +30,18 @@ export function functionGetGoals() {
     }
   };
 }
-export function functionGetGoalsByUserNow() {
+export function functionGetGoalsByUserNow(id) {
   return async (dispatch) => {
     dispatch({ type: "Loading" });
     try {
-      var decoded = jwtDecode(localStorage.getItem("token"));
-      console.log(decoded);
-      const response = await getGoalsByUserNow(decoded.id);
-      console.log(response);
+      const response = await getGoalsByUserNow(id);
+      // console.log(response);
       const data = response.data;
 
       dispatch({
         type: "LoadingStop",
       });
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (err) {
       dispatch({
@@ -65,7 +63,7 @@ export function functionGetGoalsById(id) {
       dispatch({
         type: "LoadingStop",
       });
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (err) {
       dispatch({

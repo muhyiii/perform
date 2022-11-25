@@ -45,14 +45,36 @@ export function getGoalsByUserNow(id) {
   return axioss.get(`/data/goals/user/${id}`);
 }
 //// GET GOAL BY ID
-export const getGoalById = async (userId) => {
+export function getGoalById(userId) {
   return axioss.get(`/data/goals/${userId}`);
-};
+}
 //// DELETE GOAL BY ID
-export const deleteGoalById = async (goalId) => {
+export function deleteGoalById(goalId) {
   return axioss.delete(`/data/goals/${goalId}/delete`);
-};
+}
 //// UPDATE GOAL BY ID
-export const updateGoalById = async (goalId, payload) => {
+export function updateGoalById(goalId, payload) {
   return axioss.put(`/data/goals/${goalId}/update`, { status: payload });
-};
+}
+
+//// MEASURED ACTIVITY
+//// ADD MEASURED ACTIVITY
+export function addMeasuredActivity(payload) {
+  return axioss.post("add-measured-activity", payload);
+}
+//// GET ALL MEASURED ACTIVITIES
+export function getMeasuredActivities() {
+  return axioss.get("/data/measured-activities");
+}
+//// GET MEASURED ACTIVITIES ALL BY USER NOW
+export function getMeasuredActivitiesByUserNow(id) {
+  return axioss.get(`/data/measured-activities/user/${id}`);
+}
+//// GET MEASURED ACTIVITY BY GOAL ID
+export function getMeasuredActivitiesByGoalId(id) {
+  return axioss.get(`/data/measured-activities/goal/${id}`);
+}
+//// GET MEASURED ACTIVITIES ALL BY USER NOW
+export function getMeasuredActivityById(id) {
+  return axioss.get(`/data/measured-activities/${id}`);
+}

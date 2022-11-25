@@ -16,6 +16,8 @@ import ChangingProgressProvider from "../../Component/Support/ChangingProggresPr
 import Peringkat from "./peringkat";
 import Todolist from "./Todolist";
 import User from "../../Component/User";
+import Loadings from "../../Component/Loading";
+import ReviewsProvider from "../../Component/Support/ReviewsProvider";
 
 const data = [
   {
@@ -46,10 +48,19 @@ const data = [
 const persen = 66;
 
 const Dashboard = () => {
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+  }, []);
+  if (isLoading) return <Loadings />;
   return (
     <div className="relative  h-screen">
       <User />
-      <div className="p-10  h-full w-auto">
+      <div className="px-10 py-5 h-full w-auto">
         <div>
           <h1 className="text-5xl font-bold pb-4">Dashboard</h1>
         </div>
@@ -72,37 +83,26 @@ const Dashboard = () => {
                 className=" container mx-auto"
                 style={{ width: 150, height: 150 }}
               >
-                <ChangingProgressProvider values={[0, `${23}`]}>
+                <ReviewsProvider valueStart={0} valueEnd={persen}>
                   {(percentage) => (
                     <CircularProgressbarWithChildren
                       value={percentage}
-                      strokeWidth={20}
+                      strokeWidth={18}
                       styles={buildStyles({
-                        // Rotation of path and trail, in number of turns (0-1)
                         rotation: 0.25,
-
-                        // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
                         strokeLinecap: "butt",
-
-                        // Text size
-
-                        // How long animation takes to go from one percentage to another, in seconds
                         pathTransitionDuration: 0.5,
-
-                        // Can specify path transition in more detail, or remove it entirely
-                        // pathTransition: 'none',
-
-                        // Colors
-                        pathColor: `rgba(62, 152, 199, ${percentage / 100})`,
-
+                        pathColor: `rgba(${percentage / 100}, 152, 199 ,${
+                          percentage / 100
+                        })`,
                         trailColor: "#d6d6d6",
                         backgroundColor: "#3e98c7",
                       })}
                     >
-                      <p className="text-xl pl-3">{percentage} %</p>
+                      <p className="text-lg">{persen}%</p>
                     </CircularProgressbarWithChildren>
                   )}
-                </ChangingProgressProvider>
+                </ReviewsProvider>
               </div>
               <div className="container mx-auto">
                 <div className="_periode  flex w-full  ">

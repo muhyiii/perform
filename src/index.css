@@ -8,7 +8,8 @@
   font-family: 'Eveleth-Clean-Regular';
   src: local('Eveleth-Clean-Regular'), url('./Images/fonts/Eveleth\ Clean\ Regular.otf') format('otf')
 }
-.bg-image{
+
+.bg-image {
   background-image: url('./Images/image.png');
   background-size: cover;
 }
@@ -19,6 +20,7 @@
 }
 
 /* fjdwdsjfgdnteruewwqjqksldfghjdsfgb  */
+.height{height: 40rem;}
 .pagination {
   width: 350px;
   color: white;
@@ -27,35 +29,49 @@
   top: 93%;
   left: 52%;
   transform: translate(-50%, -50%);
+  gap: 0 5px;
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  list-style: none;
+  outline: none;
+}
 
-    margin: 10px auto;
-    display: flex;
-    list-style: none;
-    outline: none;
-  }
-  .pagination > .active > a{
-    border-radius: 8px;
-    background-color: #8db1b6 ;
-    border-color: #94b3b8 ;
-    color: #fff;
-  }
-  .pagination > li > a{
-    border: 1px solid #80aeb4 ;
-    border-radius: 6px;
-    padding: 5px 10px;
-    outline: none;
-    cursor: pointer;
-  }
-  .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
-    background-color: #6fbfca ;
-    border-color: #5b9ca5;
-    border-radius: 5px;
-    outline: none ;
-  }
-  .pagination > li > a, .pagination > li > span{
-    color: #89a8ac
-  }
-  .pagination > li:first-child > a, .pagination > li:first-child > span, .pagination > li:last-child > a, .pagination > li:last-child > span{
-    border-radius: unset
-    
-  }
+.pagination>.active>a {
+  border-radius: 8px;
+  background-color: #8db1b6;
+  border-color: #94b3b8;
+  color: #fff;
+}
+
+.pagination>li>a {
+  border: 1px solid #80aeb4;
+  border-radius: 6px;
+  padding: 5px 10px;
+  outline: none;
+  cursor: pointer;
+}
+
+.pagination>.active>a,
+.pagination>.active>span,
+.pagination>.active>a:hover,
+.pagination>.active>span:hover,
+.pagination>.active>a:focus,
+.pagination>.active>span:focus {
+  background-color: #6fbfca;
+  border-color: #5b9ca5;
+  border-radius: 5px;
+  outline: none;
+}
+
+.pagination>li>a,
+.pagination>li>span {
+  color: #89a8ac
+}
+
+.pagination>li:first-child>a,
+.pagination>li:first-child>span,
+.pagination>li:last-child>a,
+.pagination>li:last-child>span {
+  border-radius: unset
+}

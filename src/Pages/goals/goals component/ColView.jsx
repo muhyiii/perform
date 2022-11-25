@@ -7,10 +7,11 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import Swal from "sweetalert2";
 import ModalOption from "./ModalOption";
 
-import ChangingProgressProvider from "../Support/ChangingProggresProvider";
+import ChangingProgressProvider from "../../../Component/Support/ChangingProggresProvider";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { functionUpdateGoal } from "../../redux/actions/goalsAction";
+import { functionUpdateGoal } from "../../../redux/actions/goalsAction";
+import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
 
 const ColView = (props) => {
   const [isOption, setIsOption] = React.useState(false);
@@ -19,7 +20,7 @@ const ColView = (props) => {
   const updateStatus = async (id, status) => {
     const payload = { status: status };
     console.log(status);
-    const response = await dispatch(functionUpdateGoal( id, status ));
+    const response = await dispatch(functionUpdateGoal(id, status));
     console.log(response);
     if (response.status === "Success") {
       Swal.fire({
@@ -49,16 +50,16 @@ const ColView = (props) => {
       <div className="grid grid-cols-6">
         <div></div>
         <div className="col-span-3">
-          <ChangingProgressProvider values={[0, `${props.rate}`]}>
+          <ReviewsProvider valueStart={0} valueEnd={props.rate}>
             {(percentage) => (
               <CircularProgressbarWithChildren
                 value={percentage}
-                strokeWidth={20}
+                strokeWidth={18}
                 styles={buildStyles({
                   rotation: 0.25,
                   strokeLinecap: "butt",
                   pathTransitionDuration: 0.5,
-                  pathColor: `rgba(${percentage / 100}, 152, 199  ,${
+                  pathColor: `rgba(${percentage / 100}, 152, 199 ,${
                     percentage / 100
                   })`,
                   trailColor: "#d6d6d6",
@@ -68,7 +69,7 @@ const ColView = (props) => {
                 <p className="text-[10px]">{props.rate}%</p>
               </CircularProgressbarWithChildren>
             )}
-          </ChangingProgressProvider>
+          </ReviewsProvider>
         </div>
       </div>
       <div

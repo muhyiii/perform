@@ -1,198 +1,312 @@
 import React from "react";
-import { VscFilter, VscFilterFilled } from "react-icons/vsc";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { FaUserCircle } from "react-icons/fa";
-import ChangingProgressProvider from "../../Component/Support/ChangingProggresProvider";
-import {
-  CircularProgressbarWithChildren,
-  buildStyles,
-} from "react-circular-progressbar";
+import { MdSearch, MdOutlineCancel } from "react-icons/md";
+import { motion, AnimatePresence } from "framer-motion";
 import "../measured/ma";
 import User from "../../Component/User";
+import AddMA from "./addMa";
+import { useDispatch } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import {
+  functionGetMeasuredActivities,
+  functionGetMeasuredActivityByUserNow,
+} from "../../redux/actions/maAction";
+import ListView from "./ma component/ListView";
+import Loadings from "../../Component/Loading";
+import jwtDecode from "jwt-decode";
 
 const Ma = () => {
-  let a = [1, 2, 3, 4, 5, 2, 2, 2, 2, 2, 2, 2, 12, 2, 1, 12, 12];
-  let b = [3, 3, 5, 6];
-  const [row, setRow] = React.useState(true);
+  const [data, setData] = React.useState([]);
+  const [filtered, setFiltered] = React.useState([]);
+  const [status, setStatus] = React.useState("");
+  const [isAll, setIsAll] = React.useState(true);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [query, setQuery] = React.useState("");
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const decoded = jwtDecode(localStorage.getItem("token"));
+  const getData = async () => {
+    const response = await dispatch(functionGetMeasuredActivities());
+    if (response.status === "Success") {
+      // console.log(typeof(status));
+      if (status !== "") {
+        let filtered = response.data.rows.filter((e) => e.status === status);
+        setFiltered(filtered);
+      }
+      setData(response.data.rows);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    }
+  };
+  const getDataUserNow = async () => {
+    const response = await dispatch(
+      functionGetMeasuredActivityByUserNow(decoded.id)
+    );
+    if (response.status === "Success") {
+      if (status !== "") {
+        let filtered = response.data.rows.filter((e) => e.status === status);
+        setFiltered(filtered);
+      }
+      setData(response.data.rows);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    }
+  };
+  React.useEffect(() => {
+    setIsLoading(true);
+    isAll ? getData() : getDataUserNow();
+  }, [isAll, status]);
+  // React.useEffect(() => {
+  //   setIsLoading(true);
+  //   getData();
+  // }, []);
+  if (isLoading) return <Loadings />;
   return (
-    <div className="relative overflow-hidden h-screen">
+    <div
+      className={`${
+        location.state?.isAddMA && "overflow-hidden"
+      } relative  h-screen`}
+    >
       <User />
-      <div className="p-10   w-full">
+      <div className="px-10 py-5   w-full">
+        <AnimatePresence>
+          {location.state?.isAddMA && (
+            <motion.div
+              className=" absolute overflow-hidden   flex justify-center items-center backdrop-blur-[2px] z-20 modal  inset-0  overflow-y-hidden h-full "
+              initial={{ y: -100 }}
+              animate={{
+                y: 0,
+                transitionEnd: {
+                  background: "rgba(0, 0, 0, 0.7)",
+                },
+              }}
+              exit={{ opacity: 0 }}
+              transition={{ ease: "easeOut", duration: 1 }}
+            >
+              <AddMA
+                onClose={() =>
+                  navigate(".", { state: { isAddMA: false }, replace: true })
+                }
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
         <div>
-          <h1 className="text-5xl font-bold ">Measured Actifity</h1>
+          <h1 className="text-5xl font-bold ">Measured Activity</h1>
         </div>
         {/* NAV ////////////>....................... */}
-        <nav class="flex  space-x-4 py-10 justify-between">
-          <div className="">
-            <button className=" border-4 border-white " onClick={a}>
-              <diva>
-                Approve{" "}
-                <span class="hover:underline-offset-[3px] rounded-full border-transparent bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">
-                  204
-                </span>
-              </diva>
-            </button>
 
-            <button className=" border-4 border-white " onClick={b}>
-              <diva>
-                Active{" "}
-                <span class="rounded-full border-transparent bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">
-                  204
-                </span>
-              </diva>
-            </button>
+        <div className="flex justify-between items-center my-5 font-semibold ml-3">
+          <div className=" flex space-x-5">
+            <div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className={`group `}
+                onClick={() => setStatus("to-do")}
+              >
+                <p>
+                  To Do{" "}
+                  <span
+                    className={` px-3 py-1 bg-gray-100 group-hover:bg-slate-300 rounded-full`}
+                  >
+                    201
+                  </span>
+                </p>
+              </motion.button>
+              {status === "to-do" && (
+                <div className="w-full border-b-2 border-b-black mt-2"></div>
+              )}
+            </div>
 
-            <button className=" border-4 border-white ">
-              <diva>
-                Overdue{" "}
-                <span class="rounded-full border-transparent bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">
-                  204
-                </span>
-              </diva>
-            </button>
+            <div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className={`group `}
+                onClick={() => setStatus("ongoing")}
+              >
+                <p>
+                  Ongoing{" "}
+                  <span
+                    className={` px-3 py-1 bg-gray-100 group-hover:bg-slate-300 rounded-full`}
+                  >
+                    201
+                  </span>
+                </p>
+              </motion.button>
+              {status === "ongoing" && (
+                <div className="w-full border-b-2 border-b-black mt-2"></div>
+              )}
+            </div>
 
-            <button className=" border-4 border-white ">
-              <diva>
-                Complete{" "}
-                <span class="rounded-full border-transparent bg-slate-100 px-2 py-1 text-xs font-semibold text-slate-700">
-                  204
-                </span>
-              </diva>
-            </button>
+            <div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className={`group `}
+                onClick={() => setStatus("hold")}
+              >
+                <p>
+                  Hold{" "}
+                  <span
+                    className={` px-3 py-1 bg-gray-100 group-hover:bg-slate-300 rounded-full`}
+                  >
+                    201
+                  </span>
+                </p>
+              </motion.button>
+              {status === "hold" && (
+                <div className="w-full border-b-2 border-b-black mt-2"></div>
+              )}
+            </div>
+
+            <div>
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className={`group `}
+                onClick={() => setStatus("done")}
+              >
+                <p>
+                  Done{" "}
+                  <span
+                    className={` px-3 py-1 bg-gray-100 group-hover:bg-slate-300 rounded-full`}
+                  >
+                    201
+                  </span>
+                </p>
+              </motion.button>
+              {status === "done" && (
+                <div className="w-full border-b-2 border-b-black mt-2"></div>
+              )}
+            </div>
           </div>
-          <a
-            href="#_"
-            class="relative inline-flex items-center justify-start inline-block px-5 py-3 overflow-hidden font-medium transition-all bg-blue-600 rounded-full hover:bg-white group"
+          <motion.button
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="py-1 px-3 bg-white ring-1 ring-blue-400 rounded-full hover:ring-2 hover:bg-blue-400 hover:text-white font-semibold hover:shadow-md"
+            onClick={() =>
+              navigate(".", { state: { isAddMA: true }, replace: true })
+            }
           >
-            <span class="absolute inset-0 border-0 group-hover:border-[25px] ease-linear duration-100 transition-all border-white rounded-full"></span>
-            <span class="relative w-full text-left text-white transition-colors duration-200 ease-in-out group-hover:text-blue-600">
-              Buat Measure Activity Baru
-            </span>
-          </a>
-        </nav>
+            Create New Measure Activity
+          </motion.button>
+        </div>
+
         {/* NAV ////////////>....................... */}
 
-        <div className="text-white grid grid-cols-3 space-x-3 my-5">
-          <label htmlFor="" className="">
-            <input
-              type="text"
-              placeholder="Search.."
-              className="outline-none bg-slate-100 text-base placeholder:text-sm :border-2 border-rose-600 text-black px-3 py-1 rounded-lg w-full"
-            />
-          </label>
-
-          <a
-            onClick={() => {
-              setRow(!row);
-            }}
-            href="#_"
-            class="inline-flex overflow-hidden text-white bg-gray-900 rounded group w-32 h-8"
-          >
-            <span class="place-items-center  font-medium font-medium px-3.5 py-2 text-gray bg-gray group-hover:bg-gray-800 flex items-center justify-center">
-              <div>
-                {row ? <VscFilter size={20} /> : <VscFilterFilled size={20} />}
-              </div>
-            </span>
-            <span class="pl-4 pr-5 py-1">Filter</span>
-          </a>
-
-          <div className="pl-25">
-            <a
-              href="#_"
-              class="inline-flex items-center ml-40 justify-center px-6 tracking-wide text-white transition duration-200 bg-gray-900 rounded hover:bg-gray-800 focus:shadow-outline focus:outline-none w-36 h-8"
+        <div className="text-black flex my-5 justify-between">
+          <div className="flex items-center space-x-4  w-1/3">
+            <label
+              htmlFor=""
+              title="search data"
+              className=" bg-slate-100 hover:ring-1 w-full  ring-gray-800 border-none focus-within:ring-1 focus-within:ring-gray-800 px-3 border rounded-md flex items-center"
             >
-              <span class="text-center text-sm">Export CSV</span>
-            </a>
+              <MdSearch />
+              <input
+                type="text"
+                title="search data"
+                placeholder="Search.."
+                value={query}
+                onChange={(e) => setQuery(e.target.value.toLowerCase())}
+                className="outline-none bg-transparent  placeholder-gray-400 bg-none text-base placeholder:text-sm  px-3 py-2 w-full group-focus:border "
+              />
+              <MdOutlineCancel
+                className="cursor-pointer"
+                onClick={(e) => setQuery("")}
+              />
+            </label>
+          </div>
+
+          <div className="flex items-center space-x-6">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className={` space-x-5  text-white ring-1 py-1 rounded-full group px-5 ${
+                isAll ? "ring-2 bg-blue-400 text-white" : " bg-black"
+              }`}
+              onClick={() => {
+                setIsAll(!isAll);
+              }}
+            >
+              {isAll ? "Show All" : "Only showing me"}
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="bg-white ring-1 ring-blue-400 py-1 text-black font-semibold rounded-full px-5 hover:bg-blue-400 hover:text-white shadow-lg"
+            >
+              Export CSV
+            </motion.button>
           </div>
         </div>
 
         <p className="border-b-2 w-full my-5 "></p>
-
-        <table
-          cellPadding="35"
-          className="justify-items-center"
-          // className="place-items-center flex justify-items-center  p-4 grid grid-cols-5 gap-4 border-2 rounded-lg justify-round"
-        >
-          <tr>
-            <th></th>
-            <th class="justify-start">Achievement</th>
-            <th class="">Measured Activity</th>
-            <th class="pr-20">User</th>
-            <th class="py-2 pr-5">Result Value</th>
-            <th class="...">Last Update</th>
-            <th></th>
-          </tr>
-        </table>
-
-        {/* list>>>>>>>>>>>>>>>>>>>>>>>>> */}
-
-        <div>
-          {a.map((e) => (
-            <div className=" items-center border-2 p-4 grid grid-cols-11 m-3 rounded-lg">
-              <input type="checkbox" name="" id="" className="col-end-2" />
-
-              <div
-                className=" container mx-auto"
-                style={{ width: 80, height: 80 }}
-              >
-                <ChangingProgressProvider values={[80, `${20}`]}>
-                  {(percentage) => (
-                    <CircularProgressbarWithChildren
-                      value={percentage}
-                      strokeWidth={15}
-                      styles={buildStyles({
-                        rotation: 0.25,
-                        strokeLinecap: "button",
-
-                        pathTransitionDuration: 0.5,
-
-                        pathColor: `rgba(62, 152, 199, ${percentage / 100})`,
-
-                        trailColor: "#d6d6d6",
-                        backgroundColor: "#3e98c7",
-                      })}
-                    >
-                      <p className="text-center text-xl ">{percentage}%</p>
-                    </CircularProgressbarWithChildren>
-                  )}
-                </ChangingProgressProvider>
-              </div>
-
-              <div className="col-span-3 p-10">
-                <p className="text-sm font-bold ">
-                  Membuat halaman di html dengan bantuan css
-                </p>
-                <p className="text-xs">12 Nov</p>
-              </div>
-
-              <div className="flex col-span-2 place-items-center justify-evenly">
-                <FaUserCircle className="flex " />
-                <div className="col-span-2 ">
-                  <p>Kamu Nanya?</p>
-                  <p className="text-xs">Farhan</p>
-                </div>
-              </div>
-
-              <p>100.00</p>
-
-              <div className="flex col-span-2 place-items-center justify-evenly">
-                <div className="col-span-2 ">
-                  <p>02 November 2022</p>
-                  <p className="text-xs">1:53:24 pm</p>
-                </div>
-              </div>
-
-              <button class="justify-end cursor-not-allowed opacity-50 p-0 w-16 h-16 bg-gray-200 hover:bg-gray-500 rounded-full mouse shadow transition ease-in duration-200 focus:outline-none">
-                <BsThreeDotsVertical
-                  size={30}
-                  className="w-6 h-6 inline-block "
+        {status !== ""
+          ? filtered
+              .filter(
+                (e) =>
+                  e.task.toLowerCase().includes(query) ||
+                  e.description.toLowerCase().includes(query) ||
+                  e.goals[0].task.toLowerCase().includes(query) ||
+                  e.users[0].name.toLowerCase().includes(query)
+              )
+              ?.map((e) => (
+                <ListView
+                  key={e.id}
+                  data={e}
+                  name={e.users[0].name}
+                  role={e.users[0].role}
+                  image={e.users[0].image}
+                  goalTask={e.goals[0].task}
+                  idUser={e.idUser}
+                  idGoal={e.idGoal}
+                  maId={e.maId}
+                  task={e.task}
+                  description={e.description}
+                  status={e.status}
+                  rate={e.rate}
+                  value={e.value}
+                  isArchive={e.isArchive}
+                  fromDate={e.fromDate}
+                  toDate={e.toDate}
+                  updatedAt={e.updatedAt}
                 />
-              </button>
-            </div>
-          ))}
-        </div>
-
-        {/* list>>>>>>>>>>>>>>>>>>>>>>>>> */}
+              ))
+          : data
+              .filter(
+                (e) =>
+                  e.task.toLowerCase().includes(query) ||
+                  e.description.toLowerCase().includes(query) ||
+                  e.goals[0].task.toLowerCase().includes(query) ||
+                  e.users[0].name.toLowerCase().includes(query)
+              )
+              ?.map((e) => (
+                <ListView
+                  key={e.id}
+                  data={e}
+                  name={e.users[0].name}
+                  role={e.users[0].role}
+                  image={e.users[0].image}
+                  goalTask={e.goals[0].task}
+                  idUser={e.idUser}
+                  idGoal={e.idGoal}
+                  maId={e.maId}
+                  task={e.task}
+                  description={e.description}
+                  status={e.status}
+                  rate={e.rate}
+                  value={e.value}
+                  isArchive={e.isArchive}
+                  fromDate={e.fromDate}
+                  toDate={e.toDate}
+                  updatedAt={e.updatedAt}
+                />
+              ))}
 
         <div className="h-20 w-full"></div>
       </div>

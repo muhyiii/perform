@@ -16,6 +16,7 @@ import EmptyPage from "./Component/Support/Empty";
 import { useSelector } from "react-redux";
 import Loading from "./Component/Loading";
 import Loadings from "./Component/Loading";
+import Prototype from "./Pages/measured/ma component/prototype";
 
 const ProtectedRoute = ({ user }) => {
   const loading = useSelector((state) => state.auth?.isLoading);
@@ -35,15 +36,16 @@ function App() {
         <Route path="/" element={<EmptyPage />}>
           {" "}
         </Route>{" "}
-        <Route path="/load" element={<Loadings />} />
-        <Route index path="/login" element={<Login />} />{" "}
-        <Route path="/register" element={<Register />} />{" "}
+        {/* <Route path="/load" element={<Loadings />} /> */}
+        <Route index path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        {/* <Route path="/loading" element={<Prototype />} /> */}
         <Route path="/add-biodata" element={<Biodata />} />
         <Route element={<ProtectedRoute user={user} />}>
           <Route path="/acc" element={<Body />}>
             {/* <Route index path="peringkat" element={<Peringkat />}></Route> */}
             <Route index exact path="dashboard" element={<Dashboard />}></Route>
-         
+
             <Route path="goals">
               <Route index element={<Goals />} />{" "}
               <Route path=":id" element={<GoalsDetail />} />

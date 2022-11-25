@@ -2,10 +2,8 @@ import React from "react";
 import Swal from "sweetalert2";
 import { IoTrashOutline, IoArchiveOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { api } from "../../Functions/axiosClient";
 import { useDispatch } from "react-redux";
-import { functionDeleteGoal } from "../../redux/actions/goalsAction";
+import { functionDeleteGoal } from "../../../redux/actions/goalsAction";
 
 const ModalOption = (props) => {
   const navigate = useNavigate();

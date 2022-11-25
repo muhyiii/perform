@@ -6,9 +6,10 @@ import {
 } from "react-circular-progressbar";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { api } from "../../Functions/axiosClient";
+import { api } from "../../../Functions/axiosClient";
 
-import ChangingProgressProvider from "../Support/ChangingProggresProvider";
+import ChangingProgressProvider from "../../../Component/Support/ChangingProggresProvider";
+import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
 
 const RowView = (props) => {
   const navigate = useNavigate();
@@ -64,13 +65,13 @@ const RowView = (props) => {
             </svg>
           </span>
           <div className="flex space-x-3  ">
-            <div className="text-left ">
+            <div className="text-left truncate text-ellipsis ">
               <p>{props.name}</p>
               <p className="text-xs text-gray-400">{props.role}</p>
             </div>
           </div>
           <p className={`text-xs capitalize font-semibold`}>
-            {props.rate == 100
+            {props.rate === 100
               ? "Completed"
               : props.fromDateA + " - " + props.toDateA}
           </p>
@@ -82,31 +83,18 @@ const RowView = (props) => {
           }}
         >
           <div className="col-span-2">
-            <ChangingProgressProvider values={[0, `${props.rate}`]}>
+            <ReviewsProvider valueStart={0} valueEnd={props.rate}>
               {(percentage) => (
                 <CircularProgressbarWithChildren
                   value={percentage}
-                  strokeWidth={20}
+                  strokeWidth={18}
                   styles={buildStyles({
-                    // Rotation of path and trail, in number of turns (0-1)
                     rotation: 0.25,
-
-                    // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
                     strokeLinecap: "butt",
-
-                    // Text size
-
-                    // How long animation takes to go from one percentage to another, in seconds
                     pathTransitionDuration: 0.5,
-
-                    // Can specify path transition in more detail, or remove it entirely
-                    // pathTransition: 'none',
-
-                    // Colors
                     pathColor: `rgba(${percentage / 100}, 152, 199 ,${
                       percentage / 100
                     })`,
-
                     trailColor: "#d6d6d6",
                     backgroundColor: "#3e98c7",
                   })}
@@ -114,11 +102,9 @@ const RowView = (props) => {
                   <p className="text-[10px]">{props.rate}%</p>
                 </CircularProgressbarWithChildren>
               )}
-            </ChangingProgressProvider>
+            </ReviewsProvider>
           </div>
-          <p className="truncate col-span-9 text-ellipsis font-semibold ">
-            {props.task}
-          </p>
+          <p className="truncate col-span-9  font-semibold ">{props.task}</p>
         </div>
         <div className="flex justify-between border-t-2 mt-2">
           {props.value}.00
