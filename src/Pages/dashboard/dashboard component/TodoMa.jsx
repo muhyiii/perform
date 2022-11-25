@@ -1,21 +1,20 @@
-import Perkerjaan from "../../Images/iconpekerjaan.png";
-import calendar from "../../Images/calendar.png";
-import Delete from "../../Images/delete.png";
-// import React from "react";
+import Perkerjaan from '../../../Images/iconpekerjaan.png'
+import calendar from '../../../Images/calendar.png'
+import Delete from '../../../Images/delete.png'
+
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
-import { useDispatch } from "react-redux";
 
-function Todolist() {
+const TodoMa = () => {
   const [offset, setOffset] = useState(0);
   const [data, setData] = useState([]);
-  const perPage = 5;
+  const perPage = 4;
   const [pageCount, setPageCount] = useState(0);
   const [deletedList] = useState([]);
-  const dispatch = useDispatch();
+
   const getData = async () => {
-    // const response = await dispatch(fungma);
+    //   const res = await axios.get(`https://jsonplaceholder.typicode.com/photos`)
     const res = [
       {
         nama: "Migration Alibaba - AWS:Implementasi AWS DMS integrasi 1",
@@ -70,12 +69,12 @@ function Todolist() {
       {
         nama: "Migration Alibaba - AWS:Implementasi AWS DMS integrasi 11",
         created: "05-11-04",
-        id: 12,
+        id: 11,
       },
       {
         nama: "Migration Alibaba - AWS:Implementasi AWS DMS integrasi 12",
         created: "05-11-04",
-        id: 13,
+        id: 12,
       },
     ];
 
@@ -85,11 +84,11 @@ function Todolist() {
       getData();
     };
     const response = res.filter((item) => !deletedList.includes(item.id));
-    const slice = res.slice(offset, offset + perPage);
+    const slice = response.slice(offset, offset + perPage);
     const postData = slice.map((pd) => (
       <React.Fragment>
-        <div className="overflow-y-auto">
-          <div className=" grid-cols-6 w-11/12 h-20 flex bg-white rounded-xl drop-shadow-xl pr-10 mx-auto ">
+        <div className="overflow-y-auto pt-3">
+          <div className="grid-cols-6 w-11/12 h-20 flex bg-white rounded-xl drop-shadow-xl pr-10 mx-auto">
             <div className="col-span-1">
               <div>
                 <img
@@ -147,35 +146,32 @@ function Todolist() {
 
   return (
     <div>
-      <div className="pt-20 pb-10 ">
-        <div className=" bg-slate-200 rounded-lg w-full height drop-shadow-xl  ">
-          <div className="w-52 mx-auto font-extrabold text-2xl pt-5 pl-14 pb-5">
-            To do list
-          </div>
-          <div>
-            <div className=" pt-1 ">
-              <div className="grid grid-cols-1 gap-x-44 gap-y-4  ">
-                {data}
-                <ReactPaginate
-                  previousLabel={"Prev"}
-                  nextLabel={"Next"}
-                  breakLabel={"..."}
-                  breakClassName={"break-me"}
-                  pageCount={pageCount}
-                  marginPagesDisplayed={2}
-                  pageRangeDisplayed={5}
-                  onPageChange={handlePageClick}
-                  containerClassName={"pagination"}
-                  subContainerClassName={"pages pagination"}
-                  activeClassName={"active"}
-                />
-              </div>
-            </div>
+      <div className="w-52 mx-auto font-semibold text-2xl pt-7 pl-20 pb-3">
+        Goal
+      </div>
+
+      <div>
+        <div className=" pt-1 ">
+          <div className="grid grid-cols-1 gap-x-44 gap-y-4 pb-28  ">
+            {data}
+            <ReactPaginate
+              previousLabel={"prev"}
+              nextLabel={"next"}
+              breakLabel={"..."}
+              breakClassName={"break-me"}
+              pageCount={pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={handlePageClick}
+              containerClassName={"pagination"}
+              subContainerClassName={"pages pagination"}
+              activeClassName={"active"}
+            />
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
-export default Todolist;
+export default TodoMa;

@@ -5,7 +5,7 @@ import {
 } from "react-circular-progressbar";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import Swal from "sweetalert2";
-import ModalOption from "./ModalOption";
+import ModalOptionGoal from "./ModalOptionGoal";
 
 import ChangingProgressProvider from "../../../Component/Support/ChangingProggresProvider";
 import { useNavigate } from "react-router-dom";
@@ -30,8 +30,8 @@ const ColView = (props) => {
         timer: 1000,
       });
       setTimeout(() => {
-        props.getData();
-      }, 1000);
+        navigate(".");
+      }, 500);
     }
     if (response.status !== "Success") {
       Swal.fire({
@@ -84,13 +84,22 @@ const ColView = (props) => {
             ? "Completed"
             : props.fromDateA + " - " + props.toDateA}
         </p>
-      </div>
-      <div className="text-left col-start-7 col-span-2 ml-5 ">
-        <p>{props.name}</p>
-        <p className="text-xs text-gray-400">{props.role}</p>
+      </div>{" "}
+      <div className="text-left col-start-7 col-span-2  space-x-2 flex ">
+        {" "}
+        <img
+          src={props.image}
+          className="h-10 rounded-full w-10 bg-cover"
+          alt=""
+        />
+        <div className="truncate text-ellipsis mr-1 px-1">
+          {" "}
+          <p className="">{props.name}</p>
+          <p className="text-xs text-gray-400  h-5">{props.role}</p>
+        </div>
       </div>
       <p
-        className="cursor-pointer hover:font-semibold"
+        className="cursor-pointer hover:font-semibold ml-3"
         onClick={() => {
           if (props.status === "to-do" || props.status === "ongoing") {
             Swal.fire({
@@ -143,7 +152,7 @@ const ColView = (props) => {
         {props.status}
       </p>
       <p>{props.value}.00</p>
-      <div className="col-start-12 relative">
+      <div className="col-start-13 relative">
         {" "}
         <BiDotsVerticalRounded
           className="hover:cursor-pointer"
@@ -152,7 +161,7 @@ const ColView = (props) => {
             setIsOption(!isOption);
           }}
         />
-        <ModalOption
+        <ModalOptionGoal
           onCloseOption={() => {
             setIsOption(false);
           }}

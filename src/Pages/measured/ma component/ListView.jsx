@@ -4,23 +4,18 @@ import {
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { FaUserCircle } from "react-icons/fa";
-import Swal from "sweetalert2";
-import ChangingProgressProvider from "../../../Component/Support/ChangingProggresProvider";
 import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
+import ModalOptionMa from "./ModalOptionMa";
 
 const ListView = (props) => {
+  const [isOption, setIsOption] = React.useState(false);
+
   const options1 = {
     year: "numeric",
     month: "short",
     day: "numeric",
   };
-  const options2 = {
-    hour: "2-digit",
-    minute: "numeric",
-    second: "numeric",
-    hour12: true,
-  };
+
   let toDate = new Date(props.toDate).toLocaleDateString("id", options1);
   let updatedAt = new Date(props.updatedAt).toLocaleDateString("id", options1);
   let updatedAte = new Date(props.updatedAt).toLocaleTimeString("id", {
@@ -31,7 +26,7 @@ const ListView = (props) => {
   });
   return (
     <div>
-      <div className=" items-center border-2 px-3 py-2 grid grid-cols-12 my-2 rounded-lg capitalize  peer-checked:border-blue-500">
+      <div className=" items-center  relative border-2 px-3 py-5 grid grid-cols-12 my-2 rounded-lg capitalize  peer-checked:border-blue-500">
         <label className="flex items-center col-span-1 space-x-3 justify-center py relative ">
           <input
             type="checkbox"
@@ -76,14 +71,14 @@ const ListView = (props) => {
                     backgroundColor: "#3e98c7",
                   })}
                 >
-                  <p className="text-[10px]">{props.rate}%</p>
+                  <p className="text-[9px]">{props.rate}%</p>
                 </CircularProgressbarWithChildren>
               )}
             </ReviewsProvider>
           </div>
         </label>
 
-        <div className=" col-start-2 px-4 col-span-4 flex items-center ">
+        <div className=" col-start-2 px-4 col-span-4 flex items-center  ">
           <div>
             <p className="text-xs text-gray-400">{props.goalTask}</p>
             <div>
@@ -106,59 +101,7 @@ const ListView = (props) => {
         </div>
 
         <p>{props.value}.00</p>
-        <p
-          className="cursor-pointer hover:font-semibold"
-          onClick={() => {
-            if (props.status === "to-do" || props.status === "ongoing") {
-              Swal.fire({
-                title: "Are you sure?",
-                text: "You can only update to the next stage",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, update it!",
-              }).then(async (result) => {
-                if (result.isConfirmed) {
-                  await Swal.fire({
-                    title: "Select value of status update",
-                    input: "select",
-                    inputOptions:
-                      props.status !== "ongoing"
-                        ? {
-                            ongoing: "Ongoing",
-                            hold: "Hold",
-                            done: "Done",
-                          }
-                        : {
-                            hold: "Hold",
-                            done: "Done",
-                          },
-                    inputPlaceholder: "Select a status",
-                    showCancelButton: true,
-                    inputValidator: (value) => {
-                      return new Promise((resolve) => {
-                        if (value !== props.status) {
-                          // updateStatus(props.goalId, value);
-                        } else {
-                          resolve("You can only update to next stage");
-                        }
-                      });
-                    },
-                  }).then((e) => {});
-                }
-              });
-            } else {
-              Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "You cannot update to stage before!",
-              });
-            }
-          }}
-        >
-          {props.status}
-        </p>
+        <p className="">{props.status}</p>
 
         <div className="flex col-start-10 col-span-2 place-items-center justify-evenly">
           <div className="col-span-2 ">
@@ -167,8 +110,23 @@ const ListView = (props) => {
           </div>
         </div>
 
-        <button className="col-start-12 justify-end m-auto opacity-50  w-10 h-10 hover:bg-gray-300 rounded-full  shadow transition ease-in duration-200 focus:outline-none">
-          <BsThreeDotsVertical size={30} className="w-6 h-6 inline-block " />
+        <button className="col-start-12    w-10 h-10 hover:bg-gray-300 rounded-full   transition ease-in duration-200 focus:outline-none">
+          <BsThreeDotsVertical
+            className="hover:cursor-pointer inline-block"
+            size={25}
+            onClick={() => {
+              setIsOption(!isOption);
+            }}
+          />
+          <ModalOptionMa
+            onCloseOption={() => {
+              setIsOption(false);
+            }}
+            data={props.data}
+            maId={props.maId}
+            isOption={isOption}
+            setIsOption={setIsOption}
+          />
         </button>
       </div>
     </div>

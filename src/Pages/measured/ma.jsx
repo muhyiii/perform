@@ -74,7 +74,7 @@ const Ma = () => {
         <AnimatePresence>
           {location.state?.isAddMA && (
             <motion.div
-              className=" absolute overflow-hidden   flex justify-center items-center backdrop-blur-[2px] z-20 modal  inset-0  overflow-y-hidden h-full "
+              className=" absolute    flex justify-center items-center backdrop-blur-[2px] z-20 modal  inset-0   hsc "
               initial={{ y: -100 }}
               animate={{
                 y: 0,
@@ -225,7 +225,7 @@ const Ma = () => {
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className={` space-x-5  text-white ring-1 py-1 rounded-full group px-5 ${
+              className={` space-x-5  text-white ring-1 py-1 rounded-full group px-5 font-semibold ${
                 isAll ? "ring-2 bg-blue-400 text-white" : " bg-black"
               }`}
               onClick={() => {

@@ -32,7 +32,7 @@ const RowView = (props) => {
   };
 
   return (
-    <div className="col-span-4 relative ">
+    <div className="col-span-4 relative " key={props.id}>
       <div className="shadow-md m-1 px-4 py-2 border rounded-xl ">
         <label
           className="flex justify-between items-center cursor-pointer relative"

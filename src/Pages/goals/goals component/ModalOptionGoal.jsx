@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { functionDeleteGoal } from "../../../redux/actions/goalsAction";
 
-const ModalOption = (props) => {
+const ModalOptionGoal = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const deleteGoal = async (id) => {
@@ -20,7 +20,7 @@ const ModalOption = (props) => {
 
       setTimeout(() => {
         navigate(0);
-      }, 1000);
+      }, 500);
     }
     if (response.status !== "Success")
       Swal.fire({
@@ -100,4 +100,4 @@ const ModalOption = (props) => {
   );
 };
 
-export default ModalOption;
+export default ModalOptionGoal;

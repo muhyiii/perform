@@ -9,13 +9,14 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 
 import { useDispatch } from "react-redux";
 import { functionLogin } from "../../redux/actions/authAction";
-
+import { Player } from "@lottiefiles/react-lottie-player";
 
 export default function Login() {
   const [value, setValues] = useState({
     username: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const [show, setShow] = useState(false);
   function handleChange(e) {
@@ -56,6 +57,20 @@ export default function Login() {
     <React.Fragment>
       <div className=" w-screen h-screen bg-gradient-to-r overflow-hidden from-cyan-600 via-cyan-500 to-blue-400 relative flex justify-center items-center shadow-2xl  ">
         {/* <img src={Background} alt="" className="h-screen w-screen " /> */}
+        {isLoading && (
+          <div className="absolute z-50 h-screen flex items-center backdrop-blur-sm w-full justify-center">
+            <div className=" ">
+              <Player
+                autoplay
+                loop
+                src={
+                  "https://lottie.host/3425dfb9-3688-4154-8741-ce55a06174ea/d70t0oUroc.json"
+                }
+                style={{ height: "100px", width: "100px" }}
+              ></Player>
+            </div>
+          </div>
+        )}
         <div className="z-0 h-40 w-40 -left-20 -top-20 opacity-40 bg-cyan-200  absolute rounded-full shadow-xl"></div>{" "}
         <div className="z-0 h-40 w-40 -left-28 -bottom-10 rounded-lg ease-linear  rotate-12  opacity-40 bg-white absolute shadow-xl"></div>{" "}
         <div className="z-0 h-40 w-40 -left-24 -bottom-14 rounded-lg ease-linear  rotate-12  opacity-40 bg-white absolute shadow-xl"></div>
@@ -129,7 +144,7 @@ export default function Login() {
                 }}
                 className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
               >
-                Sign In
+                {isLoading ? "Loading..." : "Sign In"}
               </button>
               <div className="flex text-center w-full justify-center mt-5 mb-10">
                 <p className="">Don't have an account?</p>

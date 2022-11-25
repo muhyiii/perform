@@ -78,3 +78,13 @@ export function getMeasuredActivitiesByGoalId(id) {
 export function getMeasuredActivityById(id) {
   return axioss.get(`/data/measured-activities/${id}`);
 }
+//// DELETE MEASURED ACTIVITY BY ID
+export function deleteMeasuredActivityById(maId) {
+  return axioss.delete(`/data/measured-activities/${maId}/delete`);
+}
+//// UPDATE MEASURED ACTIVITY BY ID
+export function updateMeasuredActivityById(maId, payload) {
+  return axioss.put(`/data/measured-activities/${maId}/update`, {
+    status: payload,
+  });
+}

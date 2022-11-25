@@ -1,4 +1,6 @@
 import React from "react";
+import ModalTitle from "./goals component/ModalTitle";
+
 import {
   buildStyles,
   CircularProgressbarWithChildren,
@@ -111,7 +113,7 @@ const GoalsDetail = () => {
           </div>
         </div>
       </div>
-      <div className="col-span-9  bg-gray-400 mr-5 rounded-lg p-5 capitalize relative">
+      <div className="col-span-9  bg-gray-400  mr-5 rounded-xl p-5 capitalize relative">
         <div className="flex justify-between">
           <h1 className="text-2xl font-semibold">{goal.task}</h1>
           <p className="font-semibold">
@@ -125,14 +127,15 @@ const GoalsDetail = () => {
         </div>
         <p
           className="
-        mt-10"
+        my-5 font-bold"
         >
           Measured Activities
         </p>
+
         <div>
           {isLoading ? (
-            <div className="absolute z-50 h-screen flex items-center backdrop-blur-sm w-full justify-center">
-              <div className=" ">
+            <div className="absolute z-50 h-screen flex items-center backdrop-blur-sm w-full justify-center ">
+              <div className="">
                 <Player
                   autoplay
                   loop
@@ -144,13 +147,30 @@ const GoalsDetail = () => {
               </div>
             </div>
           ) : ma.length !== 0 ? (
-            ma?.map((e) => {
-              return (
-                <div className="border rounded-md px-5 py-3">
-                  <h1>{e.task}</h1>
-                </div>
-              );
-            })
+            <div>
+              <div className="flex justify-around">
+                <p className="font-bold cursor-pointer">
+                  <ModalTitle />
+                </p>
+                <p className="font-bold">Description</p>
+                <p className="font-bold">Date</p>
+                <p className="font-bold">Task</p>
+              </div>
+
+              <div>
+                {" "}
+                {ma?.map((e) => {
+                  return (
+                    <div className="border flex justify-around rounded-md px-5 py-3 mt-5">
+                      <h1>{e.task}</h1>
+                      <h1>{e.task}</h1>
+                      <h1>{e.task}</h1>
+                      <h1>{e.task}</h1>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           ) : (
             <p>
               Nothing to show here, measured activity of this goal is undefined

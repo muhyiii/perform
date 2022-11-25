@@ -196,7 +196,7 @@ const Goals = () => {
               <motion.div
                 whileHover={{ scale: 1.1 }}
                 className="rounded-xl border m-auto"
-                title="change view"
+                title="Change View"
                 onClick={() => {
                   setRow(!row);
                 }}
@@ -228,7 +228,7 @@ const Goals = () => {
               }}
               className=" bg-white ring-1 ring-blue-400 px-2 rounded-full py-1 font-semibold hover:text-white hover:bg-blue-400 hover:ring-2 hover:shadow-lg"
             >
-              Tambah Goals
+              Add Goals
             </motion.button>
           </div>
           {/* )} */}
@@ -345,6 +345,7 @@ const Goals = () => {
                       key={e.id}
                       id={e.id}
                       name={e.users[0].name}
+                      image={e.users[0].image}
                       role={e.users[0].role}
                       rate={e.rate}
                       fromDate={e.fromDate}
@@ -386,7 +387,9 @@ const Goals = () => {
                       key={e.id}
                       id={e.id}
                       name={e.users[0].name}
+                      image={e.users[0].image}
                       role={e.users[0].role}
+
                       rate={e.rate}
                       fromDate={e.fromDate}
                       toDate={e.toDate}

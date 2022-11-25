@@ -11,6 +11,7 @@ import {
 import Loadings from "../../Component/Loading";
 import { functionAddMeasuredActivity } from "../../redux/actions/maAction";
 import { useNavigate } from "react-router-dom";
+import Scrollbars from "react-custom-scrollbars-2";
 
 const AddMA = (props) => {
   let [users, setUsers] = React.useState([]);
@@ -58,6 +59,9 @@ const AddMA = (props) => {
         timer: 1000,
       });
       setData({});
+      setTimeout(() => {
+        navigate(0);
+      }, 1000);
       //   await dispatch(props.getData());
     }
     if (response.status !== "Success")
@@ -99,11 +103,11 @@ const AddMA = (props) => {
   }, [data.userId]);
 
   return (
-    <AnimatePresence>
-      {/* {props.AddMA && ( */}
-      <motion.div>
-        <div data-cy="modal-add" variant="primary" className="">
-          <motion.div className="w-96 pb-10 bg-white rounded-lg shadow-lg relative    ">
+    <motion.div>
+      <div data-cy="modal-add" variant="primary" className="">
+        <motion.div className="w-[450px] pb-10 bg-white rounded-lg shadow-lg relative overflow-auto h-[700px]   ">
+          {" "}
+          <Scrollbars autoHide style={{ height: "100%" }}>
             {isLoading ? (
               <Loadings />
             ) : (
@@ -116,8 +120,12 @@ const AddMA = (props) => {
                   <CgClose size={30} />
                 </div>
                 <div className="pt-6 mx-5 ">
-                  <h1 className="text-2xl font-semibold ">Add Goals</h1>
-                  <p className="text-sm ">Adding goals for another person</p>
+                  <h1 className="text-2xl font-semibold ">
+                    Add Measured Activity
+                  </h1>
+                  <p className="text-sm ">
+                    Adding submission measured activity of goal target
+                  </p>
                 </div>
                 <div className="px-5 mt-10 ">
                   <div className="mb-3">
@@ -273,12 +281,11 @@ const AddMA = (props) => {
                   </button>
                 </div>
               </div>
-            )}
-          </motion.div>
-        </div>
-      </motion.div>
-      {/* )} */}
-    </AnimatePresence>
+            )}{" "}
+          </Scrollbars>
+        </motion.div>
+      </div>
+    </motion.div>
   );
 };
 

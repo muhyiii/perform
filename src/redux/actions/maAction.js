@@ -1,8 +1,10 @@
 import {
   addMeasuredActivity,
+  deleteMeasuredActivityById,
   getMeasuredActivities,
   getMeasuredActivitiesByGoalId,
   getMeasuredActivitiesByUserNow,
+  updateMeasuredActivityById,
 } from "../../Functions/api";
 
 export function functionGetMeasuredActivities() {
@@ -86,6 +88,50 @@ export function functionGetMeasuredActivityByGoalId(id) {
       dispatch({
         type: "LoadingStop",
       });
+      let data = err.response.data;
+      return data;
+    }
+  };
+}
+
+export function functionDeleteMeasuredActivity(id) {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      const response = await deleteMeasuredActivityById(id);
+      const data = response.data;
+      dispatch({
+        type: "LoadingStop",
+      });
+      console.log(data);
+      return data;
+    } catch (err) {
+      dispatch({
+        type: "LoadingStop",
+      });
+      let data = err.response.data;
+      return data;
+    }
+  };
+}
+
+export function functionUpdateMeasuredActivity(id, status) {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      // console.log(status);
+      const response = await updateMeasuredActivityById(id, status);
+      const data = response.data;
+      dispatch({
+        type: "LoadingStop",
+      });
+      console.log(id, status);
+      return data;
+    } catch (err) {
+      dispatch({
+        type: "LoadingStop",
+      });
+      console.log(err);
       let data = err.response.data;
       return data;
     }

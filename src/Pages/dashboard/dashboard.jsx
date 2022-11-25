@@ -12,12 +12,15 @@ import {
   CircularProgressbarWithChildren,
   buildStyles,
 } from "react-circular-progressbar";
-import ChangingProgressProvider from "../../Component/Support/ChangingProggresProvider";
-import Peringkat from "./peringkat";
-import Todolist from "./Todolist";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { FreeMode } from "swiper";
+import "swiper/css";
+import "swiper/css/free-mode";
 import User from "../../Component/User";
-import Loadings from "../../Component/Loading";
+import TodoGoal from "./dashboard component/TodoGoal";
+import TodoMa from "./dashboard component/TodoMa";
 import ReviewsProvider from "../../Component/Support/ReviewsProvider";
+import Peringkat from "./dashboard component/Peringkat";
 
 const data = [
   {
@@ -48,19 +51,10 @@ const data = [
 const persen = 66;
 
 const Dashboard = () => {
-  const [isLoading, setIsLoading] = React.useState(false);
-
-  React.useEffect(() => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 500);
-  }, []);
-  if (isLoading) return <Loadings />;
   return (
     <div className="relative  h-screen">
       <User />
-      <div className="px-10 py-5 h-full w-auto">
+      <div className="p-10  h-full w-auto">
         <div>
           <h1 className="text-5xl font-bold pb-4">Dashboard</h1>
         </div>
@@ -87,19 +81,30 @@ const Dashboard = () => {
                   {(percentage) => (
                     <CircularProgressbarWithChildren
                       value={percentage}
-                      strokeWidth={18}
+                      strokeWidth={20}
                       styles={buildStyles({
+                        // Rotation of path and trail, in number of turns (0-1)
                         rotation: 0.25,
+
+                        // Whether to use rounded or flat corners on the ends - can use 'butt' or 'round'
                         strokeLinecap: "butt",
+
+                        // Text size
+
+                        // How long animation takes to go from one percentage to another, in seconds
                         pathTransitionDuration: 0.5,
-                        pathColor: `rgba(${percentage / 100}, 152, 199 ,${
-                          percentage / 100
-                        })`,
+
+                        // Can specify path transition in more detail, or remove it entirely
+                        // pathTransition: 'none',
+
+                        // Colors
+                        pathColor: `rgba(62, 152, 199, ${percentage / 100})`,
+
                         trailColor: "#d6d6d6",
                         backgroundColor: "#3e98c7",
                       })}
                     >
-                      <p className="text-lg">{persen}%</p>
+                      <p className="text-xl pl-3">{percentage} %</p>
                     </CircularProgressbarWithChildren>
                   )}
                 </ReviewsProvider>
@@ -159,8 +164,44 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-        <Peringkat></Peringkat>
-        <Todolist></Todolist>
+
+        <div>
+          <Peringkat />
+          <div className="pt-20 pb-10 ">
+            <div className=" bg-slate-200 rounded-lg w-full h-screen  drop-shadow-xl  ">
+              <div className=" w-36 h-16 mx-auto font-extrabold text-2xl pt-5 text-center pb-5">
+                To do list
+              </div>
+              <Swiper
+                freeMode={true}
+                grabCursor={true}
+                modules={[FreeMode]}
+                className="mySwiper"
+                slidesPerView={1}
+                spaceBetween={30}
+              >
+                <SwiperSlide>
+                  <TodoGoal />
+                </SwiperSlide>
+                <SwiperSlide>
+                  <TodoMa />
+                </SwiperSlide>
+              </Swiper>
+
+              {/* <Slider {...settings}>
+            <div>
+           125
+            </div>
+            <div>
+           124
+            </div>
+            <div>
+           123
+            </div>
+          </Slider> */}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

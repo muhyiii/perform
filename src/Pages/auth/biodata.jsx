@@ -66,7 +66,7 @@ const Biodata = () => {
       setIsLoading(false);
       setTimeout(() => {
         navigate("/acc/dashboard", { replace: true });
-      }, 1000);
+      }, 500);
     }
     setIsLoading(false);
   };

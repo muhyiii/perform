@@ -5,9 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
 import { functionGetUsers } from "../../redux/actions/authAction";
 import { functionAddGoal } from "../../redux/actions/goalsAction";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const AddGoals = (props) => {
   let [users, setUsers] = React.useState([]);
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = React.useState(false);
   const dispatch = useDispatch();
   let [data, setData] = React.useState({
@@ -48,7 +50,9 @@ const AddGoals = (props) => {
         timer: 1000,
       });
       setData({});
-      await dispatch(props.getData());
+      setTimeout(() => {
+        navigate(0);
+      }, 1000);
     }
     if (response.status !== "Success")
       Swal.fire({
@@ -78,14 +82,8 @@ const AddGoals = (props) => {
   return (
     <AnimatePresence>
       {/* {props.AddGoals && ( */}
-      <motion.div
-       
-      >
-        <div
-          data-cy="modal-add"
-          variant="primary"
-          className=""
-        >
+      <motion.div>
+        <div data-cy="modal-add" variant="primary" className="">
           <motion.div className="w-[400px] pb-10 bg-white rounded-lg shadow-lg relative    ">
             {isLoading ? (
               <p className="text-center">Loading</p>
