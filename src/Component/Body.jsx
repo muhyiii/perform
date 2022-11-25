@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import Scrollbars from "react-custom-scrollbars-2";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import logo from ".././Images/LOGO2.png";
-
+ 
 const Body = () => {
   const navigate = useNavigate();
-
+ 
   return (
     <div className="grid grid-cols-11 w-screen h-screen">
       <div className="bg-gray-900 z-50 group-hover:bg-gray-600 flex h-screen col-span-2">
@@ -27,10 +27,10 @@ const Body = () => {
               Bangun Negeri
             </p>
           </div>
-
-          <nav className="text-yellow-50 text-xl font-semibold pl-14">
-            <ul>
-              <motion.li whileHover={{ x: 10 }}>
+ 
+          <nav className="text-yellow-50 text-xl font-semibold pl-10 py-14">
+            <ul className="justify-between">
+              <motion.li whileHover={{ x: 10, scaleY: 1  }}>
                 <NavLink
                   to="dashboard"
                   className={({ isActive }) =>
@@ -49,7 +49,7 @@ const Body = () => {
                   to="goals"
                   state={{ isAddGoal: false }}
                   className={({ isActive }) =>
-                    isActive ? "text-2xl underline pb-1" : undefined
+                    isActive ? "text-2xl underline pb-1 py-14" : undefined
                   }
                 >
                   Goals
@@ -60,25 +60,27 @@ const Body = () => {
                   to="ma"
                   state={{ isAddMA: false }}
                   className={({ isActive }) =>
-                    isActive ? "text-2xl underline pb-1" : undefined
+                    isActive ? "text-2xl underline pb-1 py-14" : undefined
                   }
                 >
                   Measured Activity
                 </NavLink>
               </motion.li>
+              <motion.li whileHover={{ x: 10, scaleY: 1 }}>
+                <button
+                  className="rounded-lg border text-white text-2xl pb-1 items-end px-5 "
+                  onClick={() => {
+                    localStorage.clear();
+                    setTimeout(() => {
+                      navigate("/", { replace: true });
+                    }, 500);
+                  }}
+                >
+                  LOGOUT
+                </button>
+              </motion.li>
             </ul>
           </nav>
-          <button
-            className="text-white"
-            onClick={() => {
-              localStorage.clear();
-              setTimeout(() => {
-                navigate("/", { replace: true });
-              }, 500);
-            }}
-          >
-            LOGOUT
-          </button>
         </div>
       </div>
       <div className="col-span-9 overflow-auto relative h-screen  ">
@@ -89,5 +91,8 @@ const Body = () => {
     </div>
   );
 };
-
+ 
 export default Body;
+ 
+ 
+
