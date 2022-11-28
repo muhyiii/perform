@@ -8,7 +8,7 @@ const User = () => {
   const dispatch = useDispatch();
   const [user, setUser] = React.useState({});
   const getDataUser = async () => {
-    console.log(decodedToken);
+    // console.log(decodedToken);
     const response = await dispatch(functionGetUserAfterLogin(decodedToken.id));
     if (response.status === "Success") {
       // console.log();

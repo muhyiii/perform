@@ -71,7 +71,7 @@ export default function Register() {
                         title: "Succesfull!",
                         text: response.messege,
                         icon: "success",
-                        timer: 1000,
+                        timer: 800,
                       });
                       setIsLoading(false);
                       setTimeout(() => {

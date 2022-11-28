@@ -1,18 +1,17 @@
 import React from "react";
-import ModalTitle from "./goals component/ModalTitle";
-
 import {
   buildStyles,
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import ChangingProgressProvider from "../../Component/Support/ChangingProggresProvider";
+
 import { motion } from "framer-motion";
 import { functionGetGoalsById } from "../../redux/actions/goalsAction";
 import { functionGetMeasuredActivityByGoalId } from "../../redux/actions/maAction";
 import Loadings from "../../Component/Loading";
 import { Player } from "@lottiefiles/react-lottie-player";
+import ReviewsProvider from "../../Component/Support/ReviewsProvider";
 
 const GoalsDetail = () => {
   const [goal, setGoal] = React.useState({});
@@ -86,7 +85,7 @@ const GoalsDetail = () => {
             <p className="text-sm">{user.role}</p>
           </div>
           <div className="mt-10 w-1/2 m-auto ">
-            <ChangingProgressProvider values={[0, `${goal.rate}`]}>
+            <ReviewsProvider valueStart={0} valueEnd={goal.rate}>
               {(percentage) => (
                 <CircularProgressbarWithChildren
                   value={percentage}
@@ -105,7 +104,7 @@ const GoalsDetail = () => {
                   <p className="text-[15px] font-semibold">{goal.rate}%</p>
                 </CircularProgressbarWithChildren>
               )}
-            </ChangingProgressProvider>
+            </ReviewsProvider>
 
             {goal.rate === 100 && (
               <p className="text-center mt-5 font-semibold">Completed</p>
@@ -149,12 +148,25 @@ const GoalsDetail = () => {
           ) : ma.length !== 0 ? (
             <div>
               <div className="flex justify-around">
-                <p className="font-bold cursor-pointer">
-                  <ModalTitle />
+                <p
+                  className="font-bold cursor-pointer"
+                  title="It will show you about this task Title"
+                ></p>
+                <p
+                  className="font-bold"
+                  title=" It will EXPLAIN you about this task "
+                >
+                  Description
                 </p>
-                <p className="font-bold">Description</p>
-                <p className="font-bold">Date</p>
-                <p className="font-bold">Task</p>
+                <p className="font-bold" title="Date to Date ">
+                  Date
+                </p>
+                <p
+                  className="font-bold"
+                  title="It will show you about this task STATUS"
+                >
+                  Status
+                </p>
               </div>
 
               <div>

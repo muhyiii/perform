@@ -29,7 +29,7 @@ const Body = () => {
           </div>
  
           <nav className="text-yellow-50 text-xl font-semibold pl-10 py-14">
-            <ul className="justify-between">
+            <ul className="items-around space-y-2">
               <motion.li whileHover={{ x: 10, scaleY: 1  }}>
                 <NavLink
                   to="dashboard"
@@ -44,36 +44,36 @@ const Body = () => {
                 <br />
                 <hr />
               </motion.li>
-              <motion.li whileHover={{ x: 10, scaleY: 1 }}>
+              <motion.li  whileHover={{ x: 10, scaleY: 1 }}>
                 <NavLink
                   to="goals"
                   state={{ isAddGoal: false }}
                   className={({ isActive }) =>
-                    isActive ? "text-2xl underline pb-1 py-14" : undefined
+                    isActive ? "text-2xl underline pb-2 justify-around " : undefined
                   }
                 >
                   Goals
                 </NavLink>
               </motion.li>
-              <motion.li whileHover={{ x: 10, scaleY: 1 }}>
+              <motion.li whileHover={{ x: 5, scaleY: 1 }}>
                 <NavLink
                   to="ma"
                   state={{ isAddMA: false }}
                   className={({ isActive }) =>
-                    isActive ? "text-2xl underline pb-1 py-14" : undefined
+                    isActive ? "text-2xl underline pb-2 justify-around" : undefined
                   }
                 >
                   Measured Activity
                 </NavLink>
               </motion.li>
-              <motion.li whileHover={{ x: 10, scaleY: 1 }}>
+              <motion.li whileHover={{ x: 5, scaleY: 1 }}>
                 <button
-                  className="rounded-lg border text-white text-2xl pb-1 items-end px-5 "
+                  className="rounded-lg border text-white text-2xl pb-1 items-end px-5"
                   onClick={() => {
                     localStorage.clear();
                     setTimeout(() => {
                       navigate("/", { replace: true });
-                    }, 500);
+                    },  );
                   }}
                 >
                   LOGOUT
@@ -93,6 +93,8 @@ const Body = () => {
 };
  
 export default Body;
+ 
+ 
  
  
 

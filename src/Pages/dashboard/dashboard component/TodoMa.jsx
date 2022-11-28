@@ -1,20 +1,37 @@
-import Perkerjaan from '../../../Images/iconpekerjaan.png'
-import calendar from '../../../Images/calendar.png'
-import Delete from '../../../Images/delete.png'
+import Perkerjaan from "../../../Images/iconpekerjaan.png";
+import calendar from "../../../Images/calendar.png";
+import Delete from "../../../Images/delete.png";
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ReactPaginate from "react-paginate";
+import { useDispatch } from "react-redux";
+import {
+  functionGetMeasuredActivities,
+  functionGetMeasuredActivityByUserNow,
+} from "../../../redux/actions/maAction";
+import jwtDecode from "jwt-decode";
 
 const TodoMa = () => {
   const [offset, setOffset] = useState(0);
   const [data, setData] = useState([]);
   const perPage = 4;
+  const dispatch = useDispatch();
   const [pageCount, setPageCount] = useState(0);
   const [deletedList] = useState([]);
+  const [maData, setMaData] = React.useState([]);
 
   const getData = async () => {
     //   const res = await axios.get(`https://jsonplaceholder.typicode.com/photos`)
+    const decoded = jwtDecode(localStorage.getItem('token'));
+    const response = await dispatch(
+      functionGetMeasuredActivityByUserNow(decoded.id)
+    );
+    if (response.status === "Success") {
+      setMaData(response.data.rows);
+      // console.log(response.data.rows);
+    }
+
     const res = [
       {
         nama: "Migration Alibaba - AWS:Implementasi AWS DMS integrasi 1",
@@ -83,8 +100,8 @@ const TodoMa = () => {
       deletedList.push(id);
       getData();
     };
-    const response = res.filter((item) => !deletedList.includes(item.id));
-    const slice = response.slice(offset, offset + perPage);
+    const responses = res.filter((item) => !deletedList.includes(item.id));
+    const slice = responses.slice(offset, offset + perPage);
     const postData = slice.map((pd) => (
       <React.Fragment>
         <div className="overflow-y-auto pt-3">
@@ -146,8 +163,8 @@ const TodoMa = () => {
 
   return (
     <div>
-      <div className="w-52 mx-auto font-semibold text-2xl pt-7 pl-20 pb-3">
-        Goal
+      <div className="text-center mx-auto font-semibold text-2xl pt-7 pl-20 pb-3">
+        Measured Activity
       </div>
 
       <div>

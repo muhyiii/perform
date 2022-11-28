@@ -13,7 +13,7 @@ import {
 const ModalOptionMa = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const deleteGoal = async (id) => {
+  const deleteMa = async (id) => {
     const response = await dispatch(functionDeleteMeasuredActivity(id));
     if (response.status === "Success") {
       Swal.fire({
@@ -66,10 +66,10 @@ const ModalOptionMa = (props) => {
     <div
       data-cy="modal-add"
       variant="primary"
-      className=" modal absolute z-30 -top-1/2 right-36 "
+      className=" modal absolute z-30 -top-6 right-36 "
       onClick={props.onCloseOption}
     >
-      <nav className="bg-black text-white w-full shadow-lg rounded-md border-red-400 p-5 font-semibold">
+      <nav className="bg-white text-black w-full shadow-lg rounded-md border-red-400 p-5 font-semibold">
         <ul className="space-y-2">
           <li
             className="flex items-center justify-between hover:text-xl  cursor-pointer"
@@ -113,7 +113,7 @@ const ModalOptionMa = (props) => {
                 confirmButtonText: "Yes, delete it!",
               }).then((result) => {
                 if (result.isConfirmed) {
-                  deleteGoal(props.goalId);
+                  deleteMa(props.maId);
                 }
               });
             }}

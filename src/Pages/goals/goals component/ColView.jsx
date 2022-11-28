@@ -7,7 +7,6 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import Swal from "sweetalert2";
 import ModalOptionGoal from "./ModalOptionGoal";
 
-import ChangingProgressProvider from "../../../Component/Support/ChangingProggresProvider";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { functionUpdateGoal } from "../../../redux/actions/goalsAction";

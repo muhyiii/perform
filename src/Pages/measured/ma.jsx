@@ -109,11 +109,11 @@ const Ma = () => {
               >
                 <p>
                   To Do{" "}
-                  <span
+                  {/* <span
                     className={` px-3 py-1 bg-gray-100 group-hover:bg-slate-300 rounded-full`}
                   >
                     201
-                  </span>
+                  </span> */}
                 </p>
               </motion.button>
               {status === "to-do" && (
@@ -130,11 +130,11 @@ const Ma = () => {
               >
                 <p>
                   Ongoing{" "}
-                  <span
+                  {/* <span
                     className={` px-3 py-1 bg-gray-100 group-hover:bg-slate-300 rounded-full`}
                   >
                     201
-                  </span>
+                  </span> */}
                 </p>
               </motion.button>
               {status === "ongoing" && (
@@ -151,11 +151,11 @@ const Ma = () => {
               >
                 <p>
                   Hold{" "}
-                  <span
+                  {/* <span
                     className={` px-3 py-1 bg-gray-100 group-hover:bg-slate-300 rounded-full`}
                   >
                     201
-                  </span>
+                  </span> */}
                 </p>
               </motion.button>
               {status === "hold" && (
@@ -172,11 +172,11 @@ const Ma = () => {
               >
                 <p>
                   Done{" "}
-                  <span
+                  {/* <span
                     className={` px-3 py-1 bg-gray-100 group-hover:bg-slate-300 rounded-full`}
                   >
                     201
-                  </span>
+                  </span> */}
                 </p>
               </motion.button>
               {status === "done" && (
@@ -189,7 +189,7 @@ const Ma = () => {
             whileTap={{ scale: 0.9 }}
             className="py-1 px-3 bg-white ring-1 ring-blue-400 rounded-full hover:ring-2 hover:bg-blue-400 hover:text-white font-semibold hover:shadow-md"
             onClick={() =>
-              navigate(".", { state: { isAddMA: true }, replace: true })
+              navigate(".", { state: { isAddMA: true }, replace: false })
             }
           >
             Create New Measure Activity

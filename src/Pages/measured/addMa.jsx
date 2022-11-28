@@ -10,7 +10,7 @@ import {
 } from "../../redux/actions/goalsAction";
 import Loadings from "../../Component/Loading";
 import { functionAddMeasuredActivity } from "../../redux/actions/maAction";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Scrollbars from "react-custom-scrollbars-2";
 
 const AddMA = (props) => {
@@ -19,6 +19,7 @@ const AddMA = (props) => {
   const [isLoading, setIsLoading] = React.useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   let [data, setData] = React.useState({
     userId: 0,
     goalId: 0,
@@ -50,7 +51,6 @@ const AddMA = (props) => {
     const response = await dispatch(functionAddMeasuredActivity(data));
     console.log(response);
     if (response.status === "Success") {
-      props.onClose();
       Swal.fire({
         position: "center",
         icon: "success",
@@ -60,7 +60,7 @@ const AddMA = (props) => {
       });
       setData({});
       setTimeout(() => {
-        navigate(0);
+        navigate(0, { replace: true, state: { idAddMA: false } });
       }, 1000);
       //   await dispatch(props.getData());
     }
@@ -86,7 +86,7 @@ const AddMA = (props) => {
     const response = await dispatch(functionGetGoalsByUserNow(data.userId));
     if (response.status === "Success") {
       setGoals(response.data.rows);
-      console.log(response);
+      // console.log(response);
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
@@ -177,9 +177,12 @@ const AddMA = (props) => {
                             confirmButtonText: "Yes, create it!",
                           }).then((result) => {
                             if (result.isConfirmed) {
+                              console.log(location);
                               navigate("/acc/goals", {
-                                state: { isAddGoal: true },
-                                replace: true,
+                                state: {
+                                  isAddGoal: true,
+                                  prevPath: location.pathname,
+                                },
                               });
                             }
                           });

@@ -29,20 +29,23 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = async () => {
+    setIsLoading(true);
     const response = await dispatch(functionLogin(value));
 
     // console.log(response.status );
     if (response.status === "Success") {
+     
+
+      setTimeout(() => {
+        navigate("/acc/dashboard", { replace: true });
+        setIsLoading(false);
+      }, 2000);
       Swal.fire({
         title: "Succesfull!",
         text: response.messege,
         icon: "success",
         timer: 1000,
       });
-
-      setTimeout(() => {
-        navigate("/acc/dashboard", { replace: true });
-      }, 1000);
     }
     if (response.status !== "Success")
       Swal.fire({
