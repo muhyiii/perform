@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import Swal from "sweetalert2";
@@ -10,18 +11,18 @@ import {
 } from "react-icons/md";
 import User from "../../Component/User";
 import Loadings from "../../Component/Loading";
-import axios from "axios";
 import ColView from "./goals component/ColView";
 import RowView from "./goals component/RowView";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
+  functionDeleteMultiGoals,
   functionGetGoals,
   functionGetGoalsByUserNow,
 } from "../../redux/actions/goalsAction";
-import { api } from "../../Functions/axiosClient";
 import AddGoals from "./addGoal";
 import jwtDecode from "jwt-decode";
+import { functionUpdateMultiGoals } from "../../redux/actions/goalsAction";
 
 const Goals = () => {
   const [data, setData] = React.useState([]);
@@ -29,7 +30,7 @@ const Goals = () => {
   const [multiId, setMultiId] = React.useState([]);
   const [multiStatus, setMultiStatus] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
-  const [isAll, setIsAll] = React.useState(true);
+  const [isAll, setIsAll] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ const Goals = () => {
     const statusData = target.split("|")[1];
     console.log(idData);
     console.log(multiStatus, multiId);
-    const { id, checked } = state.target;
+    const { checked } = state.target;
 
     if (checked) {
       setMultiId((item) => [...item, idData]);
@@ -58,48 +59,47 @@ const Goals = () => {
 
   //// DELETE MULTI GOALS
   const deleteMultiGoals = async () => {
-    // console.log(id);
-    const response = await axios.post(api + "/data/goals/multiple/delete", {
-      multiId,
-    });
+    const response = await dispatch(functionDeleteMultiGoals(multiId));
     console.log(response);
-    if (response.status === 200) {
-      Swal.fire("Succesfull!", response.data.messege, "success");
+    if (response.status === "Success") {
+      Swal.fire({
+        title: "Succesfull!",
+        text: response.messege,
+        icon: "success",
+        timer: 1000,
+      });
       setTimeout(() => {
         navigate(0);
       }, 1000);
     }
-    if (response.statusText !== "OK")
+    if (response.status !== "Success")
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: response.data.messege,
+        text: response.messege,
       });
   };
 
   //// UPDATE MULTI GOALS
   const updateMultiGoals = async (value) => {
-    const payload = {
-      goalId: multiId,
-      status: value,
-    };
-    console.log(payload);
-    const response = await axios.post(api + "/data/goals/multiple/update", {
-      goalId: multiId,
-      status: value,
-    });
+    const response = await dispatch(functionUpdateMultiGoals(multiId, value));
     console.log(response);
-    if (response.status === 200) {
-      Swal.fire("Succesfull!", response.data.messege, "success");
+    if (response.status === "Success") {
+      Swal.fire({
+        title: "Succesfull!",
+        text: response.messege,
+        icon: "success",
+        timer: 1000,
+      });
       setTimeout(() => {
         navigate(0);
       }, 1000);
     }
-    if (response.statusText !== "OK")
+    if (response.status !== "Success")
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: response.data.messege,
+        text: response.messege,
       });
   };
 
@@ -107,6 +107,7 @@ const Goals = () => {
     const response = await dispatch(functionGetGoals());
     if (response.status === "Success") {
       setData(response.data.rows);
+      // console.log(response.data.rows);
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
@@ -122,22 +123,20 @@ const Goals = () => {
     }
   };
 
-  /////
   React.useEffect(() => {
     setIsLoading(true);
     console.log(location);
-    // return
     isAll ? getData() : getAsUser();
   }, [isAll]);
 
   if (isLoading) return <Loadings />;
 
-  console.log(data.filter((e) => e.task.toLowerCase().includes(query)));
+  // console.log(data.filter((e) => e.task.toLowerCase().includes(query)));
   return (
     <div
       className={`${
         location.state?.isAddGoal && "overflow-hidden"
-      }relative h-screen`}
+      }relative h-screen `}
     >
       <User />
       <div className="px-10 py-5    w-full capitalize  ">
@@ -323,7 +322,8 @@ const Goals = () => {
           {row ? (
             <div className="grid grid-cols-12">
               {data
-                .filter(
+                ?.filter((e) => e.isArchive === false)
+                ?.filter(
                   (e) =>
                     e.task.toLowerCase().includes(query) ||
                     e.users[0].name.toLowerCase().includes(query)
@@ -356,6 +356,7 @@ const Goals = () => {
                       status={e.status}
                       fromDateA={fromDate}
                       toDateA={toDate}
+                      createdAt={e.createdAt}
                       getData={getData}
                       handleChange={handleChange}
                     />
@@ -365,7 +366,8 @@ const Goals = () => {
           ) : (
             <div>
               {data
-                .filter(
+                ?.filter((e) => e.isArchive === false)
+                ?.filter(
                   (e) =>
                     e.task.toLowerCase().includes(query) ||
                     e.users[0].name.toLowerCase().includes(query)
@@ -389,7 +391,6 @@ const Goals = () => {
                       name={e.users[0].name}
                       image={e.users[0].image}
                       role={e.users[0].role}
-
                       rate={e.rate}
                       fromDate={e.fromDate}
                       toDate={e.toDate}
@@ -399,6 +400,7 @@ const Goals = () => {
                       status={e.status}
                       fromDateA={fromDate}
                       toDateA={toDate}
+                      createdAt={e.createdAt}
                       getData={getData}
                     />
                   );

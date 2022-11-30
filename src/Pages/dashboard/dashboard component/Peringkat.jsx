@@ -1,13 +1,24 @@
 import React, { useState, useEffect, Component } from "react";
+import { useDispatch } from "react-redux";
 import profile from "../../../Images/profile.png";
+import { functionGetStaticUsers } from "../../../redux/actions/authAction";
 // import { data } from 'autoprefixer';
 
 const Peringkat = () => {
   const [Ma, setMa] = useState([]);
   const [Goal, setGoal] = useState([]);
-  const perPage = 4;
+  const [users, setUsers] = React.useState([]);
+  const dispatch = useDispatch();
 
   const getData = async () => {
+    const response = await dispatch(functionGetStaticUsers());
+    if (response.status === "Success") {
+      setUsers(response.data.rows);
+      console.log(response.data.rows);
+    }
+  };
+
+  const getDataa = async () => {
     const Ma = [
       {
         Nama: "budi",
@@ -712,6 +723,7 @@ const Peringkat = () => {
         }
       }
     }
+
     const slice = Ma.slice(0, 7);
     const postData = slice.map((x) => {
       let doneTask = x.TugasMa.filter(function (item) {
@@ -722,17 +734,17 @@ const Peringkat = () => {
       return (
         <React.Fragment>
           <div className="overflow-y-auto pt-4">
-            <div className="grid grid-cols-12 w-96 flex-auto h-14 bg-white rounded-xl drop-shadow-xl  ">
+            <div className="grid grid-cols-12 w-96 flex-auto h-14 bg-white rounded-xl   ">
               <div className=" col-span-2 ">
                 <img className="w-14 h-14 py-2 pl-3  " src={profile} alt="" />
               </div>
               <div className=" col-span-6 pl-4 pt-3">
                 <p>{x.Nama}</p>
-                <div className="w-52 bg-green-400 h-3 rounded-2xl"></div>
+                <div className="w-52 bg-blue-300 h-3 rounded-2xl"></div>
               </div>
               <div className="col-span-4 py-2 pl-12 pt-6">
-                <div className="w-16 bg-green-200 h-6 rounded-lg">
-                  <div className="mx-auto text-center font-serif text-green-600">
+                <div className="w-16 bg-blue-200 h-6 rounded-lg">
+                  <div className="mx-auto text-center font-serif text-black">
                     {persentase}%
                   </div>
                 </div>
@@ -763,6 +775,7 @@ const Peringkat = () => {
         }
       }
     }
+
     const slice1 = Goal.slice(0, 7);
     const postData1 = slice1.map((x) => {
       let doneTask = x.TugasMa.filter(function (item) {
@@ -773,17 +786,17 @@ const Peringkat = () => {
       return (
         <React.Fragment>
           <div className="overflow-y-auto pt-4">
-            <div className="grid grid-cols-12 w-96 flex-auto h-14 bg-white rounded-xl drop-shadow-xl  ">
+            <div className="grid grid-cols-12 w-96 flex-auto h-14 bg-white rounded-xl   ">
               <div className=" col-span-2 ">
                 <img className="w-14 h-14 py-2 pl-3  " src={profile} alt="" />
               </div>
               <div className=" col-span-6 pl-4 pt-3">
                 <p>{x.Nama}</p>
-                <div className="w-52 bg-green-400 h-3 rounded-2xl"></div>
+                <div className="w-52 bg-blue-300 h-3 rounded-2xl"></div>
               </div>
               <div className="col-span-4 py-2 pl-12 pt-6">
-                <div className="w-16 bg-green-200 h-6 rounded-lg">
-                  <div className="mx-auto text-center font-serif text-green-600">
+                <div className="w-16 bg-blue-200 h-6 rounded-lg">
+                  <div className="mx-auto text-center font-serif text-black">
                     {persentase}%
                   </div>
                 </div>
@@ -793,14 +806,14 @@ const Peringkat = () => {
         </React.Fragment>
       );
     });
+    setMa(postData);
+    setGoal(postData1);
   };
-  // const handlePageClick = (e) => {
-  //     const selectedPage = e.selected;
-  //     setOffset(selectedPage * perPage)
-  // }
   useEffect(() => {
+    getDataa();
     getData();
   }, []);
+
   return (
     <div>
       <div className="pt-20 pb-10 ">

@@ -1,13 +1,11 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { CgClose } from "react-icons/cg";
 import { useDispatch } from "react-redux";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import Swal from "sweetalert2";
 import { functionGetUsers } from "../../redux/actions/authAction";
-import {
-  functionAddGoal,
-  functionGetGoalsByUserNow,
-} from "../../redux/actions/goalsAction";
+import { functionGetGoalsByUserNow } from "../../redux/actions/goalsAction";
 import Loadings from "../../Component/Loading";
 import { functionAddMeasuredActivity } from "../../redux/actions/maAction";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -51,6 +49,7 @@ const AddMA = (props) => {
     const response = await dispatch(functionAddMeasuredActivity(data));
     console.log(response);
     if (response.status === "Success") {
+      props.onClose();
       Swal.fire({
         position: "center",
         icon: "success",
@@ -60,7 +59,7 @@ const AddMA = (props) => {
       });
       setData({});
       setTimeout(() => {
-        navigate(0, { replace: true, state: { idAddMA: false } });
+        navigate(0, { replace: true });
       }, 1000);
       //   await dispatch(props.getData());
     }
@@ -172,6 +171,7 @@ const AddMA = (props) => {
                             text: "You must create goal first.",
                             icon: "warning",
                             showCancelButton: true,
+                            allowOutsideClick: false,
                             confirmButtonColor: "#3085d6",
                             cancelButtonColor: "#d33",
                             confirmButtonText: "Yes, create it!",

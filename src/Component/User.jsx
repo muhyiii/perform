@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import jwt_decode from "jwt-decode";
 import { functionGetUserAfterLogin } from "../redux/actions/authAction";
@@ -20,7 +21,7 @@ const User = () => {
     getDataUser();
   }, []);
   return (
-    <div className="bg-white shadow-lg text-lg  font-semibold py-3 space-x-2  text-right px-10  capitalize grid grid-cols-12 ">
+    <div className="bg-white shadow-lg text-lg  font-medium py-3 space-x-2  text-right px-10  capitalize grid grid-cols-12 ">
       <div className="col-start-11 col-end-13 truncate flex space-x-2">
         <img src={user.image} className="h-7 w-7 rounded-full" alt="profilePhoto" />
         <h1> {user.name}</h1>

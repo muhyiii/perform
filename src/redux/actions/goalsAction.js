@@ -1,11 +1,12 @@
-import jwtDecode from "jwt-decode";
 import {
   addGoal,
   deleteGoalById,
+  deleteMultiGoals,
   getGoalById,
   getGoals,
   getGoalsByUserNow,
   updateGoalById,
+  updateMultiGoals,
 } from "../../Functions/api";
 
 export function functionGetGoals() {
@@ -13,28 +14,6 @@ export function functionGetGoals() {
     dispatch({ type: "Loading" });
     try {
       const response = await getGoals();
-      console.log(response);
-      const data = response.data;
-
-      dispatch({
-        type: "LoadingStop",
-      });
-      console.log(data);
-      return data;
-    } catch (err) {
-      dispatch({
-        type: "LoadingStop",
-      });
-      let data = err.response.data;
-      return data;
-    }
-  };
-}
-export function functionGetGoalsByUserNow(id) {
-  return async (dispatch) => {
-    dispatch({ type: "Loading" });
-    try {
-      const response = await getGoalsByUserNow(id);
       // console.log(response);
       const data = response.data;
 
@@ -52,6 +31,25 @@ export function functionGetGoalsByUserNow(id) {
     }
   };
 }
+export function functionGetGoalsByUserNow(id) {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      const response = await getGoalsByUserNow(id);
+      const data = response.data;
+      dispatch({
+        type: "LoadingStop",
+      });
+      return data;
+    } catch (err) {
+      dispatch({
+        type: "LoadingStop",
+      });
+      let data = err.response.data;
+      return data;
+    }
+  };
+}
 
 export function functionGetGoalsById(id) {
   return async (dispatch) => {
@@ -59,11 +57,9 @@ export function functionGetGoalsById(id) {
     try {
       const response = await getGoalById(id);
       const data = response.data;
-
       dispatch({
         type: "LoadingStop",
       });
-      // console.log(data);
       return data;
     } catch (err) {
       dispatch({
@@ -120,13 +116,52 @@ export function functionUpdateGoal(id, status) {
   return async (dispatch) => {
     dispatch({ type: "Loading" });
     try {
-      // console.log(status);
       const response = await updateGoalById(id, status);
       const data = response.data;
       dispatch({
         type: "LoadingStop",
       });
       console.log(id, status);
+      return data;
+    } catch (err) {
+      dispatch({
+        type: "LoadingStop",
+      });
+      console.log(err);
+      let data = err.response.data;
+      return data;
+    }
+  };
+}
+export function functionUpdateMultiGoals(multiId, value) {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      const response = await updateMultiGoals(multiId, value);
+      const data = response.data;
+      dispatch({
+        type: "LoadingStop",
+      });
+      return data;
+    } catch (err) {
+      dispatch({
+        type: "LoadingStop",
+      });
+      console.log(err);
+      let data = err.response.data;
+      return data;
+    }
+  };
+}
+export function functionDeleteMultiGoals(multiId) {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      const response = await deleteMultiGoals(multiId);
+      const data = response.data;
+      dispatch({
+        type: "LoadingStop",
+      });
       return data;
     } catch (err) {
       dispatch({

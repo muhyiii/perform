@@ -10,16 +10,13 @@ import GoalsDetail from "./Pages/goals/goalsDetail";
 import Login from "./Pages/auth/login";
 import Register from "./Pages/auth/register";
 import Ma from "./Pages/measured/ma";
-import FromJabatan from "./Pages/auth/biodata";
 import Biodata from "./Pages/auth/biodata";
 import EmptyPage from "./Component/Support/Empty";
-import { useSelector } from "react-redux";
-import Loading from "./Component/Loading";
-import Loadings from "./Component/Loading";
-import Prototype from "./Pages/measured/ma component/prototype";
+import MaDetail from "./Pages/measured/maDetail";
+import Archive from "./Pages/archive/archive";
 
 const ProtectedRoute = ({ user }) => {
-  const loading = useSelector((state) => state.auth?.isLoading);
+  // const loading = useSelector((state) => state.auth?.isLoading);
   if (!user) {
     return <Navigate to="/" replace />;
   }
@@ -28,9 +25,9 @@ const ProtectedRoute = ({ user }) => {
 };
 
 function App() {
-  const [user, setUser] = React.useState(localStorage.getItem("token"));
+  const user = React.useState(localStorage.getItem("token"));
   return (
-    <div className="relative  ">
+    <div className="relative  roboto">
       <Routes>
         {" "}
         <Route path="/" element={<EmptyPage />}>
@@ -52,7 +49,10 @@ function App() {
             </Route>
             <Route path="ma">
               <Route index element={<Ma />} />
-              {/* <Route path=":id" element={<MaDetail />} /> */}
+              <Route path=":id" element={<MaDetail />} />
+            </Route>
+            <Route path="archives">
+              <Route index element={<Archive />} />
             </Route>
           </Route>
         </Route>

@@ -4,7 +4,6 @@ import { IoTrashOutline, IoArchiveOutline } from "react-icons/io5";
 import { TbArrowsUpDown } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { functionDeleteGoal } from "../../../redux/actions/goalsAction";
 import {
   functionDeleteMeasuredActivity,
   functionUpdateMeasuredActivity,
@@ -35,10 +34,11 @@ const ModalOptionMa = (props) => {
         timer: 3000,
       });
   };
-  const updateStatus = async (id, status) => {
-    const payload = { status: status };
+  const updateStatus = async (id, status, archive) => {
     console.log(id, status);
-    const response = await dispatch(functionUpdateMeasuredActivity(id, status));
+    const response = await dispatch(
+      functionUpdateMeasuredActivity(id, status, archive)
+    );
     console.log(response);
     if (response.status === "Success") {
       Swal.fire({
@@ -76,7 +76,7 @@ const ModalOptionMa = (props) => {
             onClick={() => {
               Swal.fire({
                 title: "Are you sure?",
-                text: "You want to archive this goals!",
+                text: "You want to archive this measure activity!",
                 icon: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
@@ -84,7 +84,7 @@ const ModalOptionMa = (props) => {
                 confirmButtonText: "Yes, archive it!",
               }).then((result) => {
                 if (result.isConfirmed) {
-                  props.setArchive(props.id);
+                  updateStatus(props.maId, props.data.status, true);
                   Swal.fire(
                     "Archived!",
                     "Your file has been Archived.",
@@ -160,7 +160,7 @@ const ModalOptionMa = (props) => {
                       inputValidator: (value) => {
                         return new Promise((resolve) => {
                           if (value !== props.data.status) {
-                            updateStatus(props.maId, value);
+                            updateStatus(props.maId, value, false);
                           } else {
                             resolve("You can only update to next stage");
                           }

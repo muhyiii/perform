@@ -1,4 +1,3 @@
-import axios from "axios";
 import axioss from "./axiosClient";
 
 // USERS
@@ -30,6 +29,10 @@ export function getUser(id) {
   return axioss.get(`/data/users/${id}`);
   //   console.log("dataUsers", users.data.data);
 }
+//// GET ALL STATIC USERS
+export function getStaticAll(){
+  return axioss.get(`/data/users/staticAll`)
+}
 
 // GOALS
 //// ADD GOAL
@@ -56,6 +59,21 @@ export function deleteGoalById(goalId) {
 export function updateGoalById(goalId, payload) {
   return axioss.put(`/data/goals/${goalId}/update`, { status: payload });
 }
+//// UPDATE MULTI GOALS
+export function updateMultiGoals(multiId, value) {
+  return axioss.post(`/data/goals/multiple/update`, {
+    goalId: multiId,
+    status: value,
+  });
+}//// UPDATE MULTI GOALS
+export function deleteMultiGoals(multiId,) {
+  return axioss.post(`/data/goals/multiple/delete`, {
+    multiId: multiId,
+   
+  });
+}
+
+
 
 //// MEASURED ACTIVITY
 //// ADD MEASURED ACTIVITY
@@ -83,8 +101,9 @@ export function deleteMeasuredActivityById(maId) {
   return axioss.delete(`/data/measured-activities/${maId}/delete`);
 }
 //// UPDATE MEASURED ACTIVITY BY ID
-export function updateMeasuredActivityById(maId, payload) {
+export function updateMeasuredActivityById(maId, payload,archive) {
   return axioss.put(`/data/measured-activities/${maId}/update`, {
     status: payload,
+    isArchive:archive
   });
 }

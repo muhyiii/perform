@@ -9,6 +9,7 @@ import Swal from "sweetalert2";
 import { api } from "../../../Functions/axiosClient";
 
 import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
+import { FaRegDotCircle } from "react-icons/fa";
 
 const RowView = (props) => {
   const navigate = useNavigate();
@@ -29,9 +30,16 @@ const RowView = (props) => {
         text: response.data.messege,
       });
   };
-
+  let dateNow = new Date(Date.now()).getDate();
+  let createdData = new Date(props.createdAt).getDate();
   return (
     <div className="col-span-4 relative " key={props.id}>
+      {dateNow === createdData && (
+        <FaRegDotCircle
+          className="absolute -top-0  -left-0 text-red-500"
+          size={25}
+        />
+      )}
       <div className="shadow-md m-1 px-4 py-2 border rounded-xl ">
         <label
           className="flex justify-between items-center cursor-pointer relative"
@@ -63,13 +71,17 @@ const RowView = (props) => {
               <path d="M9 12l2 2l4 -4" />
             </svg>
           </span>
-          <div className="flex space-x-3  ">
+          <div className="flex space-x-3 pl-2 ">
             <div className="text-left truncate text-ellipsis ">
               <p>{props.name}</p>
               <p className="text-xs text-gray-400">{props.role}</p>
             </div>
           </div>
-          <p className={`text-xs capitalize font-semibold`}>
+          <p
+            className={`text-xs capitalize ${
+              props.rate === 100 && "font-medium text-lg"
+            }`}
+          >
             {props.rate === 100
               ? "Completed"
               : props.fromDateA + " - " + props.toDateA}
@@ -82,26 +94,10 @@ const RowView = (props) => {
           }}
         >
           <div className="col-span-2">
-            <ReviewsProvider valueStart={0} valueEnd={props.rate}>
-              {(percentage) => (
-                <CircularProgressbarWithChildren
-                  value={percentage}
-                  strokeWidth={18}
-                  styles={buildStyles({
-                    rotation: 0.25,
-                    strokeLinecap: "butt",
-                    pathTransitionDuration: 0.5,
-                    pathColor: `rgba(${percentage / 100}, 152, 199 ,${
-                      percentage / 100
-                    })`,
-                    trailColor: "#d6d6d6",
-                    backgroundColor: "#3e98c7",
-                  })}
-                >
-                  <p className="text-[10px]">{props.rate}%</p>
-                </CircularProgressbarWithChildren>
-              )}
-            </ReviewsProvider>
+            <ReviewsProvider
+              valueStart={0}
+              valueEnd={props.rate}
+            ></ReviewsProvider>
           </div>
           <p className="truncate col-span-9  font-semibold ">{props.task}</p>
         </div>

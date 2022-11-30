@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { MdSearch, MdOutlineCancel } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,13 +19,34 @@ const Ma = () => {
   const [data, setData] = React.useState([]);
   const [filtered, setFiltered] = React.useState([]);
   const [status, setStatus] = React.useState("");
-  const [isAll, setIsAll] = React.useState(true);
+  const [isAll, setIsAll] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const decoded = jwtDecode(localStorage.getItem("token"));
+  const [multiId, setMultiId] = React.useState([]);
+  const [multiStatus, setMultiStatus] = React.useState([]);
+  const handleChange = (state) => {
+    const target = state.target.value;
+    const idData = target.split("|")[0];
+    const statusData = target.split("|")[1];
+    console.log(idData);
+    console.log(multiStatus, multiId);
+    const { checked } = state.target;
+
+    if (checked) {
+      setMultiId((item) => [...item, idData]);
+      setMultiStatus((item) => [...item, statusData]);
+    } else {
+      setMultiId((item) => [...item.filter((count) => count != idData)]);
+      setMultiStatus((item) => [
+        ...item.filter((count) => count != statusData),
+      ]);
+    }
+  };
+
   const getData = async () => {
     const response = await dispatch(functionGetMeasuredActivities());
     if (response.status === "Success") {
@@ -64,11 +86,7 @@ const Ma = () => {
   // }, []);
   if (isLoading) return <Loadings />;
   return (
-    <div
-      className={`${
-        location.state?.isAddMA && "overflow-hidden"
-      } relative  h-screen`}
-    >
+    <div className={`${"overflow-hidden"} relative  h-screen`}>
       <User />
       <div className="px-10 py-5   w-full">
         <AnimatePresence>
@@ -248,7 +266,8 @@ const Ma = () => {
         <p className="border-b-2 w-full my-5 "></p>
         {status !== ""
           ? filtered
-              .filter(
+              ?.filter((e) => e.isArchive === false)
+              ?.filter(
                 (e) =>
                   e.task.toLowerCase().includes(query) ||
                   e.description.toLowerCase().includes(query) ||
@@ -274,11 +293,14 @@ const Ma = () => {
                   isArchive={e.isArchive}
                   fromDate={e.fromDate}
                   toDate={e.toDate}
+                  createdAt={e.createdAt}
                   updatedAt={e.updatedAt}
+                  handleChange={handleChange}
                 />
               ))
           : data
-              .filter(
+              ?.filter((e) => e.isArchive === false)
+              ?.filter(
                 (e) =>
                   e.task.toLowerCase().includes(query) ||
                   e.description.toLowerCase().includes(query) ||
@@ -304,7 +326,9 @@ const Ma = () => {
                   isArchive={e.isArchive}
                   fromDate={e.fromDate}
                   toDate={e.toDate}
+                  createdAt={e.createdAt}
                   updatedAt={e.updatedAt}
+                  handleChange={handleChange}
                 />
               ))}
 

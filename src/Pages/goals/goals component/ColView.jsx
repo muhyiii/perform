@@ -6,11 +6,11 @@ import {
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import Swal from "sweetalert2";
 import ModalOptionGoal from "./ModalOptionGoal";
-
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { functionUpdateGoal } from "../../../redux/actions/goalsAction";
 import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
+import { FaRegDotCircle } from "react-icons/fa";
 
 const ColView = (props) => {
   const [isOption, setIsOption] = React.useState(false);
@@ -40,35 +40,27 @@ const ColView = (props) => {
       });
     }
   };
+  let dateNow = new Date(Date.now()).getDate();
+  let createdData = new Date(props.createdAt).getDate();
 
   return (
     <div
       key={props.id}
-      className=" items-center shadow-md border p-4 grid grid-cols-11 m-3 rounded-lg h-24 peer-checked:border-blue-500"
+      className=" items-center shadow-md border p-4 grid grid-cols-11 m-3 rounded-lg h-24  relative"
     >
+      {dateNow === createdData && (
+        <FaRegDotCircle
+          className="absolute -top-2  -left-2 text-red-500"
+          size={30}
+        />
+      )}
       <div className="grid grid-cols-6">
         <div></div>
         <div className="col-span-3">
-          <ReviewsProvider valueStart={0} valueEnd={props.rate}>
-            {(percentage) => (
-              <CircularProgressbarWithChildren
-                value={percentage}
-                strokeWidth={18}
-                styles={buildStyles({
-                  rotation: 0.25,
-                  strokeLinecap: "butt",
-                  pathTransitionDuration: 0.5,
-                  pathColor: `rgba(${percentage / 100}, 152, 199 ,${
-                    percentage / 100
-                  })`,
-                  trailColor: "#d6d6d6",
-                  backgroundColor: "#3e98c7",
-                })}
-              >
-                <p className="text-[10px]">{props.rate}%</p>
-              </CircularProgressbarWithChildren>
-            )}
-          </ReviewsProvider>
+          <ReviewsProvider
+            valueStart={0}
+            valueEnd={props.rate}
+          ></ReviewsProvider>
         </div>
       </div>
       <div
@@ -77,8 +69,12 @@ const ColView = (props) => {
           navigate(`${props.goalId}`);
         }}
       >
-        <p className="text-xl font-bold  truncate">{props.task}</p>
-        <p className={`text-xs capitalize font-semibold`}>
+        <p className="text-xl font-semibold  truncate">{props.task}</p>
+        <p
+          className={`text-xs capitalize ${
+            props.rate === 100 && "font-medium text-lg"
+          }`}
+        >
           {props.rate == 100
             ? "Completed"
             : props.fromDateA + " - " + props.toDateA}

@@ -1,13 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amaranth&family=Jaldi&family=League+Spartan:wght@500&family=Poppins&family=Roboto:wght@400;500&display=swap');
 
 .eveleth {
-  font-family: 'Eveleth-Clean-Regular';
-  src: local('Eveleth-Clean-Regular'), url('./Images/fonts/Eveleth\ Clean\ Regular.otf') format('otf')
+  font-family: 'Eveleth';
+  src: url('./Images/fonts/Eveleth\ Clean\ Regular.otf') format('otf')
 }
+
+
+
+@font-face {
+  font-family: "Eveleth";
+  src: url("./Images/fonts/Eveleth\ Clean\ Regular.otf");
+
+}
+
+
+
+.amaranth {
+  font-family: 'Amaranth', sans-serif;
+}
+
+.spartan {
+  font-family: 'League Spartan', sans-serif;
+}
+
+.jaldi {
+  font-family: 'Jaldi', sans-serif;
+}
+
+.roboto {
+  font-family: 'Roboto', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+.roboto-bold {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+
+}
+
 
 .bg-image {
   background-image: url('./Images/image.png');
@@ -20,7 +55,10 @@
 }
 
 /* fjdwdsjfgdnteruewwqjqksldfghjdsfgb  */
-.height{height: 40rem;}
+.height {
+  height: 40rem;
+}
+
 .pagination {
   width: 350px;
   color: white;

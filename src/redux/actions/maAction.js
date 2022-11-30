@@ -4,6 +4,7 @@ import {
   getMeasuredActivities,
   getMeasuredActivitiesByGoalId,
   getMeasuredActivitiesByUserNow,
+  getMeasuredActivityById,
   updateMeasuredActivityById,
 } from "../../Functions/api";
 
@@ -12,13 +13,13 @@ export function functionGetMeasuredActivities() {
     dispatch({ type: "Loading" });
     try {
       const response = await getMeasuredActivities();
-      console.log(response);
+      // console.log(response);
       const data = response.data;
 
       dispatch({
         type: "LoadingStop",
       });
-      console.log(data);
+      // console.log(data);
       return data;
     } catch (err) {
       dispatch({
@@ -72,6 +73,26 @@ export function functionAddMeasuredActivity(payload) {
   };
 }
 
+export function functionGetMeasuredActivityById(id) {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      const response = await getMeasuredActivityById(id);
+      const data = response.data;
+      dispatch({
+        type: "LoadingStop",
+      });
+      return data;
+    } catch (err) {
+      dispatch({
+        type: "LoadingStop",
+      });
+      console.log(err.response);
+      let data = err.response.data;
+      return data;
+    }
+  };
+}
 export function functionGetMeasuredActivityByGoalId(id) {
   return async (dispatch) => {
     dispatch({ type: "Loading" });
@@ -115,12 +136,12 @@ export function functionDeleteMeasuredActivity(id) {
   };
 }
 
-export function functionUpdateMeasuredActivity(id, status) {
+export function functionUpdateMeasuredActivity(id, status, archive) {
   return async (dispatch) => {
     dispatch({ type: "Loading" });
     try {
       // console.log(status);
-      const response = await updateMeasuredActivityById(id, status);
+      const response = await updateMeasuredActivityById(id, status, archive);
       const data = response.data;
       dispatch({
         type: "LoadingStop",

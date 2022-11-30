@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import './Images/fonts/MazzardH-Black.otf'
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import "./Component/Support/loading.css"

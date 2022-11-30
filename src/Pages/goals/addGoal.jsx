@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { CgClose } from "react-icons/cg";
 import { useDispatch } from "react-redux";
@@ -5,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
 import { functionGetUsers } from "../../redux/actions/authAction";
 import { functionAddGoal } from "../../redux/actions/goalsAction";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Loadings from "../../Component/Loading";
 import Scrollbars from "react-custom-scrollbars-2";
 
@@ -85,10 +86,6 @@ const AddGoals = (props) => {
   React.useEffect(() => {
     getDataUsers();
   }, []);
-  ///////////////////////
-  // if (!props.addGoals) {
-  //   return null;
-  // }
   return (
     <AnimatePresence>
       {/* {props.AddGoals && ( */}

@@ -1,5 +1,6 @@
 import {
   getAuth,
+  getStaticAll,
   getUser,
   getUsers,
   login,
@@ -149,6 +150,25 @@ export function functionGetUsers() {
         type: "LoadingStop",
       });
       // console.log(err);
+      let data = err.response.data;
+      return data;
+    }
+  };
+}
+export function functionGetStaticUsers() {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      const response = await getStaticAll();
+      const data = response.data;
+      dispatch({
+        type: "LoadingStop",
+      });
+      return data;
+    } catch (err) {
+      dispatch({
+        type: "LoadingStop",
+      });
       let data = err.response.data;
       return data;
     }

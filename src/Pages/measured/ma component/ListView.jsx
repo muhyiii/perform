@@ -4,11 +4,13 @@ import {
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
 import ModalOptionMa from "./ModalOptionMa";
 
 const ListView = (props) => {
   const [isOption, setIsOption] = React.useState(false);
+  const navigate = useNavigate();
 
   const options1 = {
     year: "numeric",
@@ -24,19 +26,28 @@ const ListView = (props) => {
 
     hour12: true,
   });
+
+  let dateNow = new Date(Date.now()).getDate();
+  let createdData = new Date(props.createdAt).getDate();
+
   return (
-    <div>
-      <div className=" items-center  relative border-2 px-3 py-5 grid grid-cols-12 my-2 rounded-lg capitalize  peer-checked:border-blue-500">
-        <label className="flex items-center col-span-1 space-x-3 justify-center py relative ">
+    <div className="h-full overflow-auto">
+      <div className=" items-center shadow-md  relative border-2 px-3 py-4 grid grid-cols-12 my-2 rounded-lg capitalize  peer-checked:border-blue-500">
+        {dateNow === createdData && (
+          <p className="absolute top-1 left-1 text-xs lowercase  text-red-500 font-medium ">
+            new
+          </p>
+        )}
+        <label className="flex items-center h-full space-x-3 justify-center py relative ">
           <input
             type="checkbox"
             name="goals"
             id=""
-            // value={props.goalId + "|" + props.status}
-            // onChange={props.handleChange}
+            value={props.maId + "|" + props.data.status}
+            onChange={props.handleChange}
             className="peer sr-only"
           />
-          <span className="  transition-all opacity-0 peer-checked:opacity-100">
+          <span className="  transition-all opacity-10 peer-checked:opacity-100">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="fill-blue-500 stroke-white"
@@ -54,31 +65,17 @@ const ListView = (props) => {
               <path d="M9 12l2 2l4 -4" />
             </svg>
           </span>
-          <div className=" " style={{ width: 50, height: 50 }}>
-            <ReviewsProvider valueStart={0} valueEnd={props.rate}>
-              {(percentage) => (
-                <CircularProgressbarWithChildren
-                  value={percentage}
-                  strokeWidth={18}
-                  styles={buildStyles({
-                    rotation: 0.25,
-                    strokeLinecap: "butt",
-                    pathTransitionDuration: 0.5,
-                    pathColor: `rgba(${percentage / 100}, 152, 199 ,${
-                      percentage / 100
-                    })`,
-                    trailColor: "#d6d6d6",
-                    backgroundColor: "#3e98c7",
-                  })}
-                >
-                  <p className="text-[9px]">{props.rate}%</p>
-                </CircularProgressbarWithChildren>
-              )}
-            </ReviewsProvider>
-          </div>
         </label>
-
-        <div className=" col-start-2 px-4 col-span-4 flex items-center  ">
+        <div className=" " style={{ width: 50, height: 50 }}>
+          <ReviewsProvider
+            valueStart={0}
+            valueEnd={props.rate}
+          ></ReviewsProvider>
+        </div>
+        <div
+          className=" col-start-3 px-4 col-span-3 flex items-center  hover:cursor-pointer"
+          onClick={() => navigate(props.maId)}
+        >
           <div>
             <p className="text-xs text-gray-400">{props.goalTask}</p>
             <div>
