@@ -1,11 +1,13 @@
 import {
   addMeasuredActivity,
   deleteMeasuredActivityById,
+  deleteMultiMeasuredActivity,
   getMeasuredActivities,
   getMeasuredActivitiesByGoalId,
   getMeasuredActivitiesByUserNow,
   getMeasuredActivityById,
   updateMeasuredActivityById,
+  updateMultiMeasuredActivity,
 } from "../../Functions/api";
 
 export function functionGetMeasuredActivities() {
@@ -147,6 +149,47 @@ export function functionUpdateMeasuredActivity(id, status, archive) {
         type: "LoadingStop",
       });
       console.log(id, status);
+      return data;
+    } catch (err) {
+      dispatch({
+        type: "LoadingStop",
+      });
+      console.log(err);
+      let data = err.response.data;
+      return data;
+    }
+  };
+}
+
+export function functionUpdateMultiMeasuredActivity(multiId, value) {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      const response = await updateMultiMeasuredActivity(multiId, value);
+      const data = response.data;
+      dispatch({
+        type: "LoadingStop",
+      });
+      return data;
+    } catch (err) {
+      dispatch({
+        type: "LoadingStop",
+      });
+      console.log(err);
+      let data = err.response.data;
+      return data;
+    }
+  };
+}
+export function functionDeleteMultiMeasuredActivity(multiId) {
+  return async (dispatch) => {
+    dispatch({ type: "Loading" });
+    try {
+      const response = await deleteMultiMeasuredActivity(multiId);
+      const data = response.data;
+      dispatch({
+        type: "LoadingStop",
+      });
       return data;
     } catch (err) {
       dispatch({

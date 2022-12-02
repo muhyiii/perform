@@ -107,3 +107,16 @@ export function updateMeasuredActivityById(maId, payload,archive) {
     isArchive:archive
   });
 }
+//// UPDATE MULTI MEASURED ACTIVITIES
+export function updateMultiMeasuredActivity(multiId, value) {
+  return axioss.post(`/data/measured-activities/multiple/update`, { 
+    maId: multiId,
+    status: value,
+  });
+}//// UPDATE MULTI MEASURED ACTIVITIES
+export function deleteMultiMeasuredActivity(multiId,) {
+  return axioss.post(`/data/measured-activities/multiple/delete`, {
+    multiId: multiId,
+   
+  });
+}

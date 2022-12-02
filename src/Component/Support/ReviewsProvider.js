@@ -4,12 +4,11 @@ import {
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
 
-const ReviewsProvider = ({ valueStart, valueEnd, children }) => {
+const ReviewsProvider = ({ valueStart, valueEnd, size }) => {
   const [value, setValue] = React.useState(valueStart);
+
   React.useEffect(() => {
-    setTimeout(() => {
-      setValue(valueEnd);
-    }, 50);
+    setValue(valueEnd);
   }, [valueEnd]);
 
   return (
@@ -25,7 +24,7 @@ const ReviewsProvider = ({ valueStart, valueEnd, children }) => {
         backgroundColor: "#3e98c7",
       })}
     >
-      <p className="text-[10px]">{value}%</p>
+      <p className={`text-[${size ? size : 10}px]`}>{value} %</p>
     </CircularProgressbarWithChildren>
   );
 };

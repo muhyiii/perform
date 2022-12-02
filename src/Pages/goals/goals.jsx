@@ -8,6 +8,7 @@ import {
   MdViewStream,
   MdSearch,
   MdOutlineCancel,
+  MdDelete,
 } from "react-icons/md";
 import User from "../../Component/User";
 import Loadings from "../../Component/Loading";
@@ -15,6 +16,7 @@ import ColView from "./goals component/ColView";
 import RowView from "./goals component/RowView";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { HiPencil } from "react-icons/hi";
 import {
   functionDeleteMultiGoals,
   functionGetGoals,
@@ -23,6 +25,7 @@ import {
 import AddGoals from "./addGoal";
 import jwtDecode from "jwt-decode";
 import { functionUpdateMultiGoals } from "../../redux/actions/goalsAction";
+import Scrollbars from "react-custom-scrollbars-2";
 
 const Goals = () => {
   const [data, setData] = React.useState([]);
@@ -30,12 +33,20 @@ const Goals = () => {
   const [multiId, setMultiId] = React.useState([]);
   const [multiStatus, setMultiStatus] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [status, setStatus] = React.useState("");
   const [isAll, setIsAll] = React.useState(false);
   const [query, setQuery] = React.useState("");
+  const [progress, setProgress] = React.useState("onprogress");
+  const [thisDateMonth, setThisDateMonth] = React.useState([]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
   const decoded = jwtDecode(localStorage.getItem("token"));
+  const optionDateString = {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+  };
 
   //// BUAT MULTI ID
   const handleChange = (state) => {
@@ -122,10 +133,51 @@ const Goals = () => {
       }, 500);
     }
   };
+  function getAllDaysInMonth() {
+    const now = new Date();
+    let month = now.getMonth();
+    let year = now.getFullYear();
+    const date = new Date(year, month, 1);
+
+    const dates = [];
+
+    while (date.getMonth() === month) {
+      dates.push(new Date(date).getTime());
+      date.setDate(date.getDate() + 1);
+    }
+    console.log(dates);
+    return setThisDateMonth(dates);
+  }
+
+  // 👇️ all days of the current month
+  // const firstDateThisMonthConverted =
+  //   new Date(
+  //     getAllDaysInMonth(now.getFullYear(), now.getMonth()[0])
+  //   ).getFullYear() +
+  //   "-" +
+  //   new Date(
+  //     getAllDaysInMonth(now.getFullYear(), now.getMonth()[0])
+  //   ).getMonth() +
+  //   "-" +
+  //   new Date(getAllDaysInMonth(now.getFullYear(), now.getMonth()[0])).getDate();
+  // const lastDateThisMonthConverted =
+  //   new Date(
+  //     getAllDaysInMonth(now.getFullYear(), now.getMonth()).at(-1)
+  //   ).getFullYear() +
+  //   "-" +
+  //   new Date(
+  //     getAllDaysInMonth(now.getFullYear(), now.getMonth()).at(-1)
+  //   ).getMonth() +
+  //   "-" +
+  //   new Date(
+  //     getAllDaysInMonth(now.getFullYear(), now.getMonth()).at(-1)
+  //   ).getDate();
+  // console.log(thisDateMonth);
 
   React.useEffect(() => {
     setIsLoading(true);
-    console.log(location);
+    getAllDaysInMonth();
+    // console.log(location);
     isAll ? getData() : getAsUser();
   }, [isAll]);
 
@@ -134,12 +186,11 @@ const Goals = () => {
   // console.log(data.filter((e) => e.task.toLowerCase().includes(query)));
   return (
     <div
-      className={`${
-        location.state?.isAddGoal && "overflow-hidden"
-      }relative h-screen `}
+      className={`overflow-hidden
+      relative h-screen capitalize`}
     >
       <User />
-      <div className="px-10 py-5    w-full capitalize  ">
+      <div className="px-10 pt-5   w-full   ">
         <AnimatePresence>
           {location.state?.isAddGoal && (
             <motion.div
@@ -164,61 +215,26 @@ const Goals = () => {
             </motion.div>
           )}
         </AnimatePresence>
-        <div>
-          <h1 className="text-5xl font-bold ">Goals</h1>
-        </div>
-        <div className="border-b-2  my-3 pb-2  ">
-          <div className="flex  px-3 justify-between text-black ">
-            <div className="flex items-center space-x-4  w-1/3">
-              <label
-                htmlFor=""
-                title="search data"
-                className=" bg-slate-100 hover:ring-1 w-full  ring-gray-800 border-none focus-within:ring-1 focus-within:ring-gray-800 px-3 border rounded-md flex items-center"
-              >
-                <MdSearch />
-                <input
-                  type="text"
-                  title="search data"
-                  placeholder="Search.."
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value.toLowerCase())}
-                  className="outline-none bg-transparent  placeholder-gray-400 bg-none text-base placeholder:text-sm  px-3 py-2 w-full group-focus:border "
-                />
-                <MdOutlineCancel
-                  className="cursor-pointer"
-                  onClick={(e) => setQuery("")}
-                />
-              </label>
-            </div>
-
-            <div className=" text-black  cursor-pointer ">
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                className="rounded-xl border m-auto"
-                title="Change View"
-                onClick={() => {
-                  setRow(!row);
-                }}
-              >
-                {row ? <MdViewModule size={30} /> : <MdViewStream size={30} />}
-              </motion.div>
-            </div>
-          </div>
-          {/* {isFilter && ( */}
-          <div className="mx-4 mt-4 text-base font-semibold flex items-center justify-between ">
-            {" "}
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className={` space-x-5  text-white ring-1 py-1 rounded-full group px-5 ${
-                isAll ? "ring-2 bg-blue-400 text-white" : " bg-black"
-              }`}
-              onClick={() => {
-                setIsAll(!isAll);
-              }}
+        <div className="flex justify-between items-center">
+          <div className="flex space-x-5 ml-4">
+            <p
+              onClick={() => setProgress("onprogress")}
+              className={` ${
+                progress === "onprogress" && "border-b-2  border-b-blue-400"
+              } hover:bg-blue-50 hover:cursor-pointer px-2 py-1  rounded`}
             >
-              {isAll ? "Show All" : "Only showing me"}
-            </motion.button>
+              Active This Month
+            </p>
+            <p
+              onClick={() => setProgress("completedDate")}
+              className={` ${
+                progress === "completedDate" && "border-b-2  border-b-blue-400"
+              } hover:bg-blue-50 hover:cursor-pointer px-2 py-1  rounded`}
+            >
+              Complete Date
+            </p>
+          </div>
+          <div className="flex items-center space-x-5">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -228,12 +244,96 @@ const Goals = () => {
               className=" bg-white ring-1 ring-blue-400 px-2 rounded-full py-1 font-semibold hover:text-white hover:bg-blue-400 hover:ring-2 hover:shadow-lg"
             >
               Add Goals
+            </motion.button>{" "}
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              className="rounded-xl border m-auto"
+              title="Change View"
+              onClick={() => {
+                setRow(!row);
+              }}
+            >
+              {row ? <MdViewModule size={30} /> : <MdViewStream size={30} />}
             </motion.button>
+          </div>
+        </div>
+        <div className="border-b-2  mt-3    ">
+          <div className="flex  px-3 justify-between text-black ">
+            <div className=" flex items-center space-x-2 w-1/2 ">
+              <div className="flex items-center space-x-4  w-2/5">
+                <label
+                  htmlFor=""
+                  title="search data"
+                  className=" bg-slate-100 hover:ring-1 w-full  ring-gray-800 border-none focus-within:ring-1 focus-within:ring-gray-800 px-3 border rounded-md flex items-center"
+                >
+                  <MdSearch />
+                  <input
+                    type="text"
+                    title="search data"
+                    placeholder="Search.."
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value.toLowerCase())}
+                    className="outline-none bg-transparent  placeholder-gray-400 bg-none text-sm placeholder:text-sm  px-2 py-1 w-full group-focus:border "
+                  />
+                  <MdOutlineCancel
+                    className="cursor-pointer"
+                    onClick={(e) => setQuery("")}
+                  />
+                </label>
+              </div>
+              <div className="border flex justify-center rounded">
+                <select
+                  name="status"
+                  id="status"
+                  className=" flex m-auto space-x-5 appearance-none outline-none px-2  rounded-md hover:cursor-pointer  space-y-1"
+                  onChange={(e) => {
+                    setStatus(e.target.value);
+                    setMultiId([]);
+                  }}
+                  value={status}
+                >
+                  <option className="text-left" value="">
+                    All
+                  </option>
+                  <option className="text-left" value={"to-do"}>
+                    To Do
+                  </option>
+                  <option className="text-left" value={"ongoing"}>
+                    Ongoing{" "}
+                  </option>
+                  <option className="text-left" value={"hold"}>
+                    Hold
+                  </option>
+                  <option className="text-left" value={"done"}>
+                    Done
+                  </option>
+                </select>
+              </div>
+            </div>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className={` space-x-5  text-white ring-1 py-1 rounded-full group px-5 font-medium${
+                isAll
+                  ? "ring-2 bg-blue-400 text-white font-medium"
+                  : " bg-black"
+              }`}
+              onClick={() => {
+                setIsAll(!isAll);
+                setMultiId([]);
+              }}
+            >
+              {isAll ? "Show All" : "Only showing me"}
+            </motion.button>
+          </div>
+          {/* {isFilter && ( */}
+          <div className="mx-4 mt-4 text-base font-semibold flex items-center justify-between ">
+            {" "}
           </div>
           {/* )} */}
         </div>
         {multiId.length > 0 && (
-          <div className="text-white">
+          <div className="text-white flex mt-2">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -287,10 +387,10 @@ const Goals = () => {
                   });
                 }
               }}
-              className="px-5 py-1 bg-blue-500 my-3 rounded-lg mx-3"
+              className="px-2 space-x-1 py-1 bg-blue-500 my-1 rounded-lg mx-3 shadow-md flex items-center"
             >
-              {" "}
-              Update
+              <HiPencil />
+              <span>Update</span>
             </motion.button>
             <motion.button
               whileHover={{ scale: 1.1 }}
@@ -312,103 +412,130 @@ const Goals = () => {
                   }
                 });
               }}
-              className="px-5 py-1 bg-red-500 my-3 rounded-lg mx-3"
+              className="px-2 space-x-1 py-1 bg-red-500 my-1 rounded-lg mx-3 shadow-md flex items-center "
             >
-              Delete
+              <MdDelete />
+              <span>Delete</span>
             </motion.button>
           </div>
         )}
-        <div className=" w-full">
-          {row ? (
-            <div className="grid grid-cols-12">
-              {data
-                ?.filter((e) => e.isArchive === false)
-                ?.filter(
-                  (e) =>
-                    e.task.toLowerCase().includes(query) ||
-                    e.users[0].name.toLowerCase().includes(query)
-                )
-                ?.map((e) => {
-                  let fromDate = new Date(e.fromDate).toLocaleDateString("id", {
-                    day: "numeric",
-                    month: "numeric",
-                    year: "numeric",
-                  });
-                  let toDate = new Date(e.toDate).toLocaleDateString("id", {
-                    day: "numeric",
-                    month: "numeric",
-                    year: "numeric",
-                  });
-                  return (
-                    <RowView
-                      data={e}
-                      key={e.id}
-                      id={e.id}
-                      name={e.users[0].name}
-                      image={e.users[0].image}
-                      role={e.users[0].role}
-                      rate={e.rate}
-                      fromDate={e.fromDate}
-                      toDate={e.toDate}
-                      task={e.task}
-                      value={e.value}
-                      goalId={e.goalId}
-                      status={e.status}
-                      fromDateA={fromDate}
-                      toDateA={toDate}
-                      createdAt={e.createdAt}
-                      getData={getData}
-                      handleChange={handleChange}
-                    />
-                  );
-                })}
-            </div>
-          ) : (
-            <div>
-              {data
-                ?.filter((e) => e.isArchive === false)
-                ?.filter(
-                  (e) =>
-                    e.task.toLowerCase().includes(query) ||
-                    e.users[0].name.toLowerCase().includes(query)
-                )
-                ?.map((e) => {
-                  let fromDate = new Date(e.fromDate).toLocaleDateString("id", {
-                    day: "numeric",
-                    month: "numeric",
-                    year: "numeric",
-                  });
-                  let toDate = new Date(e.toDate).toLocaleDateString("id", {
-                    day: "numeric",
-                    month: "numeric",
-                    year: "numeric",
-                  });
-                  return (
-                    <ColView
-                      data={e}
-                      key={e.id}
-                      id={e.id}
-                      name={e.users[0].name}
-                      image={e.users[0].image}
-                      role={e.users[0].role}
-                      rate={e.rate}
-                      fromDate={e.fromDate}
-                      toDate={e.toDate}
-                      task={e.task}
-                      value={e.value}
-                      goalId={e.goalId}
-                      status={e.status}
-                      fromDateA={fromDate}
-                      toDateA={toDate}
-                      createdAt={e.createdAt}
-                      getData={getData}
-                    />
-                  );
-                })}
-            </div>
-          )}
-        </div>
-        <div className="h-20 w-full"></div>
+      </div>
+      <div className="h-[75%]  w-full">
+        <Scrollbars autoHide style={{ height: "100%" }}>
+          <div className="px-10">
+            {" "}
+            {row ? (
+              <div className="grid grid-cols-12">
+                {data
+                  ?.filter((e) =>
+                    progress === "onprogress"
+                      ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
+                        new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
+                      : new Date(e.fromDate).getTime()
+                  )
+                  ?.filter((e) => e.isArchive === false)
+                  ?.filter((e) =>
+                    status !== "" ? e.status === status : e.status !== null
+                  )
+                  ?.filter(
+                    (e) =>
+                      e.task.toLowerCase().includes(query) ||
+                      e.users[0].name.toLowerCase().includes(query)
+                  )
+                  ?.map((e) => {
+                    let fromDate = new Date(e.fromDate).toLocaleDateString(
+                      "id",
+                      optionDateString
+                    );
+                    let toDate = new Date(e.toDate).toLocaleDateString(
+                      "id",
+                      optionDateString
+                    );
+                    console.log(
+                      new Date(e.fromDate).toLocaleDateString(
+                        "id",
+                        optionDateString
+                      ) +
+                        "  " +
+                        thisDateMonth
+                    );
+                    // let b = Date(
+                    //   getAllDaysInMonth(now.getFullYear(), now.getMonth()[0])
+                    // );
+                    // console.log(b);
+                    // let toDateConverted = new Date(e.toDate);
+                    // console.log(toDateConverted);
+                    return (
+                      <RowView
+                        data={e}
+                        key={e.id}
+                        id={e.id}
+                        name={e.users[0].name}
+                        image={e.users[0].image}
+                        role={e.users[0].role}
+                        rate={e.rate}
+                        fromDate={e.fromDate}
+                        toDate={e.toDate}
+                        task={e.task}
+                        value={e.value}
+                        goalId={e.goalId}
+                        status={e.status}
+                        fromDateA={fromDate}
+                        toDateA={toDate}
+                        createdAt={e.createdAt}
+                        getData={getData}
+                        handleChange={handleChange}
+                      />
+                    );
+                  })}
+              </div>
+            ) : (
+              <div>
+                {data
+                  ?.filter((e) => e.isArchive === false)
+                  ?.filter((e) =>
+                    status !== "" ? e.status === status : e.status !== null
+                  )
+                  ?.filter(
+                    (e) =>
+                      e.task.toLowerCase().includes(query) ||
+                      e.users[0].name.toLowerCase().includes(query)
+                  )
+                  ?.map((e) => {
+                    let fromDate = new Date(e.fromDate).toLocaleDateString(
+                      "id",
+                      optionDateString
+                    );
+                    let toDate = new Date(e.toDate).toLocaleDateString(
+                      "id",
+                      optionDateString
+                    );
+                    return (
+                      <ColView
+                        data={e}
+                        key={e.id}
+                        id={e.id}
+                        name={e.users[0].name}
+                        image={e.users[0].image}
+                        role={e.users[0].role}
+                        rate={e.rate}
+                        fromDate={e.fromDate}
+                        toDate={e.toDate}
+                        task={e.task}
+                        value={e.value}
+                        goalId={e.goalId}
+                        status={e.status}
+                        fromDateA={fromDate}
+                        toDateA={toDate}
+                        createdAt={e.createdAt}
+                        getData={getData}
+                      />
+                    );
+                  })}
+              </div>
+            )}
+          </div>
+        </Scrollbars>
       </div>
     </div>
   );

@@ -43,6 +43,7 @@ const MaDetail = () => {
         </motion.button>{" "}
         Detail
       </h1>
+      <div></div>
     </div>
   );
 };

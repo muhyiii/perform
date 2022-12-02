@@ -60,6 +60,7 @@ const ColView = (props) => {
           <ReviewsProvider
             valueStart={0}
             valueEnd={props.rate}
+            size={10}
           ></ReviewsProvider>
         </div>
       </div>

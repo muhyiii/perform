@@ -1,720 +1,749 @@
 import React, { useState, useEffect, Component } from "react";
 import { useDispatch } from "react-redux";
+import { getStaticAll } from "../../../Functions/api";
 import profile from "../../../Images/profile.png";
 import { functionGetStaticUsers } from "../../../redux/actions/authAction";
 // import { data } from 'autoprefixer';
 
 const Peringkat = () => {
+  const [offset, setOffset] = useState(0);
+  const dispatch = useDispatch();
+  const [users, setUsers] = useState([]);
   const [Ma, setMa] = useState([]);
   const [Goal, setGoal] = useState([]);
-  const [users, setUsers] = React.useState([]);
-  const dispatch = useDispatch();
-
-  const getData = async () => {
+  const perPage = 4;
+  const [pageCount, setPageCount] = useState(0);
+  const [deletedList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const getDataa = async () => {
     const response = await dispatch(functionGetStaticUsers());
     if (response.status === "Success") {
       setUsers(response.data.rows);
-      console.log(response.data.rows);
     }
   };
 
-  const getDataa = async () => {
-    const Ma = [
-      {
-        Nama: "budi",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "eko",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "joe",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "cipung",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "joinior",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "bambang",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "bintang",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "solana",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "elon",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "gueyi",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "josep",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "supriyadi",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "gala",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-    ];
+  const getData = async () => {
+    // const Ma = [
+    //     {
+    //         Nama: "budi",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //         ]
+    //     },
+    //     {
+    //         Nama: "eko",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "joe",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "cipung",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "joinior",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "bambang",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "bintang",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "solana",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "elon",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "gueyi",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "josep",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "supriyadi",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "gala",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    // ];
 
-    const Goal = [
-      {
-        Nama: "budi",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "eko",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "agus",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "cipung",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "Maychel",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
+    // const Goal = [
+    //     {
+    //         Nama: "budi",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "eko",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "agus",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "cipung",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false
+    //                 ,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "Maychel",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
 
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "bambang",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "bambang",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
 
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "dani",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "dani",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
 
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "junaidi",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "junaidi",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
 
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "dzul",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "dzul",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
 
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "gala",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "gala",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
 
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "ikhsan",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "ikhsan",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
 
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "yogi",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "yogi",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
 
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-      {
-        Nama: "asep",
-        TugasMa: [
-          {
-            Ma: "mengerjakan backlink",
-            Status: false,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    //     {
+    //         Nama: "asep",
+    //         TugasMa: [
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: false,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             },
 
-          {
-            Ma: "mengerjakan backlink",
-            Status: true,
-            tanggal: 15,
-            bulan: 1,
-            tahun: 2022,
-          },
-        ],
-      },
-    ];
+    //             {
+    //                 Ma: "mengerjakan backlink",
+    //                 Status: true,
+    //                 tanggal: 15,
+    //                 bulan: 1,
+    //                 tahun: 2022
+    //             }
+    //         ]
+    //     },
+    // ];
 
     for (let i = 0; i < Ma.length; i++) {
       for (let j = i + 1; j < Ma.length; j++) {
+        // mendapatkan jumlah tugas yang sudah selesai pada indeks yg sekarang
         let doneTask1 = Ma[i].TugasMa.filter(function (item) {
           return item.Status;
         }).length;
+        // mendapatkan total jumlah tugas yang sudah pada indeks yg sekarang
         let allTask1 = Ma[i].TugasMa.length;
+        // mendapatkan persenan berapa tugas yang sudah selesai pada indeks yg sekarang
         let persentase1 = (doneTask1 / allTask1) * 100;
+        // mendapatkan jumlah tugas yang sudah selesai pada indeks yg setelahnya
         let doneTask2 = Ma[j].TugasMa.filter(function (item) {
           return item.Status;
         }).length;
+        // mendapatkan total jumlah tugas yang sudah pada indeks yg setelahnya
         let allTask2 = Ma[j].TugasMa.length;
+        // mendapatkan persenan berapa tugas yang sudah selesai pada indeks yg setelahnya
         let persentase2 = (doneTask2 / allTask2) * 100;
+        // menukar indeks persenan tugas pada indeks yg sekarang dengan indeks yg setelahnya, jika persenan tugas pada indeks yg sekarang lebih kecil dari indeks yg setelahnya
         if (persentase1 < persentase2) {
           let temp;
           temp = Ma[i];
@@ -757,16 +786,23 @@ const Peringkat = () => {
 
     for (let i = 0; i < Goal.length; i++) {
       for (let j = i + 1; j < Goal.length; j++) {
+        // mendapatkan jumlah ma yang sudah selesai pada indeks yg sekarang
         let doneTask1 = Goal[i].TugasMa.filter(function (item) {
           return item.Status;
         }).length;
+        // mendapatkan total jumlah ma yang sudah pada indeks yg sekarang
         let allTask1 = Goal[i].TugasMa.length;
+        // mendapatkan persenan berapa ma yang sudah selesai pada indeks yg sekarang
         let persentase1 = (doneTask1 / allTask1) * 100;
+        // mendapatkan jumlah ma yang sudah selesai pada indeks yg setelahnya
         let doneTask2 = Goal[j].TugasMa.filter(function (item) {
           return item.Status;
         }).length;
+        // mendapatkan total jumlah ma yang sudah pada indeks yg setelahnya
         let allTask2 = Goal[j].TugasMa.length;
+        // mendapatkan persenan berapa ma yang sudah selesai pada indeks yg setelahnya
         let persentase2 = (doneTask2 / allTask2) * 100;
+        // menukar indeks persenan ma pada indeks yg sekarang dengan indeks yg setelahnya, jika persenan ma pada indeks yg sekarang lebih kecil dari indeks yg setelahnya
         if (persentase1 < persentase2) {
           let temp;
           temp = Goal[i];
@@ -808,10 +844,13 @@ const Peringkat = () => {
     });
     setMa(postData);
     setGoal(postData1);
+    setPageCount(Math.ceil(Ma, Goal.length / perPage));
   };
   useEffect(() => {
-    getDataa();
     getData();
+  }, []);
+  useEffect(() => {
+    getDataa();
   }, []);
 
   return (

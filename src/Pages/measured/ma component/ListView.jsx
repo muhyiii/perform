@@ -31,7 +31,7 @@ const ListView = (props) => {
   let createdData = new Date(props.createdAt).getDate();
 
   return (
-    <div className="h-full overflow-auto">
+    <div>
       <div className=" items-center shadow-md  relative border-2 px-3 py-4 grid grid-cols-12 my-2 rounded-lg capitalize  peer-checked:border-blue-500">
         {dateNow === createdData && (
           <p className="absolute top-1 left-1 text-xs lowercase  text-red-500 font-medium ">
@@ -44,7 +44,11 @@ const ListView = (props) => {
             name="goals"
             id=""
             value={props.maId + "|" + props.data.status}
-            onChange={props.handleChange}
+            onChange={(e) => {
+              props.handleChange(e);
+              setIsOption(false);
+            }}
+            // checked={props.setMultiId([])}
             className="peer sr-only"
           />
           <span className="  transition-all opacity-10 peer-checked:opacity-100">
@@ -70,6 +74,7 @@ const ListView = (props) => {
           <ReviewsProvider
             valueStart={0}
             valueEnd={props.rate}
+            size={10}
           ></ReviewsProvider>
         </div>
         <div
@@ -111,8 +116,9 @@ const ListView = (props) => {
           <BsThreeDotsVertical
             className="hover:cursor-pointer inline-block"
             size={25}
-            onClick={() => {
+            onClick={(e) => {
               setIsOption(!isOption);
+              // props.setMultiId([])
             }}
           />
           <ModalOptionMa

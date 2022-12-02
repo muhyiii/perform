@@ -33,7 +33,7 @@ const RowView = (props) => {
   let dateNow = new Date(Date.now()).getDate();
   let createdData = new Date(props.createdAt).getDate();
   return (
-    <div className="col-span-4 relative " key={props.id}>
+    <div className="col-span-4 my-3 relative " key={props.id}>
       {dateNow === createdData && (
         <FaRegDotCircle
           className="absolute -top-0  -left-0 text-red-500"
@@ -97,6 +97,7 @@ const RowView = (props) => {
             <ReviewsProvider
               valueStart={0}
               valueEnd={props.rate}
+              size={10}
             ></ReviewsProvider>
           </div>
           <p className="truncate col-span-9  font-semibold ">{props.task}</p>

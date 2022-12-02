@@ -69,7 +69,7 @@ const ModalOptionMa = (props) => {
       className=" modal absolute z-30 -top-6 right-36 "
       onClick={props.onCloseOption}
     >
-      <nav className="bg-white text-black w-full shadow-lg rounded-md border-red-400 p-5 font-semibold">
+      <nav className="bg-white text-black w-full shadow-lg rounded-md border-red-400 p-5 font-medium">
         <ul className="space-y-2">
           <li
             className="flex items-center justify-between hover:text-xl  cursor-pointer"

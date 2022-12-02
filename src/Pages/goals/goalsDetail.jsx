@@ -115,26 +115,11 @@ const GoalsDetail = () => {
             <p className="text-sm">{user.role}</p>
           </div>
           <div className="mt-10 w-1/2 m-auto ">
-            <ReviewsProvider valueStart={0} valueEnd={goal.rate}>
-              {(percentage) => (
-                <CircularProgressbarWithChildren
-                  value={percentage}
-                  strokeWidth={20}
-                  styles={buildStyles({
-                    rotation: 0.25,
-                    strokeLinecap: "butt",
-                    pathTransitionDuration: 0.5,
-                    pathColor: `rgba(${percentage / 100}, 152, 199 ,${
-                      percentage / 100
-                    })`,
-                    trailColor: "#d6d6d6",
-                    backgroundColor: "#3e98c7",
-                  })}
-                >
-                  <p className="text-[15px] font-semibold">{goal.rate}%</p>
-                </CircularProgressbarWithChildren>
-              )}
-            </ReviewsProvider>
+            <ReviewsProvider
+              valueStart={0}
+              valueEnd={goal.rate}
+              size={12}
+            ></ReviewsProvider>
 
             {goal.rate === 100 && (
               <p className="text-center mt-5 font-semibold">Completed</p>
@@ -215,7 +200,11 @@ const GoalsDetail = () => {
                     options
                   );
                   return (
-                    <div className="border grid grid-cols-12 items-center rounded-lg px-2 py-1 shadow-sm ">
+                    <div
+                      key={e.id}
+                      onClick={() => navigate(`/acc/ma/${e.maId}`)}
+                      className="border grid grid-cols-12 items-center rounded-lg px-2 py-1 shadow-sm hover:cursor-pointer hover:shadow-lg"
+                    >
                       <h1 className=" truncate hover:text-clip col-span-2">
                         {e.task}
                       </h1>

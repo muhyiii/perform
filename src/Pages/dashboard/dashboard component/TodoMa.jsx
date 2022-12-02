@@ -45,7 +45,7 @@ const TodoMa = (props) => {
               return (
                 <React.Fragment key={pd.id}>
                   <div
-                    className="overflow-y-auto pt-3"
+                    className="overflow-y-auto pt-3 hover:cursor-pointer"
                     onClick={() => {
                       navigate(`/acc/ma/${pd.maId}`);
                     }}

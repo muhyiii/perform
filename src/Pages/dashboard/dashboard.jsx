@@ -77,7 +77,7 @@ const Dashboard = () => {
                 className=" container mx-auto"
                 style={{ width: 150, height: 150 }}
               >
-                <ReviewsProvider valueStart={0} valueEnd={persen}>
+                <ReviewsProvider valueStart={0} valueEnd={persen} size={14}>
                 </ReviewsProvider>
               </div>
               <div className="container mx-auto">
