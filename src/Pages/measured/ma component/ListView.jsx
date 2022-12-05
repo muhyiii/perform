@@ -17,7 +17,7 @@ const ListView = (props) => {
     month: "short",
     day: "numeric",
   };
-
+  let fromDate = new Date(props.fromDate).toLocaleDateString("id", options1);
   let toDate = new Date(props.toDate).toLocaleDateString("id", options1);
   let updatedAt = new Date(props.updatedAt).toLocaleDateString("id", options1);
   let updatedAte = new Date(props.updatedAt).toLocaleTimeString("id", {
@@ -32,7 +32,10 @@ const ListView = (props) => {
 
   return (
     <div>
-      <div className=" items-center shadow-md  relative border-2 px-3 py-4 grid grid-cols-12 my-2 rounded-lg capitalize  peer-checked:border-blue-500">
+      <div
+        // onClick={() => setIsOption(!isOption)}
+        className=" items-center shadow-md  relative border-2 px-3 py-4 grid grid-cols-12 my-2 rounded-lg capitalize  peer-checked:border-blue-500"
+      >
         {dateNow === createdData && (
           <p className="absolute top-1 left-1 text-xs lowercase  text-red-500 font-medium ">
             new
@@ -78,26 +81,26 @@ const ListView = (props) => {
           ></ReviewsProvider>
         </div>
         <div
-          className=" col-start-3 px-4 col-span-3 flex items-center  hover:cursor-pointer"
+          className=" truncate col-start-3 px-4 col-span-4 flex items-center  hover:cursor-pointer"
           onClick={() => navigate(props.maId)}
         >
           <div>
             <p className="text-xs text-gray-400">{props.goalTask}</p>
-            <div>
-              <p className="text-xl font-bold ">{props.task}</p>
-              <p className="text-xs">{toDate}</p>
+            <div className="">
+              <p className="text-xl font-bold  ">{props.task}</p>
+              <p className="text-xs">{fromDate + " - " + toDate}</p>
             </div>
           </div>
         </div>
 
-        <div className="flex col-span-2  items-start justify-start space-x-5">
+        <div className="flex truncate col-span-2 mx-3  items-start justify-start space-x-5">
           <img
             src={props.image}
-            className="h-10 rounded-full w-10 bg-cover"
+            className="h-10 rounded-full w-10 bg-cover shadow-md border"
             alt=""
           />
           <div className="col-span-2  ">
-            <p>{props.name}</p>
+            <p className="text-sm">{props.name}</p>
             <p className="text-xs">{props.role}</p>
           </div>
         </div>
@@ -105,14 +108,14 @@ const ListView = (props) => {
         <p>{props.value}.00</p>
         <p className="">{props.status}</p>
 
-        <div className="flex col-start-10 col-span-2 place-items-center justify-evenly">
+        <div className="flex col-start-11 col-span-2 place-items-center justify-evenly">
           <div className="col-span-2 ">
             <p>{updatedAt}</p>
             <p className="text-xs">{updatedAte}</p>
           </div>
         </div>
 
-        <button className="col-start-12    w-10 h-10 hover:bg-gray-300 rounded-full   transition ease-in duration-200 focus:outline-none">
+        <button className="col-start-13   w-10 h-10 hover:bg-gray-300 rounded-full   transition ease-in duration-200 focus:outline-none">
           <BsThreeDotsVertical
             className="hover:cursor-pointer inline-block"
             size={25}

@@ -104,7 +104,7 @@ const AddMA = (props) => {
   return (
     <motion.div>
       <div data-cy="modal-add" variant="primary" className="">
-        <motion.div className="w-[450px] pb-10 bg-white rounded-lg shadow-lg relative overflow-auto h-[700px]   ">
+        <motion.div className="w-[450px] pb-5 bg-white rounded-lg shadow-lg relative overflow-auto h-[700px]   ">
           {" "}
           <Scrollbars autoHide style={{ height: "100%" }}>
             {isLoading ? (
@@ -116,9 +116,9 @@ const AddMA = (props) => {
                   className="top-3 right-3 absolute cursor-pointer"
                   onClick={props.onClose}
                 >
-                  <CgClose size={30} />
+                  <CgClose size={30} color={'white'} />
                 </div>
-                <div className="pt-6 mx-5 ">
+                <div className=" text-white bg-gradient-to-tr from-[#101424] to-[#091546] p-5 ">
                   <h1 className="text-2xl font-semibold ">
                     Add Measured Activity
                   </h1>
@@ -126,7 +126,7 @@ const AddMA = (props) => {
                     Adding submission measured activity of goal target
                   </p>
                 </div>
-                <div className="px-5 mt-10 ">
+                <div className="px-5 mt-8 ">
                   <div className="mb-3">
                     <p className="text-sm pl-2">Name</p>
                     <select
@@ -196,7 +196,7 @@ const AddMA = (props) => {
                         });
                       }}
                     >
-                      <option value="">Select User</option>
+                      <option value="">Select Goal</option>
                       {goals.length !== 0 ? (
                         goals?.map((e) => (
                           <option value={`${e.id}`} key={e.id}>
@@ -266,6 +266,7 @@ const AddMA = (props) => {
                       type="date"
                       name="toDate"
                       id="toDate"
+                      min={data.fromDate}
                       onChange={(e) => {
                         setData({
                           ...data,

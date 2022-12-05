@@ -26,6 +26,7 @@ import AddGoals from "./addGoal";
 import jwtDecode from "jwt-decode";
 import { functionUpdateMultiGoals } from "../../redux/actions/goalsAction";
 import Scrollbars from "react-custom-scrollbars-2";
+import { IoArchiveOutline } from "react-icons/io5";
 
 const Goals = () => {
   const [data, setData] = React.useState([]);
@@ -92,8 +93,10 @@ const Goals = () => {
   };
 
   //// UPDATE MULTI GOALS
-  const updateMultiGoals = async (value) => {
-    const response = await dispatch(functionUpdateMultiGoals(multiId, value));
+  const updateMultiGoals = async (value, archive) => {
+    const response = await dispatch(
+      functionUpdateMultiGoals(multiId, value, archive)
+    );
     console.log(response);
     if (response.status === "Success") {
       Swal.fire({
@@ -148,31 +151,6 @@ const Goals = () => {
     console.log(dates);
     return setThisDateMonth(dates);
   }
-
-  // 👇️ all days of the current month
-  // const firstDateThisMonthConverted =
-  //   new Date(
-  //     getAllDaysInMonth(now.getFullYear(), now.getMonth()[0])
-  //   ).getFullYear() +
-  //   "-" +
-  //   new Date(
-  //     getAllDaysInMonth(now.getFullYear(), now.getMonth()[0])
-  //   ).getMonth() +
-  //   "-" +
-  //   new Date(getAllDaysInMonth(now.getFullYear(), now.getMonth()[0])).getDate();
-  // const lastDateThisMonthConverted =
-  //   new Date(
-  //     getAllDaysInMonth(now.getFullYear(), now.getMonth()).at(-1)
-  //   ).getFullYear() +
-  //   "-" +
-  //   new Date(
-  //     getAllDaysInMonth(now.getFullYear(), now.getMonth()).at(-1)
-  //   ).getMonth() +
-  //   "-" +
-  //   new Date(
-  //     getAllDaysInMonth(now.getFullYear(), now.getMonth()).at(-1)
-  //   ).getDate();
-  // console.log(thisDateMonth);
 
   React.useEffect(() => {
     setIsLoading(true);
@@ -370,7 +348,7 @@ const Goals = () => {
                               value === "hold" ||
                               value === "ongoing"
                             ) {
-                              updateMultiGoals(value);
+                              updateMultiGoals(value, false);
                             } else {
                               resolve("Choose the next stage of your status");
                             }
@@ -392,6 +370,30 @@ const Goals = () => {
               <HiPencil />
               <span>Update</span>
             </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => {
+                Swal.fire({
+                  title: "Are you sure?",
+                  text: "You want to archive this goal!",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Yes, archive it!",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    updateMultiGoals(null, true);
+                  }
+                });
+              }}
+              className="px-2 space-x-1 py-1 bg-green-500 my-1 rounded-lg mx-3 shadow-md flex items-center"
+            >
+              <IoArchiveOutline />
+              <span>Archive</span>
+            </motion.button>
+
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -427,6 +429,12 @@ const Goals = () => {
             {row ? (
               <div className="grid grid-cols-12">
                 {data
+                  ?.filter(
+                    (e) =>
+                      e.task.toLowerCase().includes(query) ||
+                      e.description.toLowerCase().includes(query) ||
+                      e.users[0].name.toLowerCase().includes(query)
+                  )
                   ?.filter((e) =>
                     progress === "onprogress"
                       ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
@@ -437,11 +445,7 @@ const Goals = () => {
                   ?.filter((e) =>
                     status !== "" ? e.status === status : e.status !== null
                   )
-                  ?.filter(
-                    (e) =>
-                      e.task.toLowerCase().includes(query) ||
-                      e.users[0].name.toLowerCase().includes(query)
-                  )
+
                   ?.map((e) => {
                     let fromDate = new Date(e.fromDate).toLocaleDateString(
                       "id",
@@ -459,12 +463,6 @@ const Goals = () => {
                         "  " +
                         thisDateMonth
                     );
-                    // let b = Date(
-                    //   getAllDaysInMonth(now.getFullYear(), now.getMonth()[0])
-                    // );
-                    // console.log(b);
-                    // let toDateConverted = new Date(e.toDate);
-                    // console.log(toDateConverted);
                     return (
                       <RowView
                         data={e}
@@ -477,6 +475,7 @@ const Goals = () => {
                         fromDate={e.fromDate}
                         toDate={e.toDate}
                         task={e.task}
+                        description={e.description}
                         value={e.value}
                         goalId={e.goalId}
                         status={e.status}
@@ -492,6 +491,12 @@ const Goals = () => {
             ) : (
               <div>
                 {data
+                  ?.filter((e) =>
+                    progress === "onprogress"
+                      ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
+                        new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
+                      : new Date(e.fromDate).getTime()
+                  )
                   ?.filter((e) => e.isArchive === false)
                   ?.filter((e) =>
                     status !== "" ? e.status === status : e.status !== null
@@ -522,12 +527,14 @@ const Goals = () => {
                         fromDate={e.fromDate}
                         toDate={e.toDate}
                         task={e.task}
+                        description={e.description}
                         value={e.value}
                         goalId={e.goalId}
                         status={e.status}
                         fromDateA={fromDate}
                         toDateA={toDate}
                         createdAt={e.createdAt}
+                        updateMultiGoals={updateMultiGoals}
                         getData={getData}
                       />
                     );

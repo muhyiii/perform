@@ -112,11 +112,11 @@ export function functionDeleteGoal(id) {
     }
   };
 }
-export function functionUpdateGoal(id, status) {
+export function functionUpdateGoal(id, status, archive) {
   return async (dispatch) => {
     dispatch({ type: "Loading" });
     try {
-      const response = await updateGoalById(id, status);
+      const response = await updateGoalById(id, status, archive);
       const data = response.data;
       dispatch({
         type: "LoadingStop",
@@ -133,11 +133,11 @@ export function functionUpdateGoal(id, status) {
     }
   };
 }
-export function functionUpdateMultiGoals(multiId, value) {
+export function functionUpdateMultiGoals(multiId, value, archive) {
   return async (dispatch) => {
     dispatch({ type: "Loading" });
     try {
-      const response = await updateMultiGoals(multiId, value);
+      const response = await updateMultiGoals(multiId, value, archive);
       const data = response.data;
       dispatch({
         type: "LoadingStop",

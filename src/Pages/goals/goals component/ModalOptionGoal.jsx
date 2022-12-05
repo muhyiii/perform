@@ -3,11 +3,37 @@ import Swal from "sweetalert2";
 import { IoTrashOutline, IoArchiveOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { functionDeleteGoal } from "../../../redux/actions/goalsAction";
+import {
+  functionDeleteGoal,
+  functionUpdateGoal,
+} from "../../../redux/actions/goalsAction";
 
 const ModalOptionGoal = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const updateGoal = async (id, status, archive) => {
+    const response = await dispatch(functionUpdateGoal(id, status, archive));
+    if (response.status === "Success") {
+      Swal.fire({
+        title: "Succesfull!",
+        text: response.messege,
+        icon: "success",
+        timer: 1000,
+      });
+
+      setTimeout(() => {
+        navigate(0);
+      }, 500);
+    }
+    if (response.status !== "Success")
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: response.messege,
+        timer: 3000,
+      });
+  };
+
   const deleteGoal = async (id) => {
     const response = await dispatch(functionDeleteGoal(id));
     if (response.status === "Success") {
@@ -55,7 +81,7 @@ const ModalOptionGoal = (props) => {
                 confirmButtonText: "Yes, archive it!",
               }).then((result) => {
                 if (result.isConfirmed) {
-                  props.setArchive(props.id);
+                  updateGoal(props.goalId, props.data.status, true);
                   Swal.fire(
                     "Archived!",
                     "Your file has been Archived.",

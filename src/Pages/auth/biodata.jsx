@@ -1,16 +1,13 @@
 import React from "react";
-import { Formik, useFormik } from "formik";
-import * as Yup from "yup";
+import { motion } from "framer-motion";
 import { useState } from "react";
 import Profile from "../../Images/profile.png";
 import { functionRegisterBiodata } from "../../redux/actions/authAction";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import axios from "axios";
-import { api } from "../../Functions/api";
+
 import { Player } from "@lottiefiles/react-lottie-player";
-import Loadings from "../../Component/Loading";
 
 const Biodata = () => {
   const [selectedImage, setSelectedImage] = useState();
@@ -82,7 +79,7 @@ const Biodata = () => {
                 autoplay
                 loop
                 src={
-                  "https://lottie.host/3425dfb9-3688-4154-8741-ce55a06174ea/d70t0oUroc.json"
+                  "https://lottie.host/b44bd23b-999e-48a3-8efc-68ecf87bea51/8Gl3bPK7CJ.json"
                 }
                 style={{ height: "100px", width: "100px" }}
               ></Player>
@@ -97,7 +94,17 @@ const Biodata = () => {
         <div className="z-0 h-40 w-40 left-48 top-14  opacity-40 bg-blue-600 skew-x-6 mix-blend-multiply absolute rounded-full shadow-xl"></div>
         <div></div>
         <div className="grid grid-cols-5 w-4/5 h-5/6  pl-5   bg-slate-200  rounded-lg  z-10 ">
-          <div className="col-span-3 ">
+          <motion.div
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+            transition={{
+              ease: "easeOut",
+              bounce: 0.5,
+              duration: 1,
+              type: "spring",
+            }}
+            className="col-span-3 "
+          >
             <div className="border-b-2 border-blue-200 w-11/12 h-1/4 ml-4 ">
               <div className="flex mt-5">
                 <div>
@@ -153,9 +160,19 @@ const Biodata = () => {
                 </p>
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="col-span-2 shadow-2xl rounded-bl-3xl shadow-slate-500 bg-white bottom-7 py-10 px-10 rounded-r-3xl  absolute right-32 w-2/6">
+          <motion.div
+            initial={{ x: -1000 }}
+            transition={{
+              ease: "easeOut",
+              duration: 1,
+              type: "spring",
+              bounce: 0.35,
+            }}
+            animate={{ x: 0 }}
+            className="col-span-2 shadow-2xl rounded-bl-3xl shadow-slate-500 bg-white bottom-7 py-10 px-10 rounded-r-3xl  absolute right-32 w-2/6"
+          >
             <form action="" onSubmit={handleSubmit}>
               <div className="space-y-5 mt-2 pl-9">
                 <label className="text-sm text-slate-600 ml-1 mb-1">
@@ -278,7 +295,7 @@ const Biodata = () => {
                 </button>
               </div>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </React.Fragment>

@@ -30,8 +30,8 @@ export function getUser(id) {
   //   console.log("dataUsers", users.data.data);
 }
 //// GET ALL STATIC USERS
-export function getStaticAll(){
-  return axioss.get(`/data/users/staticAll`)
+export function getStaticAll() {
+  return axioss.get(`/data/users/staticAll`);
 }
 
 // GOALS
@@ -56,24 +56,25 @@ export function deleteGoalById(goalId) {
   return axioss.delete(`/data/goals/${goalId}/delete`);
 }
 //// UPDATE GOAL BY ID
-export function updateGoalById(goalId, payload) {
-  return axioss.put(`/data/goals/${goalId}/update`, { status: payload });
+export function updateGoalById(goalId, payload, archive) {
+  return axioss.put(`/data/goals/${goalId}/update`, {
+    status: payload,
+    isArchive: archive,
+  });
 }
 //// UPDATE MULTI GOALS
-export function updateMultiGoals(multiId, value) {
+export function updateMultiGoals(multiId, value, archive) {
   return axioss.post(`/data/goals/multiple/update`, {
     goalId: multiId,
     status: value,
+    isArchive: archive,
   });
-}//// UPDATE MULTI GOALS
-export function deleteMultiGoals(multiId,) {
+} //// UPDATE MULTI GOALS
+export function deleteMultiGoals(multiId) {
   return axioss.post(`/data/goals/multiple/delete`, {
     multiId: multiId,
-   
   });
 }
-
-
 
 //// MEASURED ACTIVITY
 //// ADD MEASURED ACTIVITY
@@ -101,22 +102,22 @@ export function deleteMeasuredActivityById(maId) {
   return axioss.delete(`/data/measured-activities/${maId}/delete`);
 }
 //// UPDATE MEASURED ACTIVITY BY ID
-export function updateMeasuredActivityById(maId, payload,archive) {
+export function updateMeasuredActivityById(maId, payload, archive) {
   return axioss.put(`/data/measured-activities/${maId}/update`, {
     status: payload,
-    isArchive:archive
+    isArchive: archive,
   });
 }
 //// UPDATE MULTI MEASURED ACTIVITIES
-export function updateMultiMeasuredActivity(multiId, value) {
-  return axioss.post(`/data/measured-activities/multiple/update`, { 
+export function updateMultiMeasuredActivity(multiId, value, archive) {
+  return axioss.post(`/data/measured-activities/multiple/update`, {
     maId: multiId,
     status: value,
+    isArchive: archive,
   });
-}//// UPDATE MULTI MEASURED ACTIVITIES
-export function deleteMultiMeasuredActivity(multiId,) {
+} //// UPDATE MULTI MEASURED ACTIVITIES
+export function deleteMultiMeasuredActivity(multiId) {
   return axioss.post(`/data/measured-activities/multiple/delete`, {
     multiId: multiId,
-   
   });
 }

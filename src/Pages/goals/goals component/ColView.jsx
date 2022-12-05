@@ -1,8 +1,4 @@
 import React from "react";
-import {
-  buildStyles,
-  CircularProgressbarWithChildren,
-} from "react-circular-progressbar";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import Swal from "sweetalert2";
 import ModalOptionGoal from "./ModalOptionGoal";
@@ -10,14 +6,13 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { functionUpdateGoal } from "../../../redux/actions/goalsAction";
 import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
-import { FaRegDotCircle } from "react-icons/fa";
+import { GoPrimitiveDot } from "react-icons/go";
 
 const ColView = (props) => {
   const [isOption, setIsOption] = React.useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const updateStatus = async (id, status) => {
-    const payload = { status: status };
     console.log(status);
     const response = await dispatch(functionUpdateGoal(id, status));
     console.log(response);
@@ -29,7 +24,7 @@ const ColView = (props) => {
         timer: 1000,
       });
       setTimeout(() => {
-        navigate(".");
+        navigate(0);
       }, 500);
     }
     if (response.status !== "Success") {
@@ -49,9 +44,9 @@ const ColView = (props) => {
       className=" items-center shadow-md border p-4 grid grid-cols-11 m-3 rounded-lg h-24  relative"
     >
       {dateNow === createdData && (
-        <FaRegDotCircle
-          className="absolute -top-2  -left-2 text-red-500"
-          size={30}
+        <GoPrimitiveDot
+          className="absolute -top-4  -left-4 text-red-500"
+          size={40}
         />
       )}
       <div className="grid grid-cols-6">
@@ -70,7 +65,11 @@ const ColView = (props) => {
           navigate(`${props.goalId}`);
         }}
       >
-        <p className="text-xl font-semibold  truncate">{props.task}</p>
+        <div className="truncate">
+          {" "}
+          <p className="text-xl font-semibold  ">{props.task}</p>
+          <p className="font-medium text-xs">{props.description}</p>
+        </div>
         <p
           className={`text-xs capitalize ${
             props.rate === 100 && "font-medium text-lg"
@@ -161,7 +160,7 @@ const ColView = (props) => {
           onCloseOption={() => {
             setIsOption(false);
           }}
-          getData={props.getData}
+          d ata={props.getData}
           goalId={props.goalId}
           isOption={isOption}
           setIsOption={setIsOption}

@@ -24,7 +24,11 @@ const ReviewsProvider = ({ valueStart, valueEnd, size }) => {
         backgroundColor: "#3e98c7",
       })}
     >
-      <p className={`text-[${size ? size : 10}px]`}>{value} %</p>
+      {size ? (
+        <p className={`text-[${size}px]`}>{value} %</p>
+      ) : (
+        <p className={`text-[10px]`}>{value} %</p>
+      )}
     </CircularProgressbarWithChildren>
   );
 };

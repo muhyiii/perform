@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { BiEditAlt } from "react-icons/bi";
 import { motion } from "framer-motion";
-import { functionGetGoalsById } from "../../redux/actions/goalsAction";
+import { functionGetGoalsById, functionUpdateGoal } from "../../redux/actions/goalsAction";
 import {
   functionGetMeasuredActivityByGoalId,
   functionUpdateMeasuredActivity,
@@ -30,6 +30,29 @@ const GoalsDetail = () => {
     month: "short",
     day: "numeric",
   };
+  const updateStatusGoal = async (id, status) => {
+    console.log(status);
+    const response = await dispatch(functionUpdateGoal(id, status));
+    console.log(response);
+    if (response.status === "Success") {
+      Swal.fire({
+        title: "Succesfull!",
+        text: response.messege,
+        icon: "success",
+        timer: 1000,
+      });
+      setTimeout(() => {
+        navigate(".");
+      }, 500);
+    }
+    if (response.status !== "Success") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: response.messege,
+      });
+    }
+  };
   const getGoalById = async () => {
     const response = await dispatch(functionGetGoalsById(id));
     if (response.status === "Success") {
@@ -41,7 +64,7 @@ const GoalsDetail = () => {
       }, 500);
     }
   };
-  const updateStatus = async (id, status, archive) => {
+  const updateStatusMa = async (id, status, archive) => {
     console.log(id, status);
     const response = await dispatch(
       functionUpdateMeasuredActivity(id, status, archive)
@@ -56,7 +79,7 @@ const GoalsDetail = () => {
       });
       setTimeout(() => {
         navigate(0);
-      }, 500);
+      }, 1000);
     }
     if (response.status !== "Success") {
       Swal.fire({
@@ -91,8 +114,8 @@ const GoalsDetail = () => {
 
   if (isLoading) return <Loadings />;
   return (
-    <div className="grid grid-cols-12  w-full p-10 space-x-5 h-screen ">
-      <div className=" col-span-3  space-y-5 ">
+    <div className="grid grid-cols-12  w-full p-10 space-x-5 h-screen overflow-hidden">
+      <div className=" col-span-3 h-full space-y-5  relative">
         <div className="  ">
           <h1 className="text-5xl font-bold ">
             {" "}
@@ -109,7 +132,7 @@ const GoalsDetail = () => {
             Detail
           </h1>
         </div>
-        <div className="bg-slate-300 rounded-lg h-3/4  shadow-lg ">
+        <div className="bg-gradient-to-tr from-slate-300 to-white rounded-lg h-3/5  shadow-lg">
           <div className="m-auto text-center pt-10 capitalize ">
             <h1 className="text-xl font-semibold">{user.name}</h1>
             <p className="text-sm">{user.role}</p>
@@ -120,11 +143,78 @@ const GoalsDetail = () => {
               valueEnd={goal.rate}
               size={12}
             ></ReviewsProvider>
-
-            {goal.rate === 100 && (
+            {goal.rate === 100 ? (
               <p className="text-center mt-5 font-semibold">Completed</p>
+            ) : (
+              <div className="flex justify-center mt-5">
+                {" "}
+                <motion.button
+                  onClick={() => {
+                    if (goal.status === "to-do" || goal.status === "ongoing") {
+                      Swal.fire({
+                        title: "Are you sure?",
+                        text: "You can only update to the next stage",
+                        icon: "warning",
+                        showCancelButton: true,
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Yes, update it!",
+                      }).then(async (result) => {
+                        if (result.isConfirmed) {
+                          await Swal.fire({
+                            title: "Select value of status update",
+                            input: "select",
+                            inputOptions:
+                              goal.status !== "ongoing"
+                                ? {
+                                    ongoing: "Ongoing",
+                                    hold: "Hold",
+                                    done: "Done",
+                                  }
+                                : {
+                                    hold: "Hold",
+                                    done: "Done",
+                                  },
+                            inputPlaceholder: "Select a status",
+                            showCancelButton: true,
+                            inputValidator: (value) => {
+                              return new Promise((resolve) => {
+                                if (
+                                  value === "done" ||
+                                  value === "Hold" ||
+                                  value === "ongoing"
+                                ) {
+                          
+                                  updateStatusGoal(goal.goalId, value);
+                                  navigate(0)
+                                } else {
+                                  resolve(
+                                    "Choose the next stage of your status"
+                                  );
+                                }
+                              });
+                            },
+                          });
+                        }
+                      });
+                    } else {
+                      Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "You cannot update to stage before!",
+                      });
+                    }
+                  }}
+                  className="bg-slate-300 px-5 py-1 rounded-md uppercase text-sm font-medium h-7 m-auto text-center"
+                >
+                  Update
+                </motion.button>
+              </div>
             )}
           </div>
+        </div>
+        <div className="h-1/4  w-full bg-gradient-to-br from-white to-slate-100 py-5 rounded-md flex justify-center shadow-md ">
+          <div>{goal.image === null ? <p>no image</p> : goal.image}</div>
         </div>
       </div>
       <div className="col-span-9  bg-white shadow-lg   mr-5 rounded-xl p-5 capitalize relative">
@@ -256,7 +346,7 @@ const GoalsDetail = () => {
                                     inputValidator: (value) => {
                                       return new Promise((resolve) => {
                                         if (value !== e.status) {
-                                          updateStatus(e.maId, value, false);
+                                          updateStatusMa(e.maId, value, false);
                                         } else {
                                           resolve(
                                             "You can only update to next stage"
@@ -290,9 +380,19 @@ const GoalsDetail = () => {
               <p className="pb-5 text-sm">
                 measured activity of this goal is undefined
               </p>
-              <button className="bg-slate-800 hover:bg-slate-500 text-white px-8 py-2 rounded-2xl  justify-center shadow-lg">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() =>
+                  navigate(`/acc/ma`, {
+                    state: { isAddMA: true },
+                    replace: true,
+                  })
+                }
+                className="bg-slate-700 hover:bg-slate-800 text-white px-8 py-2 rounded-2xl font-medium  justify-center shadow-lg"
+              >
                 Add Measured Activities
-              </button>
+              </motion.button>
             </div>
           )}
         </div>

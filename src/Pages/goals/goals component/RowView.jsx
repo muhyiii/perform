@@ -1,43 +1,49 @@
 import axios from "axios";
 import React from "react";
-import {
-  buildStyles,
-  CircularProgressbarWithChildren,
-} from "react-circular-progressbar";
+
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { api } from "../../../Functions/axiosClient";
 
 import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
-import { FaRegDotCircle } from "react-icons/fa";
+import { GoPrimitiveDot } from "react-icons/go";
+import { useDispatch } from "react-redux";
+import { functionUpdateGoal } from "../../../redux/actions/goalsAction";
 
 const RowView = (props) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const updateStatus = async (id, status) => {
-    const response = await axios.put(api + `/data/goals/${id}/update`, {
-      status: status,
-    });
-    if (response.status === 200) {
-      Swal.fire("Succesfull!", response.data.messege, "success");
+    console.log(status);
+    const response = await dispatch(functionUpdateGoal(id, status));
+    console.log(response);
+    if (response.status === "Success") {
+      Swal.fire({
+        title: "Succesfull!",
+        text: response.messege,
+        icon: "success",
+        timer: 1000,
+      });
       setTimeout(() => {
         navigate(0);
-      }, 1000);
+      }, 500);
     }
-    if (response.statusText !== "OK")
+    if (response.status !== "Success") {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: response.data.messege,
+        text: response.messege,
       });
+    }
   };
   let dateNow = new Date(Date.now()).getDate();
   let createdData = new Date(props.createdAt).getDate();
   return (
     <div className="col-span-4 my-3 relative " key={props.id}>
       {dateNow === createdData && (
-        <FaRegDotCircle
-          className="absolute -top-0  -left-0 text-red-500"
-          size={25}
+        <GoPrimitiveDot
+          className="absolute -top-2  -left-2 text-red-500 "
+          size={40}
         />
       )}
       <div className="shadow-md m-1 px-4 py-2 border rounded-xl ">
@@ -100,7 +106,11 @@ const RowView = (props) => {
               size={10}
             ></ReviewsProvider>
           </div>
-          <p className="truncate col-span-9  font-semibold ">{props.task}</p>
+          <div className="truncate col-span-9  font-semibold ">
+            {" "}
+            <p>{props.task}</p>
+            <p className="text-xs">{props.description}</p>
+          </div>
         </div>
         <div className="flex justify-between border-t-2 mt-2">
           {props.value}.00

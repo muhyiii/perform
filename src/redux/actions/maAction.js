@@ -161,11 +161,15 @@ export function functionUpdateMeasuredActivity(id, status, archive) {
   };
 }
 
-export function functionUpdateMultiMeasuredActivity(multiId, value) {
+export function functionUpdateMultiMeasuredActivity(multiId, value, archive) {
   return async (dispatch) => {
     dispatch({ type: "Loading" });
     try {
-      const response = await updateMultiMeasuredActivity(multiId, value);
+      const response = await updateMultiMeasuredActivity(
+        multiId,
+        value,
+        archive
+      );
       const data = response.data;
       dispatch({
         type: "LoadingStop",

@@ -9,7 +9,7 @@ const Body = () => {
 
   return (
     <div className="grid grid-cols-11 w-screen h-screen">
-      <div className="bg-gray-800 w-full  flex h-screen col-span-2">
+      <div className= "bg-gradient-to-tr from-[#101424] to-[#091546] w-full  flex h-screen col-span-2">
         <div className="">
           <div className="m-6  hover:cursor-pointer">
             <img

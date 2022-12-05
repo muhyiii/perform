@@ -66,15 +66,17 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 w-auto  flex-auto h-96  ">
-          <div className="bg-slate-200 rounded-lg w-5/6 drop-shadow-xl  ">
+        <div className="grid grid-cols-7 gap-x-4 w-auto  flex-auto h-96  ">
+          <div className="bg-slate-200 rounded-lg col-span-2 h-96 drop-shadow-xl  ">
             <div className="container mx-auto    w-80 ">
+
+            {/* //Progress perusahaan */}
               <div className="container text-center mx-auto font-semibold p-5 pb-5 pl-5">
                 <h3>Progress Perusahaan</h3>
               </div>
 
               <div
-                className=" container mx-auto"
+                className="diagram lingkaran container mx-auto"
                 style={{ width: 150, height: 150 }}
               >
                 <ReviewsProvider valueStart={0} valueEnd={persen} size={14}>
@@ -89,7 +91,7 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-              <div className="container mx-auto grid grid-cols-2 gap-14 flex-auto w-60 h-7 pt-4">
+              <div className="container mx-auto grid grid-cols-2 gap-14 flex-auto w-60 h-7 pt-4 ">
                 <div className="bg-slate-200 border-2 border-gray-400 rounded-2xl">
                   <div className="text-md  text-red-600 text-center">
                     74.72%
@@ -107,14 +109,14 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-
-          <div className=" bg-slate-200 rounded-lg drop-shadow-xl  ">
+          {/* Pencapaian divisi */}
+          <div className="Diagram col-span-2 bg-slate-200 rounded-lg drop-shadow-xl h-96  ">
             <div className="font-semibold p-5 pl-5">
               <h3>Pencapaian Divisi</h3>
             </div>
-            <div className="mx-auto">
+            <div className=" mx-auto">
               <BarChart
-                width={500}
+                width={350}
                 height={300}
                 data={data}
                 margin={{
@@ -125,23 +127,21 @@ const Dashboard = () => {
                 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
+                <XAxis dataKey="name" className="text-sm" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="Goal" fill="#8884d8" />
-                <Bar dataKey="Ma" fill="#82ca9d" />
+                <Bar dataKey="Goal" fill="#af76f5" />
+                <Bar dataKey="Ma" fill="#7fd7f5" />
               </BarChart>
             </div>
           </div>
-        </div>
 
-        <div>
-          <Peringkat />
-          <div className="pt-20 pb-10 ">
-            <div className=" bg-slate-200 rounded-lg w-full h-screen  drop-shadow-xl  ">
-              <div className=" w-36 h-16 mx-auto font-extrabold text-2xl pt-5 text-center pb-5">
-                To do list
+          {/* //list your job */}
+          <div className=" col-span-3 w-full ">
+            <div className=" bg-slate-200 rounded-lg w-full h-5/6 drop-shadow-xl  ">
+              <div className=" w-36 h-16 mx-auto font-extrabold text-2xl pt-5 text-center pb-5 text-black">
+              your job list
               </div>
               <Swiper
                 freeMode={true}
@@ -158,24 +158,20 @@ const Dashboard = () => {
                   <TodoMa />
                 </SwiperSlide>
               </Swiper>
-
-              {/* <Slider {...settings}>
-            <div>
-           125
-            </div>
-            <div>
-           124
-            </div>
-            <div>
-           123
-            </div>
-          </Slider> */}
             </div>
           </div>
+        </div>
+        
+
+        <div className=" pt-20">
+{/* Peringkat */}
+          <Peringkat />
+{/* To do list */}
+         
         </div>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default Dashboard;

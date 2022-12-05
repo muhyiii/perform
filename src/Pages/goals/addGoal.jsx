@@ -185,6 +185,7 @@ const AddGoals = (props) => {
                         type="date"
                         name="toDate"
                         id="toDate"
+                        min={data.fromDate }
                         onChange={(e) => {
                           setData({
                             ...data,

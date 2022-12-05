@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { MdSearch, MdOutlineCancel } from "react-icons/md";
+import { MdSearch, MdOutlineCancel, MdDelete } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 import "../measured/ma";
 import User from "../../Component/User";
@@ -18,6 +18,8 @@ import Loadings from "../../Component/Loading";
 import jwtDecode from "jwt-decode";
 import Swal from "sweetalert2";
 import Scrollbars from "react-custom-scrollbars-2";
+import { HiPencil } from "react-icons/hi";
+import { IoArchiveOutline } from "react-icons/io5";
 
 const Ma = () => {
   const [data, setData] = React.useState([]);
@@ -26,6 +28,8 @@ const Ma = () => {
   const [isAll, setIsAll] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [query, setQuery] = React.useState("");
+  const [progress, setProgress] = React.useState("onprogress");
+  const [thisDateMonth, setThisDateMonth] = React.useState([]);
   const location = useLocation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -100,9 +104,9 @@ const Ma = () => {
   };
 
   //// UPDATE MULTI MA
-  const updateMultiMa = async (value) => {
+  const updateMultiMa = async (value, archive) => {
     const response = await dispatch(
-      functionUpdateMultiMeasuredActivity(multiId, value)
+      functionUpdateMultiMeasuredActivity(multiId, value, archive)
     );
     console.log(response);
     if (response.status === "Success") {
@@ -123,15 +127,26 @@ const Ma = () => {
         text: response.messege,
       });
   };
-
+  function getAllDaysInMonth() {
+    const now = new Date();
+    let month = now.getMonth();
+    let year = now.getFullYear();
+    const date = new Date(year, month, 1);
+    const dates = [];
+    while (date.getMonth() === month) {
+      dates.push(new Date(date).getTime());
+      date.setDate(date.getDate() + 1);
+    }
+    return setThisDateMonth(dates);
+  }
   React.useEffect(() => {
     setIsLoading(true);
+    getAllDaysInMonth();
     isAll ? getData() : getDataUserNow();
   }, [isAll]);
-  // React.useEffect(() => {
-  //   setIsLoading(true);
-  //   getData();
-  // }, []);
+  React.useEffect(() => {
+    console.log(multiId);
+  }, [multiId]);
   if (isLoading) return <Loadings />;
   return (
     <div className={`overflow-hidden relative  h-screen`}>
@@ -160,7 +175,24 @@ const Ma = () => {
           )}
         </AnimatePresence>
         <div className="flex justify-between items-center">
-          <h1 className="text-5xl font-bold ">Measured Activity</h1>{" "}
+          <div className="flex space-x-5 ml-4">
+            <p
+              onClick={() => setProgress("onprogress")}
+              className={` ${
+                progress === "onprogress" && "border-b-2  border-b-blue-400"
+              } hover:bg-blue-50 hover:cursor-pointer px-2 py-1  rounded`}
+            >
+              Active This Month
+            </p>
+            <p
+              onClick={() => setProgress("completedDate")}
+              className={` ${
+                progress === "completedDate" && "border-b-2  border-b-blue-400"
+              } hover:bg-blue-50 hover:cursor-pointer px-2 py-1  rounded`}
+            >
+              Complete Date
+            </p>
+          </div>
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
@@ -245,7 +277,7 @@ const Ma = () => {
 
         <p className="border-b-2 mt  w-full my-2 "></p>
         {multiId.length > 0 && (
-          <div className="text-white">
+          <div className="text-white flex mt-2">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -282,7 +314,7 @@ const Ma = () => {
                               value === "hold" ||
                               value === "ongoing"
                             ) {
-                              updateMultiMa(value,);
+                              updateMultiMa(value, false);
                             } else {
                               resolve("Choose the next stage of your status");
                             }
@@ -299,11 +331,35 @@ const Ma = () => {
                   });
                 }
               }}
-              className="px-5 py-1 bg-blue-500 my-1 rounded-lg mx-3"
+              className="px-2 space-x-1 py-1 bg-blue-500 my-1 rounded-lg mx-3 shadow-md flex items-center"
             >
-              {" "}
-              Update
+              <HiPencil />
+              <span>Update</span>
             </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => {
+                Swal.fire({
+                  title: "Are you sure?",
+                  text: "You won't be able to revert this!",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonColor: "#3085d6",
+                  cancelButtonColor: "#d33",
+                  confirmButtonText: "Yes, archive it!",
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    updateMultiMa(null, true);
+                  }
+                });
+              }}
+              className="px-2 space-x-1 py-1 bg-green-500 my-1 rounded-lg mx-3 shadow-md flex items-center"
+            >
+              <IoArchiveOutline />
+              <span>Archive</span>
+            </motion.button>
+
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -324,9 +380,10 @@ const Ma = () => {
                   }
                 });
               }}
-              className="px-5 py-1 bg-red-500 my-1 rounded-lg mx-3"
+              className="px-2 space-x-1 py-1 bg-red-500 my-1 rounded-lg mx-3 shadow-md flex items-center "
             >
-              Delete
+              <MdDelete />
+              <span>Delete</span>
             </motion.button>
           </div>
         )}
@@ -335,10 +392,6 @@ const Ma = () => {
         <Scrollbars autoHide style={{ height: "100%" }}>
           <div className="px-10">
             {data
-              ?.filter((e) => e.isArchive === false)
-              .filter((e) =>
-                status !== "" ? e.status === status : e.status !== null
-              )
               ?.filter(
                 (e) =>
                   e.task.toLowerCase().includes(query) ||
@@ -346,6 +399,17 @@ const Ma = () => {
                   e.goals[0].task.toLowerCase().includes(query) ||
                   e.users[0].name.toLowerCase().includes(query)
               )
+              ?.filter((e) =>
+                progress === "onprogress"
+                  ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
+                    new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
+                  : new Date(e.fromDate).getTime()
+              )
+              ?.filter((e) => e.isArchive === false)
+              .filter((e) =>
+                status !== "" ? e.status === status : e.status !== null
+              )
+
               ?.map((e) => (
                 <ListView
                   key={e.id}
