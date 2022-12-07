@@ -1,10 +1,7 @@
-import axios from "axios";
 import React from "react";
-
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { api } from "../../../Functions/axiosClient";
-
+import { motion } from "framer-motion";
 import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
 import { GoPrimitiveDot } from "react-icons/go";
 import { useDispatch } from "react-redux";
@@ -25,7 +22,7 @@ const RowView = (props) => {
         timer: 1000,
       });
       setTimeout(() => {
-        navigate(0);
+        props.getData();
       }, 500);
     }
     if (response.status !== "Success") {
@@ -39,7 +36,15 @@ const RowView = (props) => {
   let dateNow = new Date(Date.now()).getDate();
   let createdData = new Date(props.createdAt).getDate();
   return (
-    <div className="col-span-4 my-3 relative " key={props.id}>
+    <motion.div
+      layout
+      initial={{ opacity: 0, x: 100 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: 100 }}
+      transition={{ duration: 1, delay: `0.${props.length + 3}` }}
+      className="col-span-4 my-3 relative "
+      key={props.id}
+    >
       {dateNow === createdData && (
         <GoPrimitiveDot
           className="absolute -top-2  -left-2 text-red-500 "
@@ -174,7 +179,7 @@ const RowView = (props) => {
           </p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

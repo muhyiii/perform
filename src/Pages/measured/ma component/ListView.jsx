@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  buildStyles,
-  CircularProgressbarWithChildren,
-} from "react-circular-progressbar";
+import { motion } from "framer-motion";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
@@ -31,7 +28,13 @@ const ListView = (props) => {
   let createdData = new Date(props.createdAt).getDate();
 
   return (
-    <div>
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 100 }}
+      transition={{ delay: `0.${props.length + 1}`, duration: 1 }}
+    >
       <div
         // onClick={() => setIsOption(!isOption)}
         className=" items-center shadow-md  relative border-2 px-3 py-4 grid grid-cols-12 my-2 rounded-lg capitalize  peer-checked:border-blue-500"
@@ -128,6 +131,7 @@ const ListView = (props) => {
             onCloseOption={() => {
               setIsOption(false);
             }}
+            getData={props.getData}
             data={props.data}
             maId={props.maId}
             isOption={isOption}
@@ -135,7 +139,7 @@ const ListView = (props) => {
           />
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

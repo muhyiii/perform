@@ -3,6 +3,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 import Swal from "sweetalert2";
 import ModalOptionGoal from "./ModalOptionGoal";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { functionUpdateGoal } from "../../../redux/actions/goalsAction";
 import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
@@ -24,7 +25,7 @@ const ColView = (props) => {
         timer: 1000,
       });
       setTimeout(() => {
-        navigate(0);
+        props.getData();
       }, 500);
     }
     if (response.status !== "Success") {
@@ -37,9 +38,14 @@ const ColView = (props) => {
   };
   let dateNow = new Date(Date.now()).getDate();
   let createdData = new Date(props.createdAt).getDate();
-
+  console.log(props.length);
   return (
-    <div
+    <motion.div
+      layout
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 100 }}
+      transition={{ delay: `0.${props.length + 1}`, duration: 1 }}
       key={props.id}
       className=" items-center shadow-md border p-4 grid grid-cols-11 m-3 rounded-lg h-24  relative"
     >
@@ -160,13 +166,13 @@ const ColView = (props) => {
           onCloseOption={() => {
             setIsOption(false);
           }}
-          d ata={props.getData}
+          getData={props.getData}
           goalId={props.goalId}
           isOption={isOption}
           setIsOption={setIsOption}
         />
       </div>
-    </div>
+    </motion.div>
   );
 };
 

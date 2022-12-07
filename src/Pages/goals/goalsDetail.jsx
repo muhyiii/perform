@@ -7,7 +7,10 @@ import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { BiEditAlt } from "react-icons/bi";
 import { motion } from "framer-motion";
-import { functionGetGoalsById, functionUpdateGoal } from "../../redux/actions/goalsAction";
+import {
+  functionGetGoalsById,
+  functionUpdateGoal,
+} from "../../redux/actions/goalsAction";
 import {
   functionGetMeasuredActivityByGoalId,
   functionUpdateMeasuredActivity,
@@ -78,7 +81,8 @@ const GoalsDetail = () => {
         timer: 1000,
       });
       setTimeout(() => {
-        navigate(0);
+        navigate(".", { replace: true });
+        getMaByGoalId();
       }, 1000);
     }
     if (response.status !== "Success") {
@@ -184,9 +188,8 @@ const GoalsDetail = () => {
                                   value === "Hold" ||
                                   value === "ongoing"
                                 ) {
-                          
                                   updateStatusGoal(goal.goalId, value);
-                                  navigate(0)
+                                  navigate(0);
                                 } else {
                                   resolve(
                                     "Choose the next stage of your status"
@@ -292,13 +295,18 @@ const GoalsDetail = () => {
                   return (
                     <div
                       key={e.id}
-                      onClick={() => navigate(`/acc/ma/${e.maId}`)}
-                      className="border grid grid-cols-12 items-center rounded-lg px-2 py-1 shadow-sm hover:cursor-pointer hover:shadow-lg"
+                      className="border grid grid-cols-12 items-center rounded-lg px-2 py-1 shadow-sm  hover:shadow-lg"
                     >
-                      <h1 className=" truncate hover:text-clip col-span-2">
+                      <h1
+                        onClick={() => navigate(`/acc/ma/${e.maId}`)}
+                        className="hover:cursor-pointer truncate hover:text-clip col-span-2"
+                      >
                         {e.task}
                       </h1>
-                      <h1 className=" truncate hover:text-clip col-span-3">
+                      <h1
+                        onClick={() => navigate(`/acc/ma/${e.maId}`)}
+                        className="hover:cursor-pointer truncate hover:text-clip col-span-3"
+                      >
                         {e.description}
                       </h1>
 

@@ -59,9 +59,10 @@ const AddGoals = (props) => {
               replace: true,
               state: { isAddMA: true },
             });
-          navigate(0, {
-            replace: true,
-          });
+          else {
+            props.getData();
+            navigate(".", { state: { isAddGoal: false }, replace: true });
+          }
         }, 1000);
       }
       if (response.status !== "Success")
@@ -73,6 +74,7 @@ const AddGoals = (props) => {
         });
     }
   };
+  const toDay = new Date().toISOString().substring(0, 10);
 
   const getDataUsers = async () => {
     setIsLoading(true);
@@ -90,8 +92,8 @@ const AddGoals = (props) => {
     <AnimatePresence>
       {/* {props.AddGoals && ( */}
       <motion.div>
-        <div data-cy="modal-add" variant="primary" className="">
-          <motion.div className="w-[400px] pb-10 bg-white rounded-lg shadow-lg relative h-[650px]   ">
+        <div data-cy="modal-add" variant="primary" className="rounded-lg">
+          <motion.div className="w-[400px] pb-8 bg-white rounded-lg shadow-lg relative h-[650px]   ">
             <Scrollbars autoHide style={{ height: "100%" }}>
               {" "}
               {isLoading ? (
@@ -103,9 +105,9 @@ const AddGoals = (props) => {
                     className="top-3 right-3 absolute cursor-pointer"
                     onClick={props.onClose}
                   >
-                    <CgClose size={30} />
+                    <CgClose size={30} color={"white"} />
                   </div>
-                  <div className="pt-6 mx-5 ">
+                  <div className="p-5 pt-6 rounded-t-lg text-white bg-gradient-to-tr from-[#101424] to-[#091546]  ">
                     <h1 className="text-3xl font-semibold ">Add Goals</h1>
                     <p className="text-sm ">Adding goals for another person</p>
                   </div>
@@ -169,6 +171,7 @@ const AddGoals = (props) => {
                         type="date"
                         name="fromDate"
                         id="fromDate"
+                        defaultValue={toDay}
                         onChange={(e) => {
                           setData({
                             ...data,
@@ -185,7 +188,8 @@ const AddGoals = (props) => {
                         type="date"
                         name="toDate"
                         id="toDate"
-                        min={data.fromDate }
+                        min={data.fromDate}
+                        defaultValue={toDay}
                         onChange={(e) => {
                           setData({
                             ...data,
@@ -195,12 +199,14 @@ const AddGoals = (props) => {
                       />
                     </div>
 
-                    <button
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
                       className="border rounded-md w-full py-2 my-5 outline-none px-2 hover:bg-blue-400 hover:text-white hover:font-semibold uppercase transition-colors duration-500 ease-linear "
                       onClick={sendData}
                     >
                       Send
-                    </button>
+                    </motion.button>
                   </div>
                 </div>
               )}

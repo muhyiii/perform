@@ -22,7 +22,15 @@ axiosClient.interceptors.response.use(
       clearToken();
       localStorage.clear();
       window.location.replace("/login");
-    } else {
+    }
+    //  else if (error) {
+    //   localStorage.removeItem("token");
+
+    //   clearToken();
+    //   localStorage.clear();
+    //   window.location.replace("/login");
+    // } 
+    else {
       return Promise.reject(error);
     }
   }

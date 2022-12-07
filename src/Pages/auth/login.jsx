@@ -6,7 +6,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import Swal from "sweetalert2";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-
+import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { functionLogin } from "../../redux/actions/authAction";
 import { Player } from "@lottiefiles/react-lottie-player";
@@ -34,8 +34,6 @@ export default function Login() {
 
     // console.log(response.status );
     if (response.status === "Success") {
-     
-
       setTimeout(() => {
         navigate("/acc/dashboard", { replace: true });
         setIsLoading(false);
@@ -67,7 +65,7 @@ export default function Login() {
                 autoplay
                 loop
                 src={
-                  "https://lottie.host/3425dfb9-3688-4154-8741-ce55a06174ea/d70t0oUroc.json"
+                  "https://lottie.host/b44bd23b-999e-48a3-8efc-68ecf87bea51/8Gl3bPK7CJ.json"
                 }
                 style={{ height: "100px", width: "100px" }}
               ></Player>
@@ -83,21 +81,63 @@ export default function Login() {
         <div className="z-0 h-40 w-40 left-48 top-14  opacity-40 bg-blue-600 skew-x-6 mix-blend-multiply absolute rounded-full shadow-xl"></div>
         <div className="grid grid-cols-2 w-3/4  py-10  bg-white  rounded-lg  z-10 ">
           <div className="  flex items-center justify-center">
-            <img src={Logo} alt="" className="" />
+            <motion.img
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                delay: 0.4,
+                duration: 1,
+                ease: "easeOut",
+                type: "spring",
+                bounce: 0.3,
+              }}
+              src={Logo}
+              alt=""
+              className=""
+            />
           </div>
           <div className=" rounded-r-2xl flex justify-center items-center ">
             <div className=" w-4/5">
               <div className="text-left mt-5">
                 <div className="  ">
-                  <p className=" text-6xl font-bold ">Hello,</p>
-                  <p className=" text-2xl font-bold   ">Welcome back</p>
+                  <motion.p
+                    initial={{ x: -100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 1, bounce: 0.2, type: "spring" }}
+                    className=" text-6xl font-bold"
+                  >
+                    Hello,
+                  </motion.p>
+                  <motion.p
+                    initial={{ x: -100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{
+                      delay: 0.2,
+                      duration: 1,
+                      bounce: 0.2,
+                      type: "spring",
+                    }}
+                    className=" text-2xl font-bold"
+                  >
+                    Welcome back
+                  </motion.p>
                 </div>
               </div>
               {/* //from */}
               <form action="">
                 <div className="space-y-5 mt-14 ">
                   {" "}
-                  <div className="  ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm">
+                  <motion.div
+                    initial={{ x: -100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{
+                      delay: 0.2,
+                      duration: 1,
+                      bounce: 0.2,
+                      type: "spring",
+                    }}
+                    className="  ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm"
+                  >
                     <label className="">
                       <input
                         onChange={handleChange}
@@ -108,8 +148,18 @@ export default function Login() {
                         className="outline-none w-full bg-transparent bg-none"
                       />
                     </label>{" "}
-                  </div>
-                  <div className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm ">
+                  </motion.div>
+                  <motion.div
+                    initial={{ x: -100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{
+                      delay: 0.4,
+                      duration: 1,
+                      bounce: 0.2,
+                      type: "spring",
+                    }}
+                    className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-sm  outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm "
+                  >
                     <label className="flex items-center justify-center">
                       <input
                         onChange={handleChange}
@@ -128,11 +178,23 @@ export default function Login() {
                         )}
                       </div>
                     </label>
-                  </div>
+                  </motion.div>
                   {/* //button */}
                 </div>
               </form>
-              <button
+              <motion.button
+                initial={{ opacity: 0, scale: 0 }}
+                animate={
+                  value.username !== "" &&
+                  value.password !== "" && { opacity: 1, scale: 1 }
+                }
+                transition={{
+                  delay: 0.4,
+                  duration: 1,
+                  ease: "easeOut",
+                  type: "spring",
+                  bounce: 0.3,
+                }}
                 type="button"
                 onClick={() => {
                   if (value.password !== "" && value.username !== "")
@@ -148,8 +210,18 @@ export default function Login() {
                 className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
               >
                 {isLoading ? "Loading..." : "Sign In"}
-              </button>
-              <div className="flex text-center w-full justify-center mt-5 mb-10">
+              </motion.button>
+              <motion.div
+                initial={{ x: -100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{
+                  delay: 0.6,
+                  duration: 1,
+                  bounce: 0.2,
+                  type: "spring",
+                }}
+                className="flex text-center w-full justify-center mt-5 mb-10"
+              >
                 <p className="">Don't have an account?</p>
                 <Link
                   to={"/register"}
@@ -157,7 +229,7 @@ export default function Login() {
                 >
                   Sign Up
                 </Link>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>

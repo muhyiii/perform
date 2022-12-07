@@ -1,8 +1,7 @@
 import React from "react";
-import './Images/fonts/MazzardH-Black.otf'
+import "./Images/fonts/MazzardH-Black.otf";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import "./Component/Support/loading.css"
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";

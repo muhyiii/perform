@@ -22,7 +22,7 @@ const ModalOptionGoal = (props) => {
       });
 
       setTimeout(() => {
-        navigate(0);
+       props.getData()
       }, 500);
     }
     if (response.status !== "Success")
@@ -45,7 +45,7 @@ const ModalOptionGoal = (props) => {
       });
 
       setTimeout(() => {
-        navigate(0);
+       props.getData()
       }, 500);
     }
     if (response.status !== "Success")

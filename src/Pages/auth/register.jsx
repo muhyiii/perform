@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Logo from "../../Images/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import { Formik, replace, useFormik } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
+import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { functionRegister } from "../../redux/actions/authAction";
@@ -44,14 +45,46 @@ export default function Register() {
         <div className="z-0 h-40 w-40 left-48 top-14  opacity-40 bg-blue-600 skew-x-6 mix-blend-multiply absolute rounded-full shadow-xl"></div>
         <div className="grid grid-cols-2 w-3/4  py-10  bg-white  rounded-lg  z-10 ">
           <div className="  flex items-center justify-center">
-            <img src={Logo} alt="" className="" />
+            <motion.img
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                delay: 0.4,
+                duration: 1,
+                ease: "easeOut",
+                type: "spring",
+                bounce: 0.3,
+              }}
+              src={Logo}
+              alt=""
+              className=""
+            />
           </div>
           <div className=" rounded-r-2xl flex justify-center items-center ">
             <div className=" w-4/5">
               <div className="text-left mt-5">
                 <div className="  ">
-                  <p className=" text-6xl font-bold">Hello,</p>
-                  <p className=" text-2xl font-bold">Welcome back</p>
+                  <motion.p
+                    initial={{ x: -100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ duration: 1, bounce: 0.2, type: "spring" }}
+                    className=" text-6xl font-bold"
+                  >
+                    Hello,
+                  </motion.p>
+                  <motion.p
+                    initial={{ x: -100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{
+                      delay: 0.2,
+                      duration: 1,
+                      bounce: 0.2,
+                      type: "spring",
+                    }}
+                    className=" text-2xl font-bold"
+                  >
+                    Welcome back
+                  </motion.p>
                 </div>
               </div>
               {/* //from */}
@@ -93,8 +126,18 @@ export default function Register() {
                   }) => (
                     <form action="" onSubmit={handleSubmit}>
                       <div className="space-y-5 mt-14 ">
-                        <label className="">
-                          <div className=" ">
+                        <motion.div
+                          initial={{ x: -100, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{
+                            delay: 0.2,
+                            duration: 1,
+                            bounce: 0.2,
+                            type: "spring",
+                          }}
+                          className=" "
+                        >
+                          <label className="">
                             <input
                               onChange={handleChange}
                               placeholder="Enter your username"
@@ -108,9 +151,19 @@ export default function Register() {
                                 {errors.username}
                               </p>
                             )}
-                          </div>
-                        </label>{" "}
-                        <div className=" rounded-sm">
+                          </label>{" "}
+                        </motion.div>
+                        <motion.div
+                          initial={{ x: -100, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{
+                            delay: 0.4,
+                            duration: 1,
+                            bounce: 0.2,
+                            type: "spring",
+                          }}
+                          className=""
+                        >
                           <label className=" flex items-center focus-within:ring-2 ring-black ring-1 rounded-sm  invalid:ring-red-500 invalid:ring-2     outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm  ">
                             <input
                               type={showPassword ? "text" : "password"}
@@ -133,8 +186,17 @@ export default function Register() {
                               {errors.password}
                             </p>
                           )}
-                        </div>
-                        <div className=" rounded-sm">
+                        </motion.div>
+                        <motion.div
+                          initial={{ x: -100, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{
+                            delay: 0.6,
+                            duration: 1,
+                            bounce: 0.2,
+                            type: "spring",
+                          }}
+                        >
                           <label className=" flex items-center focus-within:ring-2 ring-black ring-1 rounded-sm  invalid:ring-red-500 invalid:ring-2     outline-none py-2 w-full px-3  text-base bg-transparent shadow-sm  ">
                             <input
                               type={
@@ -166,21 +228,49 @@ export default function Register() {
                                 {errors.confirm_password}
                               </p>
                             )}
-                        </div>
+                        </motion.div>
                         {/* //button */}
                       </div>
-                      <button
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        initial={{ opacity: 0, scale: 0 }}
+                        transition={{
+                          ease: "easeIn",
+                          type: "spring",
+                          bounce: 0.3,
+                          damping: 10,
+                          stiffness: 100,
+                        }}
+                        animate={
+                          values.username !== "" &&
+                          values.password !== "" &&
+                          values.confirm_password !== "" && {
+                            opacity: 1,
+                            scale: 1,
+                          }
+                        }
                         type="submit"
                         className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
                       >
                         Sign Up
-                      </button>
+                      </motion.button>
                     </form>
                   )}
                 </Formik>
               </div>
 
-              <div className="flex text-center w-full justify-center mt-5 mb-10">
+              <motion.div
+                initial={{ x: -100, opacity: 0 }}
+                animate={{ x: 0, opacity: 1 }}
+                transition={{
+                  delay: 0.8,
+                  duration: 1,
+                  bounce: 0.2,
+                  type: "spring",
+                }}
+                className="flex text-center w-full justify-center mt-5 mb-10"
+              >
                 <p className="">Already have an account?</p>
                 <Link
                   to={"/login"}
@@ -188,7 +278,7 @@ export default function Register() {
                 >
                   Sign In
                 </Link>
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>

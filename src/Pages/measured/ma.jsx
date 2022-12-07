@@ -1,6 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { MdSearch, MdOutlineCancel, MdDelete } from "react-icons/md";
+import {
+  MdSearch,
+  MdOutlineCancel,
+  MdDelete,
+  MdOutlineClose,
+} from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
 import "../measured/ma";
 import User from "../../Component/User";
@@ -92,7 +97,8 @@ const Ma = () => {
         timer: 1000,
       });
       setTimeout(() => {
-        navigate(0);
+        navigate(".");
+        getData();
       }, 1000);
     }
     if (response.status !== "Success")
@@ -117,7 +123,8 @@ const Ma = () => {
         timer: 1000,
       });
       setTimeout(() => {
-        navigate(0);
+        navigate(".");
+        getData();
       }, 1000);
     }
     if (response.status !== "Success")
@@ -167,6 +174,7 @@ const Ma = () => {
               transition={{ ease: "easeOut", duration: 1 }}
             >
               <AddMA
+                getData={getData}
                 onClose={() =>
                   navigate(".", { state: { isAddMA: false }, replace: true })
                 }
@@ -385,59 +393,74 @@ const Ma = () => {
               <MdDelete />
               <span>Delete</span>
             </motion.button>
+            {/* <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => {
+                setMultiId([]);
+              }}
+              className="px-2 space-x-1 py-1 bg-black text-white my-1 rounded-lg mx-3 shadow-md flex items-center"
+            >
+              <MdOutlineClose />
+              <span>Cancel</span>
+            </motion.button> */}
           </div>
         )}
       </div>
-      <div className="mt-2 overflow-auto h-[75%]">
+      <motion.div layout className="mt-2 overflow-auto h-[75%]">
         <Scrollbars autoHide style={{ height: "100%" }}>
-          <div className="px-10">
-            {data
-              ?.filter(
-                (e) =>
-                  e.task.toLowerCase().includes(query) ||
-                  e.description.toLowerCase().includes(query) ||
-                  e.goals[0].task.toLowerCase().includes(query) ||
-                  e.users[0].name.toLowerCase().includes(query)
-              )
-              ?.filter((e) =>
-                progress === "onprogress"
-                  ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
-                    new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
-                  : new Date(e.fromDate).getTime()
-              )
-              ?.filter((e) => e.isArchive === false)
-              .filter((e) =>
-                status !== "" ? e.status === status : e.status !== null
-              )
+          <motion.div layout className="px-10">
+            <AnimatePresence>
+              {data
+                ?.filter(
+                  (e) =>
+                    e.task.toLowerCase().includes(query) ||
+                    e.description.toLowerCase().includes(query) ||
+                    e.goals[0].task.toLowerCase().includes(query) ||
+                    e.users[0].name.toLowerCase().includes(query)
+                )
+                ?.filter((e) =>
+                  progress === "onprogress"
+                    ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
+                      new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
+                    : new Date(e.fromDate).getTime()
+                )
+                ?.filter((e) => e.isArchive === false)
+                .filter((e) =>
+                  status !== "" ? e.status === status : e.status !== null
+                )
 
-              ?.map((e) => (
-                <ListView
-                  key={e.id}
-                  data={e}
-                  name={e.users[0].name}
-                  role={e.users[0].role}
-                  image={e.users[0].image}
-                  goalTask={e.goals[0].task}
-                  idUser={e.idUser}
-                  idGoal={e.idGoal}
-                  maId={e.maId}
-                  task={e.task}
-                  description={e.description}
-                  status={e.status}
-                  rate={e.rate}
-                  value={e.value}
-                  isArchive={e.isArchive}
-                  fromDate={e.fromDate}
-                  toDate={e.toDate}
-                  createdAt={e.createdAt}
-                  updatedAt={e.updatedAt}
-                  handleChange={handleChange}
-                  setMultiId={setMultiId}
-                />
-              ))}
-          </div>
+                ?.map((e, index) => (
+                  <ListView
+                    key={e.id}
+                    data={e}
+                    name={e.users[0].name}
+                    role={e.users[0].role}
+                    image={e.users[0].image}
+                    goalTask={e.goals[0].task}
+                    idUser={e.idUser}
+                    idGoal={e.idGoal}
+                    maId={e.maId}
+                    task={e.task}
+                    description={e.description}
+                    status={e.status}
+                    rate={e.rate}
+                    value={e.value}
+                    isArchive={e.isArchive}
+                    fromDate={e.fromDate}
+                    toDate={e.toDate}
+                    createdAt={e.createdAt}
+                    updatedAt={e.updatedAt}
+                    handleChange={handleChange}
+                    setMultiId={setMultiId}
+                    getData={getData}
+                    length={index}
+                  />
+                ))}
+            </AnimatePresence>
+          </motion.div>
         </Scrollbars>
-      </div>
+      </motion.div>
     </div>
   );
 };

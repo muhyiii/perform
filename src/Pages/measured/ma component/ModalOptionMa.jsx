@@ -23,7 +23,8 @@ const ModalOptionMa = (props) => {
       });
 
       setTimeout(() => {
-        navigate(0);
+        navigate(".");
+        props.getData();
       }, 1000);
     }
     if (response.status !== "Success")
@@ -48,7 +49,8 @@ const ModalOptionMa = (props) => {
         timer: 1000,
       });
       setTimeout(() => {
-        navigate(0);
+        navigate(".");
+        props.getData();
       }, 500);
     }
     if (response.status !== "Success") {

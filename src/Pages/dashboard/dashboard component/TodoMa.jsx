@@ -36,7 +36,7 @@ const TodoMa = (props) => {
         Ma
       </div>
 
-      <div className="h-[420px] overflow-x-auto scrollbar-hide">
+      <div className=" overflow-x-auto scrollbar-hide">
         <div className=" pt-1 ">
 
             {maData.map((pd) => {

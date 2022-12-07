@@ -59,7 +59,8 @@ const AddMA = (props) => {
       });
       setData({});
       setTimeout(() => {
-        navigate(0, { replace: true });
+        props.getData();
+        navigate(".", { replace: true, state: { isAddMA: false } });
       }, 1000);
       //   await dispatch(props.getData());
     }
@@ -91,7 +92,7 @@ const AddMA = (props) => {
       }, 500);
     }
   };
-
+  const toDay = new Date().toISOString().substring(0, 10);
   React.useEffect(() => {
     setIsLoading(true);
     getDataUsers();
@@ -116,7 +117,7 @@ const AddMA = (props) => {
                   className="top-3 right-3 absolute cursor-pointer"
                   onClick={props.onClose}
                 >
-                  <CgClose size={30} color={'white'} />
+                  <CgClose size={30} color={"white"} />
                 </div>
                 <div className=" text-white bg-gradient-to-tr from-[#101424] to-[#091546] p-5 ">
                   <h1 className="text-2xl font-semibold ">
@@ -250,6 +251,7 @@ const AddMA = (props) => {
                       type="date"
                       name="fromDate"
                       id="fromDate"
+                      defaultValue={toDay}
                       onChange={(e) => {
                         setData({
                           ...data,
@@ -267,6 +269,7 @@ const AddMA = (props) => {
                       name="toDate"
                       id="toDate"
                       min={data.fromDate}
+                      defaultValue={toDay}
                       onChange={(e) => {
                         setData({
                           ...data,
@@ -276,13 +279,15 @@ const AddMA = (props) => {
                     />
                   </div>
 
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                     className="border rounded-md w-full py-2 my-5 outline-none px-2 hover:bg-blue-400 hover:text-white hover:font-semibold uppercase transition-colors duration-500 ease-linear "
                     onClick={sendData}
                     // onClick={() => console.log(data)}
                   >
                     Send
-                  </button>
+                  </motion.button>
                 </div>
               </div>
             )}{" "}

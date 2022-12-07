@@ -81,7 +81,8 @@ const Goals = () => {
         timer: 1000,
       });
       setTimeout(() => {
-        navigate(0);
+        setMultiId([]);
+        getData();
       }, 1000);
     }
     if (response.status !== "Success")
@@ -106,7 +107,8 @@ const Goals = () => {
         timer: 1000,
       });
       setTimeout(() => {
-        navigate(0);
+        setMultiId([]);
+        getData();
       }, 1000);
     }
     if (response.status !== "Success")
@@ -148,7 +150,7 @@ const Goals = () => {
       dates.push(new Date(date).getTime());
       date.setDate(date.getDate() + 1);
     }
-    console.log(dates);
+    // console.log(dates);
     return setThisDateMonth(dates);
   }
 
@@ -422,128 +424,132 @@ const Goals = () => {
           </div>
         )}
       </div>
-      <div className="h-[75%]  w-full">
+      <motion.div layout className="h-[75%]  w-full">
         <Scrollbars autoHide style={{ height: "100%" }}>
-          <div className="px-10">
-            {" "}
-            {row ? (
-              <div className="grid grid-cols-12">
-                {data
-                  ?.filter(
-                    (e) =>
-                      e.task.toLowerCase().includes(query) ||
-                      e.description.toLowerCase().includes(query) ||
-                      e.users[0].name.toLowerCase().includes(query)
-                  )
-                  ?.filter((e) =>
-                    progress === "onprogress"
-                      ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
-                        new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
-                      : new Date(e.fromDate).getTime()
-                  )
-                  ?.filter((e) => e.isArchive === false)
-                  ?.filter((e) =>
-                    status !== "" ? e.status === status : e.status !== null
-                  )
+          <motion.div layout className="px-10">
+            <AnimatePresence>
+              {" "}
+              {row ? (
+                <div className="grid grid-cols-12">
+                  {data
+                    ?.filter(
+                      (e) =>
+                        e.task.toLowerCase().includes(query) ||
+                        e.description.toLowerCase().includes(query) ||
+                        e.users[0].name.toLowerCase().includes(query)
+                    )
+                    ?.filter((e) =>
+                      progress === "onprogress"
+                        ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
+                          new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
+                        : new Date(e.fromDate).getTime()
+                    )
+                    ?.filter((e) => e.isArchive === false)
+                    ?.filter((e) =>
+                      status !== "" ? e.status === status : e.status !== null
+                    )
 
-                  ?.map((e) => {
-                    let fromDate = new Date(e.fromDate).toLocaleDateString(
-                      "id",
-                      optionDateString
-                    );
-                    let toDate = new Date(e.toDate).toLocaleDateString(
-                      "id",
-                      optionDateString
-                    );
-                    console.log(
-                      new Date(e.fromDate).toLocaleDateString(
+                    ?.map((e,index) => {
+                      let fromDate = new Date(e.fromDate).toLocaleDateString(
                         "id",
                         optionDateString
-                      ) +
-                        "  " +
-                        thisDateMonth
-                    );
-                    return (
-                      <RowView
-                        data={e}
-                        key={e.id}
-                        id={e.id}
-                        name={e.users[0].name}
-                        image={e.users[0].image}
-                        role={e.users[0].role}
-                        rate={e.rate}
-                        fromDate={e.fromDate}
-                        toDate={e.toDate}
-                        task={e.task}
-                        description={e.description}
-                        value={e.value}
-                        goalId={e.goalId}
-                        status={e.status}
-                        fromDateA={fromDate}
-                        toDateA={toDate}
-                        createdAt={e.createdAt}
-                        getData={getData}
-                        handleChange={handleChange}
-                      />
-                    );
-                  })}
-              </div>
-            ) : (
-              <div>
-                {data
-                  ?.filter((e) =>
-                    progress === "onprogress"
-                      ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
-                        new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
-                      : new Date(e.fromDate).getTime()
-                  )
-                  ?.filter((e) => e.isArchive === false)
-                  ?.filter((e) =>
-                    status !== "" ? e.status === status : e.status !== null
-                  )
-                  ?.filter(
-                    (e) =>
-                      e.task.toLowerCase().includes(query) ||
-                      e.users[0].name.toLowerCase().includes(query)
-                  )
-                  ?.map((e) => {
-                    let fromDate = new Date(e.fromDate).toLocaleDateString(
-                      "id",
-                      optionDateString
-                    );
-                    let toDate = new Date(e.toDate).toLocaleDateString(
-                      "id",
-                      optionDateString
-                    );
-                    return (
-                      <ColView
-                        data={e}
-                        key={e.id}
-                        id={e.id}
-                        name={e.users[0].name}
-                        image={e.users[0].image}
-                        role={e.users[0].role}
-                        rate={e.rate}
-                        fromDate={e.fromDate}
-                        toDate={e.toDate}
-                        task={e.task}
-                        description={e.description}
-                        value={e.value}
-                        goalId={e.goalId}
-                        status={e.status}
-                        fromDateA={fromDate}
-                        toDateA={toDate}
-                        createdAt={e.createdAt}
-                        updateMultiGoals={updateMultiGoals}
-                        getData={getData}
-                      />
-                    );
-                  })}
-              </div>
-            )}
-          </div>
+                      );
+                      let toDate = new Date(e.toDate).toLocaleDateString(
+                        "id",
+                        optionDateString
+                      );
+                      console.log(
+                        new Date(e.fromDate).toLocaleDateString(
+                          "id",
+                          optionDateString
+                        ) +
+                          "  " +
+                          thisDateMonth
+                      );
+                      return (
+                        <RowView
+                          data={e}
+                          key={index}
+                          id={e.id}
+                          name={e.users[0].name}
+                          image={e.users[0].image}
+                          role={e.users[0].role}
+                          rate={e.rate}
+                          fromDate={e.fromDate}
+                          toDate={e.toDate}
+                          task={e.task}
+                          description={e.description}
+                          value={e.value}
+                          goalId={e.goalId}
+                          status={e.status}
+                          fromDateA={fromDate}
+                          toDateA={toDate}
+                          createdAt={e.createdAt}
+                          getData={getData}
+                          handleChange={handleChange}
+                          length={index}
+                        />
+                      );
+                    })}
+                </div>
+              ) : (
+                <div>
+                  {data
+                    ?.filter((e) =>
+                      progress === "onprogress"
+                        ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
+                          new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
+                        : new Date(e.fromDate).getTime()
+                    )
+                    ?.filter((e) => e.isArchive === false)
+                    ?.filter((e) =>
+                      status !== "" ? e.status === status : e.status !== null
+                    )
+                    ?.filter(
+                      (e) =>
+                        e.task.toLowerCase().includes(query) ||
+                        e.users[0].name.toLowerCase().includes(query)
+                    )
+                    ?.map((e, index) => {
+                      let fromDate = new Date(e.fromDate).toLocaleDateString(
+                        "id",
+                        optionDateString
+                      );
+                      let toDate = new Date(e.toDate).toLocaleDateString(
+                        "id",
+                        optionDateString
+                      );
+                      return (
+                        <ColView
+                          data={e}
+                          key={index}
+                          id={e.id}
+                          name={e.users[0].name}
+                          image={e.users[0].image}
+                          role={e.users[0].role}
+                          rate={e.rate}
+                          fromDate={e.fromDate}
+                          toDate={e.toDate}
+                          task={e.task}
+                          description={e.description}
+                          value={e.value}
+                          goalId={e.goalId}
+                          status={e.status}
+                          fromDateA={fromDate}
+                          toDateA={toDate}
+                          createdAt={e.createdAt}
+                          updateMultiGoals={updateMultiGoals}
+                          getData={getData}
+                          length={index}
+                        />
+                      );
+                    })}
+                </div>
+              )}
+            </AnimatePresence>
+          </motion.div>
         </Scrollbars>
-      </div>
+      </motion.div>
     </div>
   );
 };
