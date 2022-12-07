@@ -115,9 +115,20 @@ export function updateMultiMeasuredActivity(multiId, value, archive) {
     status: value,
     isArchive: archive,
   });
-} //// UPDATE MULTI MEASURED ACTIVITIES
+}
+//// UPDATE MULTI MEASURED ACTIVITIES
 export function deleteMultiMeasuredActivity(multiId) {
   return axioss.post(`/data/measured-activities/multiple/delete`, {
     multiId: multiId,
   });
+}
+
+///// PERIOD
+//// GET ALL PERIOD DATA
+export function getAllPeriods() {
+  return axioss.get(`/data/periods`);
+}
+//// ADD NEW PERIOD
+export function addPeriod(value) {
+  return axioss.post(`/add-period`, value);
 }

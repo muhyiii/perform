@@ -42,7 +42,8 @@ const Biodata = () => {
       initialValues.name === "" ||
       initialValues.role === "" ||
       initialValues.position === "" ||
-      initialValues.birthday === ""
+      initialValues.birthday === "" ||
+      selectedImage === ""
     ) {
       Swal.fire({
         icon: "error",
@@ -50,20 +51,21 @@ const Biodata = () => {
         text: "Please fill the input requirement.",
         timer: 3000,
       });
-    }
-    const response = await dispatch(functionRegisterBiodata(formData));
-    console.log(response);
-    if (response.status === "Success") {
-      Swal.fire({
-        title: "Succesfull!",
-        text: response.messege,
-        icon: "success",
-        timer: 1000,
-      });
-      setIsLoading(false);
-      setTimeout(() => {
-        navigate("/acc/dashboard", { replace: true });
-      }, 500);
+    } else {
+      const response = await dispatch(functionRegisterBiodata(formData));
+      console.log(response);
+      if (response.status === "Success") {
+        Swal.fire({
+          title: "Succesfull!",
+          text: response.messege,
+          icon: "success",
+          timer: 1000,
+        });
+        setIsLoading(false);
+        setTimeout(() => {
+          navigate("/acc/dashboard", { replace: true });
+        }, 500);
+      }
     }
     setIsLoading(false);
   };

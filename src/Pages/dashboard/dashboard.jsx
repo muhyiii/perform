@@ -22,7 +22,8 @@ import TodoMa from "./dashboard component/TodoMa";
 import ReviewsProvider from "../../Component/Support/ReviewsProvider";
 import Peringkat from "./dashboard component/Peringkat";
 import Scrollbars from "react-custom-scrollbars-2";
-
+import Target from "../../Images/target.png";
+ 
 const data = [
   {
     name: "Risk",
@@ -30,11 +31,12 @@ const data = [
     Ma: 24,
     amt: 24,
   },
-
+ 
+ 
   {
     name: "Operational",
     Goal: 20,
-    Ma: 98,
+    Ma: 44,
     amt: 22,
   },
   {
@@ -45,7 +47,7 @@ const data = [
   },
 ];
 const persen = 66;
-
+ 
 const Dashboard = () => {
   return (
     <div className="relative  h-screen">
@@ -56,20 +58,20 @@ const Dashboard = () => {
         </div> */}
         <div className="_periode flex justify-start pb-5">
           <div className="font-serif ">Periode :</div>
-
+ 
           <div className="">
             <input type="month" className="font-serif text-blue-500 " />
           </div>
         </div>
-
-        <div className="grid grid-cols-12 gap-x-2 w-auto  flex-auto h-96  ">
+ 
+        <div className="grid grid-cols-12 gap-x-3 w-auto  flex-auto h-96  ">
           <div className="bg-slate-200 rounded-lg col-span-3  drop-shadow-xl  ">
             <div className="container mx-auto    ">
               {/* //Progress perusahaan */}
               <div className="container text-center mx-auto font-semibold py-5">
                 <h3>Progress Perusahaan</h3>
               </div>
-
+ 
               <div
                 className="diagram lingkaran container mx-auto"
                 style={{ width: 120, height: 150 }}
@@ -81,7 +83,7 @@ const Dashboard = () => {
                 ></ReviewsProvider>
               </div>
               <div className="container mx-auto">
-                <div className="_periode  flex   ">
+                <div className="_periode flex   ">
                   <div>
                     <p className="text-center text-sm px-10">
                       Anda telah mencapai 66% dari keseluruhan goal anda
@@ -89,7 +91,7 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-              <div className="container mx-auto    space-x-5 justify-center flex  mt-10">
+              <div className="container mx-auto space-x-5 justify-center flex  mt-10">
                 <div className="bg-slate-200 text-xs text-center">
                   <div className="text-base  text-red-600 text-center border-gray-400  border-2 rounded-xl mb-1">
                     74.72%
@@ -110,19 +112,19 @@ const Dashboard = () => {
             <div className="font-semibold p-5 ">
               <h3>Pencapaian Divisi</h3>
             </div>
-            <div className=" mx-auto">
+            <div className=" ">
               <BarChart
                 width={360}
                 height={300}
                 data={data}
                 margin={{
                   top: 5,
-                  right: 10,
-                  left: 10,
+                  right: 40,
+                  left: 0,
                   bottom: 5,
                 }}
               >
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3" />
                 <XAxis dataKey="name" className="text-sm" />
                 <YAxis />
                 <Tooltip />
@@ -132,16 +134,51 @@ const Dashboard = () => {
               </BarChart>
             </div>
           </div>
-
+ 
           {/* //list your job */}
           <div className=" col-start-8 col-end-13 h-96  ">
             {" "}
             <div className=" bg-slate-200 rounded-lg h-full overflow-auto  drop-shadow-xl  ">
+              <div className="pt-11">
+              <img src={Target} alt="" className="w-32 mx-auto " />
+              <h2 className="text-slate-600 font-medium text-center text-base">Anda telah mencapai 0,00% dari target Anda</h2>
+              <div className=" pt-8 flex justify-center gap-x-16">
+                <div>
+                  <h1 className="text-center pb-1 font-light">Performa Goal Anda</h1>
+                  <div className="mx-auto w-16 h-6 bg-blue-400 rounded-3xl">
+                    <h1 className="text-center pt-0.5 text-sm text-white">115%</h1>
+                  </div>
+                </div>
+ 
+ 
+                <div className=" ">
+                  <h1 className="text-center pb-1 font-light">Performa Ma Anda</h1>
+                  <div className="mx-auto w-16 h-6 bg-blue-400 rounded-3xl">
+                    <h1 className="text-center pt-0.5 text-sm text-white">115%</h1>
+                  </div>
+ 
+                </div>
+              </div>
+              </div>
+             
+ 
+            </div>
+          </div>
+        </div>
+ 
+        <div className="pb-48">
+ 
+          <div className=" h-96 flex gap-x-10 justify-between pt-10 ">
+ 
+            <div className='  bg-slate-200 rounded-lg w-[500px] h-[500px] drop-shadow-xl pb-10 '>
+              <div className='w-96 mx-auto font-extrabold text-2xl pt-6 text-center'>Peringkat Teratas</div>
+              <Peringkat />
+            </div>
+ 
+            <div className='bg-slate-200 rounded-lg w-[500px] h-[500px] drop-shadow-xl pb-10 '>
+              <div className='w-96 mx-auto font-extrabold text-2xl pt-6 text-center'>Job List</div>
               {" "}
               <Scrollbars autoHide height={"100%"}>
-                <div className="font-bold  py-5 text-center text-black">
-                  Job List
-                </div>
                 <Swiper
                   freeMode={true}
                   grabCursor={true}
@@ -158,18 +195,15 @@ const Dashboard = () => {
                   </SwiperSlide>
                 </Swiper>{" "}
               </Scrollbars>
+ 
             </div>
           </div>
-        </div>
-
-        <div className=" pt-20">
-          {/* Peringkat */}
-          <Peringkat />
-          {/* To do list */}
         </div>
       </div>
     </div>
   );
 };
-
+ 
 export default Dashboard;
+ 
+

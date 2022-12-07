@@ -1,14 +1,14 @@
 import Perkerjaan from "../../../Images/iconpekerjaan.png";
 import calendar from "../../../Images/calendar.png";
 import Delete from "../../../Images/delete.png";
-
+ 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import jwtDecode from "jwt-decode";
 import { functionGetGoalsByUserNow } from "../../../redux/actions/goalsAction";
 import { useNavigate } from "react-router-dom";
-
+ 
 const TodoGoal = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,25 +21,27 @@ const TodoGoal = (props) => {
       console.log(response.data.rows);
     }
   };
-
+ 
   useEffect(() => {
     getData();
   }, []);
-
+ 
   return (
-    <div>
-      <div className="px-5 font-medium   pb-1">Goal</div>
-
-      <div className="  scrollbar-hide">
-        <div className=" pt-1 ">
+    <div className="pl-14 pt-6">
+      <div className="font-medium w-16 h-7 bg-slate-700 rounded-lg">
+        <h2 className="text-center text-white">Goal</h2>
+      </div>
+ 
+      <div className="scrollbar-hide">
+        <div className=" pt-1 h-64 ">
           {goalData.map((pd) => {
             let formdate = new Date(pd.fromDate).toLocaleDateString();
             let todate = new Date(pd.toDate).toLocaleDateString();
-
+ 
             return (
               <React.Fragment key={pd.id}>
                 <div
-                  className="overflow-y-auto  px-5 pb-2"
+                  className="overflow-y-auto px-5 pb-2"
                   onClick={() => {
                     navigate(`/acc/goals/${pd.goalId}`);
                   }}
@@ -54,7 +56,7 @@ const TodoGoal = (props) => {
                         />
                       </div>
                     </div>
-
+ 
                     <div className="col-span-6 w-52  ">
                       <div className="namatugas font-semibold text-sm  pl-6 pt-2 ">
                         <h3>{pd.task}</h3>
@@ -67,7 +69,7 @@ const TodoGoal = (props) => {
                         </div>
                       </div>
                     </div>
-
+ 
                     <div className="flex col-span-1 ">
                       <div className=" pt-8 mx-auto flex pl-5">
                         <img
@@ -91,5 +93,7 @@ const TodoGoal = (props) => {
     </div>
   );
 };
-
+ 
 export default TodoGoal;
+ 
+

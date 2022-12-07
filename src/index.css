@@ -17,6 +17,125 @@
 
 }
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Amaranth&family=Jaldi&family=League+Spartan:wght@500&family=Poppins&family=Roboto:wght@400;500&display=swap');
+ 
+ 
+.eveleth {
+  font-family: 'Eveleth';
+  src: url('./Images/fonts/Eveleth\ Clean\ Regular.otf') format('otf')
+}
+ 
+@layer components{
+  .shadow-in { box-shadow: inset 0 1px 4px 0 rgba(0, 0, 0, 0.2); }
+}
+ 
+@font-face {
+  font-family: "Eveleth";
+  src: url("./Images/fonts/Eveleth\ Clean\ Regular.otf");
+ 
+}
+ 
+ 
+ 
+.amaranth {
+  font-family: 'Amaranth', sans-serif;
+}
+ 
+.spartan {
+  font-family: 'League Spartan', sans-serif;
+}
+ 
+.jaldi {
+  font-family: 'Jaldi', sans-serif;
+}
+ 
+.roboto {
+  font-family: 'Roboto', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+ 
+.roboto-bold {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 500;
+ 
+}
+ 
+ 
+.bg-image {
+  background-image: url('./Images/image.png');
+  background-size: cover;
+}
+ 
+.poppins {
+  font-family: 'Poppins', sans-serif;
+ 
+}
+ 
+/* fjdwdsjfgdnteruewwqjqksldfghjdsfgb  */
+.height {
+  height: 40rem;
+}
+ 
+.pagination {
+  width: 350px;
+  color: white;
+  /* code di bawah ini akan membuat div berada di tengah-tengah */
+  position: absolute;
+  top: 93%;
+  left: 52%;
+  transform: translate(-50%, -50%);
+  gap: 0 5px;
+  margin: 10px auto;
+  display: flex;
+  align-items: center;
+  list-style: none;
+  outline: none;
+}
+ 
+.pagination>.active>a {
+  border-radius: 8px;
+  background-color: #8db1b6;
+  border-color: #94b3b8;
+  color: #fff;
+}
+ 
+.pagination>li>a {
+  border: 1px solid #80aeb4;
+  border-radius: 6px;
+  padding: 5px 10px;
+  outline: none;
+  cursor: pointer;
+}
+ 
+.pagination>.active>a,
+.pagination>.active>span,
+.pagination>.active>a:hover,
+.pagination>.active>span:hover,
+.pagination>.active>a:focus,
+.pagination>.active>span:focus {
+  background-color: #6fbfca;
+  border-color: #5b9ca5;
+  border-radius: 5px;
+  outline: none;
+}
+ 
+.pagination>li>a,
+.pagination>li>span {
+  color: #89a8ac
+}
+ 
+.pagination>li:first-child>a,
+.pagination>li:first-child>span,
+.pagination>li:last-child>a,
+.pagination>li:last-child>span {
+  border-radius: unset
+}
+
 
 
 .amaranth {

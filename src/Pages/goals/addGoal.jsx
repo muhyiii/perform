@@ -9,6 +9,9 @@ import { functionAddGoal } from "../../redux/actions/goalsAction";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loadings from "../../Component/Loading";
 import Scrollbars from "react-custom-scrollbars-2";
+import { FiChevronDown } from "react-icons/fi";
+import { BiChevronDown } from "react-icons/bi";
+import { functionGetPeriods } from "../../redux/actions/periodActions";
 
 const AddGoals = (props) => {
   let [users, setUsers] = React.useState([]);
@@ -16,12 +19,21 @@ const AddGoals = (props) => {
   const location = useLocation();
   const [isLoading, setIsLoading] = React.useState(false);
   const dispatch = useDispatch();
+  const [method, setMethod] = React.useState();
+  let [selectedUser, setSelectedUser] = React.useState("");
+  const [openUser, setOpenUser] = React.useState(false);
+  const [periods, setPeriods] = React.useState([]);
+  let [selectedPeriod, setSelectedPeriod] = React.useState("");
+  const [openPeriod, setOpenPeriod] = React.useState(false);
+  const [modalMethod, setModalMethod] = React.useState(false);
+
+  const toDay = new Date().toISOString().substring(0, 10);
   let [data, setData] = React.useState({
     userId: 0,
     task: "",
     description: "",
-    fromDate: "",
-    toDate: "",
+    fromDate: toDay,
+    toDate: toDay,
   });
   // SUBMIT
   const sendData = async () => {
@@ -74,8 +86,15 @@ const AddGoals = (props) => {
         });
     }
   };
-  const toDay = new Date().toISOString().substring(0, 10);
-
+  const getPeriod = async () => {
+    const response = await dispatch(functionGetPeriods());
+    if (response.status === "Success") {
+      setPeriods(response.data.rows);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 500);
+    }
+  };
   const getDataUsers = async () => {
     setIsLoading(true);
     const response = await dispatch(functionGetUsers());
@@ -87,13 +106,14 @@ const AddGoals = (props) => {
 
   React.useEffect(() => {
     getDataUsers();
+    getPeriod();
   }, []);
   return (
     <AnimatePresence>
       {/* {props.AddGoals && ( */}
       <motion.div>
         <div data-cy="modal-add" variant="primary" className="rounded-lg">
-          <motion.div className="w-[400px] pb-8 bg-white rounded-lg shadow-lg relative h-[650px]   ">
+          <motion.div className="w-[450px] pb-8 bg-white rounded-lg shadow-lg relative h-[650px]   ">
             <Scrollbars autoHide style={{ height: "100%" }}>
               {" "}
               {isLoading ? (
@@ -112,34 +132,50 @@ const AddGoals = (props) => {
                     <p className="text-sm ">Adding goals for another person</p>
                   </div>
                   <div className="px-5 mt-10 ">
-                    <div className="mb-3">
+                    <div className="mb-3 relative">
                       <p className="text-sm pl-2">Name</p>
-                      <select
-                        className="border rounded-md w-full py-2 outline-none px-2  capitalize"
-                        name=""
-                        id=""
-                        onChange={(e, index) => {
-                          console.log(e.target.value);
-                          setData({
-                            ...data,
-                            userId: e.target.value,
-                          });
+                      <div
+                        onClick={() => {
+                          setOpenUser(!openUser);
                         }}
+                        className={`border hover:cursor-pointer focus:border-black rounded-md w-full py-2 outline-none px-2  capitalize flex justify-between items-center`}
                       >
-                        <option value="">Select User</option>
-                        {users?.map((e) => (
-                          <option value={`${e.id}`} key={e.id}>
-                            {e.name}
-                          </option>
-                        ))}
-                      </select>
+                        {selectedUser
+                          ? selectedUser?.length > 25
+                            ? selectedUser?.substring(0, 25) + "..."
+                            : selectedUser
+                          : "Select User"}
+                        <BiChevronDown />
+                      </div>
+                      <div
+                        className={`bg-white z-10 shadow-lg  capitalize mt-2 rounded-md   w-full mr-10 left-0 ${
+                          openUser ? "h-[100px] absolute left-0  " : "h-0"
+                        } `}
+                      >
+                        <Scrollbars autoHide style={{ height: " 100%" }}>
+                          {users?.map((e, index) => (
+                            <p
+                              onClick={() => {
+                                setSelectedUser(e.name);
+                                setData({ ...data, userId: e.id });
+                                setOpenUser(false);
+                              }}
+                              className={`p-2 text-sm hover:bg-gray-200  hover:text-black hover:cursor-pointer`}
+                              value={`${e.id}`}
+                              key={index}
+                            >
+                              {e.name}
+                            </p>
+                          ))}{" "}
+                        </Scrollbars>
+                      </div>{" "}
                     </div>
 
                     <div className="mb-3">
                       <p className="text-sm pl-2">Task</p>
                       <input
                         type="text"
-                        className="border rounded-md w-full py-2 outline-none px-2 placeholder:italic "
+                        className="border focus:border-black rounded-md w-full py-2 outline-none px-2 placeholder:italic "
                         placeholder="Input description here"
                         onChange={(e) => {
                           setData({
@@ -153,7 +189,7 @@ const AddGoals = (props) => {
                       <p className="text-sm pl-2">Description</p>
                       <textarea
                         type="text"
-                        className="border rounded-md w-full py-2 outline-none px-2 placeholder:italic "
+                        className="border focus:border-black rounded-md w-full py-2 outline-none px-2 placeholder:italic "
                         placeholder="Input task here"
                         onChange={(e) => {
                           setData({
@@ -163,50 +199,148 @@ const AddGoals = (props) => {
                         }}
                       />
                     </div>
+                    <div className={`w-full  mb-4`}>
+                      <p className="text-sm pl-2">Method Date</p>{" "}
+                      <div className={` flex justify-between relative `}>
+                        {" "}
+                        <div
+                          onClick={() => setModalMethod(!modalMethod)}
+                          className=" w-1/2 flex justify-between items-center border focus:border-black rounded-md  py-2 outline-none px-2 "
+                        >
+                          <p>{method ? method : "Select method of date"}</p>
+                          <FiChevronDown />
+                        </div>
+                        {modalMethod && (
+                          <div
+                            className="absolute right-0 h-24 w-full flex justify-end "
+                            onClick={() => setModalMethod(false)}
+                          >
+                            <div className=" w-1/3 p-1  bg-white shadow-xl rounded-md drop-shadow-md  border-dashed">
+                              <p
+                                onClick={() => {
+                                  setMethod("period");
+                                  setModalMethod(false);
+                                }}
+                                className=" px-5 py-2  hover:bg-gray-100 hover:cursor-pointer"
+                              >
+                                Period
+                              </p>
+                              <div
+                                onClick={() => {
+                                  setMethod("date range");
+                                  setModalMethod(false);
+                                }}
+                                className=" px-5 py-2  hover:bg-gray-100 hover:cursor-pointer"
+                              >
+                                Date Range
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div>
+                      {method === "date range" ? (
+                        <div
+                          className={`grid grid-cols-2 gap-x-5 opacity-0 ${
+                            method === "date range" && "opacity-100"
+                          }`}
+                        >
+                          <div className="mb-3">
+                            <p className="text-sm pl-2">From Date</p>{" "}
+                            <input
+                              className=" border focus:border-black rounded-md w-full py-2 outline-none px-2 "
+                              type="date"
+                              name="fromDate"
+                              id="fromDate"
+                              value={data.fromDate}
+                              onChange={(e) => {
+                                setData({
+                                  ...data,
+                                  fromDate: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
 
-                    <div className="mb-3">
-                      <p className="text-sm pl-2">From Date</p>{" "}
-                      <input
-                        className="border rounded-md w-full py-2 outline-none px-2 "
-                        type="date"
-                        name="fromDate"
-                        id="fromDate"
-                        defaultValue={toDay}
-                        onChange={(e) => {
-                          setData({
-                            ...data,
-                            fromDate: e.target.value,
-                          });
-                        }}
-                      />
+                          <div className="mb-3">
+                            <p className="text-sm pl-2">To Date</p>{" "}
+                            <input
+                              className="border focus:border-black rounded-md w-full py-2 outline-none px-2 "
+                              type="date"
+                              name="toDate"
+                              id="toDate"
+                              min={data.fromDate}
+                              value={data.toDate}
+                              onChange={(e) => {
+                                setData({
+                                  ...data,
+                                  toDate: e.target.value,
+                                });
+                              }}
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        method === "period" && (
+                          <div className="mb-3 relative">
+                            <p className="text-sm pl-2">Period</p>
+                            <div
+                              onClick={() => {
+                                setOpenPeriod(!openPeriod);
+                              }}
+                              className={`border hover:cursor-pointer focus:border-black rounded-md w-full py-2 outline-none px-2  capitalize flex justify-between items-center`}
+                            >
+                              {selectedPeriod
+                                ? selectedPeriod?.length > 25
+                                  ? selectedPeriod?.substring(0, 25) + "..."
+                                  : selectedPeriod
+                                : "Select Period"}
+                              <BiChevronDown />
+                            </div>
+                            <div
+                              className={`bg-white z-10 shadow-lg  capitalize mt-2 rounded-md   w-full mr-10 left-0 ${
+                                openPeriod
+                                  ? "h-[100px] absolute left-0  "
+                                  : "h-0"
+                              } `}
+                            >
+                              <Scrollbars autoHide style={{ height: " 100%" }}>
+                                {periods?.map((e, index) => (
+                                  <p
+                                    onClick={() => {
+                                      setSelectedPeriod(e.period);
+                                      setData({
+                                        ...data,
+                                        fromDate: e.fromDate,
+                                        toDate: e.toDate,
+                                      });
+                                      setOpenPeriod(false);
+                                    }}
+                                    className={`p-2 text-sm hover:bg-gray-200  hover:text-black hover:cursor-pointer`}
+                                    value={`${e.id}`}
+                                    key={index}
+                                  >
+                                    {e.period}
+                                  </p>
+                                ))}{" "}
+                              </Scrollbars>
+                            </div>{" "}
+                          </div>
+                        )
+                      )}
                     </div>
 
-                    <div className="mb-3">
-                      <p className="text-sm pl-2">To Date</p>{" "}
-                      <input
-                        className="border rounded-md w-full py-2 outline-none px-2 "
-                        type="date"
-                        name="toDate"
-                        id="toDate"
-                        min={data.fromDate}
-                        defaultValue={toDay}
-                        onChange={(e) => {
-                          setData({
-                            ...data,
-                            toDate: e.target.value,
-                          });
-                        }}
-                      />
+                    <div className=" w-full absolute left-0 px-10 bottom-0">
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="  w-full border rounded-md  py-2 my-5 outline-none px-2 hover:bg-blue-400 hover:text-white hover:font-semibold uppercase transition-colors duration-500 ease-linear "
+                        onClick={sendData}
+                      >
+                        Send
+                      </motion.button>
                     </div>
-
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="border rounded-md w-full py-2 my-5 outline-none px-2 hover:bg-blue-400 hover:text-white hover:font-semibold uppercase transition-colors duration-500 ease-linear "
-                      onClick={sendData}
-                    >
-                      Send
-                    </motion.button>
                   </div>
                 </div>
               )}

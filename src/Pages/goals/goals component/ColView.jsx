@@ -26,7 +26,7 @@ const ColView = (props) => {
       });
       setTimeout(() => {
         props.getData();
-      }, 500);
+      }, 500);  
     }
     if (response.status !== "Success") {
       Swal.fire({
