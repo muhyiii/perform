@@ -212,7 +212,7 @@ const AddGoals = (props) => {
                         </div>
                         {modalMethod && (
                           <div
-                            className="absolute right-0 h-24 w-full flex justify-end "
+                            className="absolute right-0 z-20 h-24 w-full flex justify-end "
                             onClick={() => setModalMethod(false)}
                           >
                             <div className=" w-1/3 p-1  bg-white shadow-xl rounded-md drop-shadow-md  border-dashed">
@@ -242,7 +242,7 @@ const AddGoals = (props) => {
                     <div>
                       {method === "date range" ? (
                         <div
-                          className={`grid grid-cols-2 gap-x-5 opacity-0 ${
+                          className={`grid grid-cols-2 gap-x-5  opacity-0 ${
                             method === "date range" && "opacity-100"
                           }`}
                         >
@@ -306,24 +306,55 @@ const AddGoals = (props) => {
                               } `}
                             >
                               <Scrollbars autoHide style={{ height: " 100%" }}>
-                                {periods?.map((e, index) => (
+                                {periods.length !== 0 ? (
+                                  periods?.map((e, index) => (
+                                    <p
+                                      onClick={() => {
+                                        setSelectedPeriod(e.period);
+                                        setData({
+                                          ...data,
+                                          fromDate: e.fromDate,
+                                          toDate: e.toDate,
+                                        });
+                                        setOpenPeriod(false);
+                                      }}
+                                      className={`p-2 text-sm hover:bg-gray-200  hover:text-black hover:cursor-pointer`}
+                                      value={`${e.id}`}
+                                      key={index}
+                                    >
+                                      {e.period}
+                                    </p>
+                                  ))
+                                ) : (
                                   <p
+                                    className=" p-2 hover:bg-gray-200  hover:text-black text-red-600 font-semibold hover:cursor-pointer"
                                     onClick={() => {
-                                      setSelectedPeriod(e.period);
-                                      setData({
-                                        ...data,
-                                        fromDate: e.fromDate,
-                                        toDate: e.toDate,
+                                      Swal.fire({
+                                        title: "Peroid is emtpy.",
+                                        text: "You must create period first.",
+                                        icon: "warning",
+                                        showCancelButton: true,
+                                        allowOutsideClick: false,
+                                        confirmButtonColor: "#3085d6",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "Yes, create it!",
+                                      }).then((result) => {
+                                        if (result.isConfirmed) {
+                                          console.log(location);
+                                          navigate("/acc/archives", {
+                                            state: {
+                                              isAddPeriod: true,
+                                              isArchivePage: false,
+                                              prevPath: location.pathname,
+                                            },
+                                          });
+                                        }
                                       });
-                                      setOpenPeriod(false);
                                     }}
-                                    className={`p-2 text-sm hover:bg-gray-200  hover:text-black hover:cursor-pointer`}
-                                    value={`${e.id}`}
-                                    key={index}
                                   >
-                                    {e.period}
+                                    Period is emtpy
                                   </p>
-                                ))}{" "}
+                                )}
                               </Scrollbars>
                             </div>{" "}
                           </div>

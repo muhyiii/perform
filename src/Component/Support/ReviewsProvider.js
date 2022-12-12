@@ -3,14 +3,14 @@ import {
   buildStyles,
   CircularProgressbarWithChildren,
 } from "react-circular-progressbar";
-
+ 
 const ReviewsProvider = ({ valueStart, valueEnd, size }) => {
   const [value, setValue] = React.useState(valueStart);
-
+ 
   React.useEffect(() => {
     setValue(valueEnd);
   }, [valueEnd]);
-
+ 
   return (
     <CircularProgressbarWithChildren
       value={value}
@@ -25,11 +25,44 @@ const ReviewsProvider = ({ valueStart, valueEnd, size }) => {
       })}
     >
       {size ? (
-        <p className={`text-[${size}px]`}>{value} %</p>
+        <p className={`text-[${size}px] text-sm font-semibold text-gray-600 text-center`}>{value} %</p>
       ) : (
-        <p className={`text-[10px]`}>{value} %</p>
+        <p className={`text-[10px] text-sm font-semibold text-gray-600 text-center`}>{value} %</p>
       )}
     </CircularProgressbarWithChildren>
   );
 };
+ 
+export const BarProv = ({ valueStart, valueEnd, }) => {
+  const [style, setStyle] = React.useState(valueStart);
+  React.useEffect(() => {
+    setStyle(valueEnd);
+  }, [valueEnd]);
+ 
+  return (
+    <div
+    className="p-3 progress h-15  "
+    >
+     
+       <p style={{width: `${valueEnd}%`,}} className="text-sm font-semibold text-gray-600 text-center">
+       {valueEnd}%
+        </p>
+      <div
+        className="progress-done rounded-lg shadow-in py-2"
+        style={{
+          rotation: 0.25,
+        trailColor: "#d6d6d6",
+        backgroundColor: "#3e98c7",
+          width: `${valueEnd}%`,
+          transition:"width 0.5s"
+        }}
+      >
+       
+      </div>
+    </div>
+  );
+};
+ 
 export default ReviewsProvider;
+ 
+

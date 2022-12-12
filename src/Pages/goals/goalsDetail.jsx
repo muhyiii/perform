@@ -81,7 +81,6 @@ const GoalsDetail = () => {
         timer: 1000,
       });
       setTimeout(() => {
-        navigate(".", { replace: true });
         getMaByGoalId();
       }, 1000);
     }

@@ -1,8 +1,8 @@
 import React from "react";
-import { BiDotsVerticalRounded } from "react-icons/bi";
+import { BiDotsVerticalRounded, BiUndo } from "react-icons/bi";
 import Swal from "sweetalert2";
 import ModalOptionGoal from "./ModalOptionGoal";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { functionUpdateGoal } from "../../../redux/actions/goalsAction";
@@ -13,9 +13,10 @@ const ColView = (props) => {
   const [isOption, setIsOption] = React.useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const updateStatus = async (id, status) => {
+  const location = useLocation();
+  const updateStatus = async (id, status, archive) => {
     console.log(status);
-    const response = await dispatch(functionUpdateGoal(id, status));
+    const response = await dispatch(functionUpdateGoal(id, status, archive));
     console.log(response);
     if (response.status === "Success") {
       Swal.fire({
@@ -26,7 +27,7 @@ const ColView = (props) => {
       });
       setTimeout(() => {
         props.getData();
-      }, 500);  
+      }, 500);
     }
     if (response.status !== "Success") {
       Swal.fire({
@@ -38,25 +39,25 @@ const ColView = (props) => {
   };
   let dateNow = new Date(Date.now()).getDate();
   let createdData = new Date(props.createdAt).getDate();
-  console.log(props.length);
+  // console.log(location.pathname.split('/')[2]==='goals');
   return (
     <motion.div
       layout
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 100 }}
+      exit={{ opacity: 0, x: -100 }}
       transition={{ delay: `0.${props.length + 1}`, duration: 1 }}
       key={props.id}
-      className=" items-center shadow-md border p-4 grid grid-cols-11 m-3 rounded-lg h-24  relative"
+      className=" items-center capitalize shadow-md border p-4 grid grid-cols-11 m-3 rounded-lg h-24  relative px-5"
     >
-      {dateNow === createdData && (
-        <GoPrimitiveDot
-          className="absolute -top-4  -left-4 text-red-500"
-          size={40}
-        />
-      )}
-      <div className="grid grid-cols-6">
+      <div className="grid grid-cols-6 relative">
         <div></div>
+        {dateNow === createdData && (
+          <GoPrimitiveDot
+            className="absolute -top-10  -left-8 text-red-500"
+            size={40}
+          />
+        )}
         <div className="col-span-3">
           <ReviewsProvider
             valueStart={0}
@@ -66,9 +67,11 @@ const ColView = (props) => {
         </div>
       </div>
       <div
-        className=" col-span-5 space-y-3 text-ellipsis "
+        className=" col-span-5 space-y-3 text-ellipsis cursor-pointer"
         onClick={() => {
-          navigate(`${props.goalId}`);
+          if (location.pathname.split("/")[2] === "goals")
+            navigate(`${props.goalId}`);
+          navigate(`/acc/goals/${props.goalId}`);
         }}
       >
         <div className="truncate">
@@ -90,12 +93,12 @@ const ColView = (props) => {
         {" "}
         <img
           src={props.image}
-          className="h-10 rounded-full w-10 bg-cover"
+          className="h-10 bg-red-500 shadow-lg drop-shadow-lg rounded-full w-10 bg-cover"
           alt=""
         />
         <div className="truncate text-ellipsis mr-1 px-1">
           {" "}
-          <p className="">{props.name}</p>
+          <p className="">{props.name.substring(0, 15)}</p>
           <p className="text-xs text-gray-400  h-5">{props.role}</p>
         </div>
       </div>
@@ -153,25 +156,51 @@ const ColView = (props) => {
         {props.status}
       </p>
       <p>{props.value}.00</p>
-      <div className="col-start-13 relative">
-        {" "}
-        <BiDotsVerticalRounded
-          className="hover:cursor-pointer"
-          size={25}
+      {location?.pathname?.split("/")[2] === "goals" ? (
+        <div className="col-start-12 col-span-2 justify-center z-50 ">
+          {" "}
+          <BiDotsVerticalRounded
+            className="hover:cursor-pointer hover:bg-slate-100 rounded-full h-10 w-10 p-2"
+            size={25}
+            onClick={() => {
+              setIsOption(!isOption);
+            }}
+          />
+          <ModalOptionGoal
+            onCloseOption={() => {
+              setIsOption(false);
+            }}
+            getData={props.getData}
+            goalId={props.goalId}
+            isOption={isOption}
+            setIsOption={setIsOption}
+          />
+        </div>
+      ) : (
+        <motion.div
+          whileHover={{ y: -5 }}
+          transition={{ type: "spring", bounce: 0.2 }}
           onClick={() => {
-            setIsOption(!isOption);
+            Swal.fire({
+              title: "Are you sure?",
+              text: "You want to undo archive this goal",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, undo it!",
+            }).then((result) => {
+              if (result.isConfirmed) {
+                updateStatus(props.goalId, props.status , false);
+              }
+            });
           }}
-        />
-        <ModalOptionGoal
-          onCloseOption={() => {
-            setIsOption(false);
-          }}
-          getData={props.getData}
-          goalId={props.goalId}
-          isOption={isOption}
-          setIsOption={setIsOption}
-        />
-      </div>
+          className=" cursor-pointer hover:bg-slate-300 col-start-12 space-x-1 col-end-13 p-2 rounded-md text-xs flex bg-slate-200 items-center"
+        >
+          <BiUndo size={15} />
+          <p>Undo Archive</p>
+        </motion.div>
+      )}
     </motion.div>
   );
 };

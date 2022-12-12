@@ -40,8 +40,8 @@ const RowView = (props) => {
       layout
       initial={{ opacity: 0, x: 100 }}
       animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 100 }}
-      transition={{ duration: 1, delay: `0.${props.length + 3}` }}
+      exit={{ opacity: 0, x: -100 }}
+      transition={{ duration: 0.8, delay: `0.${props.length + 3}` }}
       className="col-span-4 my-3 relative "
       key={props.id}
     >
@@ -84,7 +84,7 @@ const RowView = (props) => {
           </span>
           <div className="flex space-x-3 pl-2 ">
             <div className="text-left truncate text-ellipsis ">
-              <p>{props.name}</p>
+              <p>{props.name.substring(0, 20)}</p>
               <p className="text-xs text-gray-400">{props.role}</p>
             </div>
           </div>

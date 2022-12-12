@@ -14,6 +14,9 @@ import Biodata from "./Pages/auth/biodata";
 import EmptyPage from "./Component/Support/Empty";
 import MaDetail from "./Pages/measured/maDetail";
 import Archive from "./Pages/archive/archive";
+import PeriodComponent from "./Pages/archive/archive component/periodComponent";
+import ArchiveGoals from "./Pages/archive/archive component/archiveGoal";
+import ArchiveMa from "./Pages/archive/archive component/archiveMa";
 
 const ProtectedRoute = ({ user }) => {
   // const loading = useSelector((state) => state.auth?.isLoading);
@@ -53,6 +56,9 @@ function App() {
             </Route>
             <Route path="archives">
               <Route index element={<Archive />} />
+              <Route path="period-page/:period" element={<PeriodComponent />} />
+              <Route path="archive-goals" element={<ArchiveGoals />} />{" "}
+              <Route path="archive-measured-activity" element={<ArchiveMa />} />
             </Route>
           </Route>
         </Route>

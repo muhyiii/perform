@@ -100,16 +100,14 @@ export default function Register() {
                     const response = await dispatch(functionRegister(values));
                     console.log(response);
                     if (response.status === "Success") {
+                      navigate("/add-biodata", { replace: true });
                       Swal.fire({
                         title: "Succesfull!",
                         text: response.messege,
                         icon: "success",
-                        timer: 800,
+                        timer: 3000,
                       });
                       setIsLoading(false);
-                      setTimeout(() => {
-                        navigate("/add-biodata", { replace: true });
-                      }, 1000);
                     }
                   }}
                   validationSchema={validateSchema}

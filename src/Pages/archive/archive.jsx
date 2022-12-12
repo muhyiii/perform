@@ -10,6 +10,7 @@ import Loadings from "../../Component/Loading";
 import { data } from "autoprefixer";
 import Swal from "sweetalert2";
 import Scrollbars from "react-custom-scrollbars-2";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function Archive() {
   const now = Date.now();
@@ -34,6 +35,8 @@ function Archive() {
   const [isLoading, setIsLoading] = useState(false);
   const [periods, setPeriods] = useState([]);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
   const sendData = async (e) => {
     console.log(state);
     e.preventDefault();
@@ -58,6 +61,7 @@ function Archive() {
         setState({});
         setIsLoading(false);
         setIsAddPeriod(false);
+        navigate(".", { state: { isAddPeriods: false } });
         getPeriod();
       }
       setIsLoading(false);
@@ -88,9 +92,16 @@ function Archive() {
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={() => setArchive(true)}
+            onClick={() => {
+              navigate(".", { state: { isArchivePage: true } });
+              setArchive(location.state.isArchivePage);
+              // console.log(location.state);
+            }}
             className={`h-full outline-none  w-1/3   bg-gray-200 hover:bg-gray-400 text-gray-800 hover:text-gray-900 active:bg-gray-700  flex justify-center rounded-xl items-center shadow-xl
-            ${archive && "bg-gray-700 text-gray-200 outline-none"}`}
+            ${
+              location.state.isArchivePage &&
+              "bg-gray-700 text-gray-200 outline-none"
+            }`}
           >
             <div className="flex items-center justify-center h-full">
               {" "}
@@ -100,15 +111,21 @@ function Archive() {
             </div>
           </motion.button>
           <p className="text-lg m-auto font-medium">
-            Click {archive ? "Period" : "Archive"} to see{" "}
-            {archive ? "Period" : "Archive"}
+            Click {location.state.isArchivePage ? "Period" : "Archive"} to see{" "}
+            {location.state.isArchivePage ? "Period" : "Archive"}
           </p>
           <motion.button
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
-            onClick={() => setArchive(false)}
+            onClick={() => {
+              navigate(".", { state: { isArchivePage: false } });
+              setArchive(location.state.isArchivePage);
+            }}
             className={`h-full outline-none w-1/3   bg-gray-200 hover:bg-gray-400 text-gray-800 hover:text-gray-900 active:bg-gray-700  flex justify-center rounded-xl items-center shadow-xl
-            ${!archive && "bg-gray-700 text-gray-200 outline-none"}`}
+            ${
+              !location.state.isArchivePage &&
+              "bg-gray-700 text-gray-200 outline-none"
+            }`}
           >
             <div className="flex items-center justify-center h-full">
               {" "}
@@ -118,7 +135,7 @@ function Archive() {
             </div>
           </motion.button>
         </div>
-        {archive ? (
+        {location.state.isArchivePage ? (
           <div className="h-full space-y-4">
             <AnimatePresence>
               {" "}
@@ -133,6 +150,8 @@ function Archive() {
                   bounce: 0.3,
                   delay: 0.5,
                 }}
+                onClick={() => navigate("archive-goals")}
+                key={1}
                 className="h-1/3 rounded-lg w-full bg-gray-800  text-gray-200 shadow-lg "
               >
                 <div className="flex items-center pl-40 h-full">
@@ -155,6 +174,8 @@ function Archive() {
                   bounce: 0.3,
                   delay: 1,
                 }}
+                onClick={() => navigate("archive-measured-activity")}
+                key={2}
                 className="h-1/3 rounded-lg w-full bg-gray-400  text-gray-700 shadow-lg "
               >
                 <div className="flex items-center pl-40 h-full">
@@ -172,7 +193,14 @@ function Archive() {
           <div className="flex ">
             <div className="   col-span-2 w-3/12">
               <motion.button
-                onClick={() => setIsAddPeriod(!isAddPeriod)}
+                onClick={() => {
+                  setIsAddPeriod(!isAddPeriod);
+                  navigate(".", {
+                    state: { isAddPeriods: isAddPeriod, isArchivePage: false },
+                    replace: true,
+                  });
+                  console.log(location.state);
+                }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className={`bg-white outline-blue-400 px-3 py-1 outline-1 outline rounded-md hover:bg-blue-400 hover:shadow-md hover:text-white ${
@@ -180,11 +208,13 @@ function Archive() {
                   "bg-blue-400 text-white shadow-lg outline-blue-400 outline"
                 }`}
               >
-                {isAddPeriod ? "Cancel Add Period" : "Add New Period"}
+                {location.state.isAddPeriods
+                  ? "Cancel Add Period"
+                  : "Add New Period"}
               </motion.button>
               <AnimatePresence>
                 {" "}
-                {isAddPeriod && (
+                {location.state.isAddPeriods && (
                   <motion.div
                     layout
                     initial={{ opacity: 0, x: -200, scale: 0 }}
@@ -246,7 +276,7 @@ function Archive() {
             </div>
             <div className="h-full w-9/12  px-4">
               <hr />
-              <Scrollbars autoHide style={{ height: '75vh',margin:'2px' }}>
+              <Scrollbars autoHide style={{ height: "75vh", margin: "2px" }}>
                 <AnimatePresence>
                   {periods.length !== 0 ? (
                     periods.map((e, index) => {
@@ -266,14 +296,21 @@ function Archive() {
                           initial={{ y: -200, scale: 0 }}
                           animate={{ y: 0, scale: 1 }}
                           exit={{ y: 200 }}
+                          whileHover={{ scale: 0.95 }}
+                          whileTap={{ scale: 1.05 }}
                           transition={{
                             duration: 1,
                             type: "spring",
                             bounce: 0.2,
                             delay: `0.${index + 3} `,
                           }}
+                          onClick={() => {
+                            navigate(`period-page/${e.period}`, {
+                              state: { fromDate: e.fromDate, toDate: e.toDate },
+                            });
+                          }}
                           key={e.id}
-                          className=" capitalize mt-2 mr-3  bg-white px-5 py-3 shadow-md drop-shadow-md rounded-md border-l-[5px] border-l-emerald-700"
+                          className="hover:cursor-pointer capitalize mt-2 mr-3  bg-white px-5 py-3 shadow-md drop-shadow-md rounded-md border-l-[5px] border-l-emerald-700"
                         >
                           <hr />
                           <p className="mt-1 font-medium text-xl">{e.period}</p>

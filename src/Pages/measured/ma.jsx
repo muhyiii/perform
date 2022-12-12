@@ -28,7 +28,7 @@ import { IoArchiveOutline } from "react-icons/io5";
 
 const Ma = () => {
   const [data, setData] = React.useState([]);
-  const [filtered, setFiltered] = React.useState([]);
+  // const [filtered, setFiltered] = React.useState([]);
   const [status, setStatus] = React.useState("");
   const [isAll, setIsAll] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -64,8 +64,8 @@ const Ma = () => {
     const response = await dispatch(functionGetMeasuredActivities());
     if (response.status === "Success") {
       // console.log(typeof(status));
-
-      setData(response.data.rows);
+      console.log(response.data.rows);
+      setData(response.data.rows?.filter((e) => e.isArchive === false));
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
@@ -76,7 +76,7 @@ const Ma = () => {
       functionGetMeasuredActivityByUserNow(decoded.id)
     );
     if (response.status === "Success") {
-      setData(response.data.rows);
+      setData(response.data.rows?.filter((e) => e.isArchive === false));
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
@@ -98,7 +98,7 @@ const Ma = () => {
       });
       setTimeout(() => {
         navigate(".");
-        getData();
+        isAll ? getData() : getDataUserNow();
       }, 1000);
     }
     if (response.status !== "Success")
@@ -124,7 +124,7 @@ const Ma = () => {
       });
       setTimeout(() => {
         navigate(".");
-        getData();
+        isAll ? getData() : getDataUserNow();
       }, 1000);
     }
     if (response.status !== "Success")
@@ -146,6 +146,7 @@ const Ma = () => {
     }
     return setThisDateMonth(dates);
   }
+
   React.useEffect(() => {
     setIsLoading(true);
     getAllDaysInMonth();
@@ -154,6 +155,34 @@ const Ma = () => {
   React.useEffect(() => {
     console.log(multiId);
   }, [multiId]);
+
+  //////////////////////
+  const filteredQuery =
+    query === ""
+      ? data
+      : data.filter(
+          (e) =>
+            e.task.toLowerCase().includes(query) ||
+            e.description.toLowerCase().includes(query) ||
+            e.goals[0].task.toLowerCase().includes(query) ||
+            e.users[0].name.toLowerCase().includes(query)
+        );
+  const thisMonth =
+    progress !== "onprogress"
+      ? filteredQuery
+      : filteredQuery.filter((e) =>
+          progress === "onprogress"
+            ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
+              new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
+            : new Date(e.fromDate).getTime()
+        );
+  const filteredStatus =
+    status === ""
+      ? thisMonth
+      : thisMonth.filter((e) =>
+          status !== "" ? e.status === status : e.status !== null
+        );
+
   if (isLoading) return <Loadings />;
   return (
     <div className={`overflow-hidden relative  h-screen`}>
@@ -411,26 +440,52 @@ const Ma = () => {
         <Scrollbars autoHide style={{ height: "100%" }}>
           <motion.div layout className="px-10">
             <AnimatePresence>
-              {data
-                ?.filter(
-                  (e) =>
-                    e.task.toLowerCase().includes(query) ||
-                    e.description.toLowerCase().includes(query) ||
-                    e.goals[0].task.toLowerCase().includes(query) ||
-                    e.users[0].name.toLowerCase().includes(query)
-                )
-                ?.filter((e) =>
-                  progress === "onprogress"
-                    ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
-                      new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
-                    : new Date(e.fromDate).getTime()
-                )
-                ?.filter((e) => e.isArchive === false)
-                .filter((e) =>
-                  status !== "" ? e.status === status : e.status !== null
-                )
-
-                ?.map((e, index) => (
+              {data.length === 0 ? (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -100 }}
+                  transition={{ delay: `0.4`, duration: 1 }}
+                  className="text-xl mt-2 font-medium text-red-400 text-center"
+                >
+                  Data of Measured Activity is empty...
+                  <p
+                    className="hover:text-blue-400 cursor-pointer hover:underline"
+                    onClick={() =>
+                      navigate(".", {
+                        state: { isAddMA: true },
+                        replace: false,
+                      })
+                    }
+                  >
+                    Create Data
+                  </p>
+                </motion.div>
+              ) : filteredQuery.length === 0 && query !== "" ? (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -100 }}
+                  transition={{ delay: `0.4`, duration: 1 }}
+                  className="text-xl mt-2 font-medium text-red-400 text-center"
+                >
+                  Cannot get data of your requesting...
+                </motion.div>
+              ) : filteredStatus.length === 0 && status !== "" ? (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -100 }}
+                  transition={{ delay: `0.4`, duration: 1 }}
+                  className="text-xl mt-2 font-medium text-red-400 text-center"
+                >
+                  Cannot get data of status {status}...
+                </motion.div>
+              ) : (
+                thisMonth?.map((e, index) => (
                   <ListView
                     key={e.id}
                     data={e}
@@ -453,10 +508,11 @@ const Ma = () => {
                     updatedAt={e.updatedAt}
                     handleChange={handleChange}
                     setMultiId={setMultiId}
-                    getData={getData}
+                    getData={isAll ? getData : getDataUserNow}
                     length={index}
                   />
-                ))}
+                ))
+              )}
             </AnimatePresence>
           </motion.div>
         </Scrollbars>

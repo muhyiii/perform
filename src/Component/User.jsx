@@ -75,9 +75,7 @@ const User = () => {
                 className="rounded text-left  text-gray-400 hover:bg-slate-100 hover:text-gray-800 text-base w-full py-2 px-5"
                 onClick={() => {
                   localStorage.clear();
-                  setTimeout(() => {
-                    navigate("/", { replace: true });
-                  });
+                  navigate("/login", { replace: true });
                 }}
               >
                 LOGOUT

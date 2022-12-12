@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const api = "http://localhost:2200";
+export const api = "http://34.128.85.173";
 const headers = {
   Accept: "application/json",
 };
@@ -22,15 +22,13 @@ axiosClient.interceptors.response.use(
       clearToken();
       localStorage.clear();
       window.location.replace("/login");
-    }
-    //  else if (error) {
-    //   localStorage.removeItem("token");
+    } else if (error) {
+      localStorage.removeItem("token");
 
-    //   clearToken();
-    //   localStorage.clear();
-    //   window.location.replace("/login");
-    // } 
-    else {
+      clearToken();
+      localStorage.clear();
+      window.location.replace("/login");
+    } else {
       return Promise.reject(error);
     }
   }

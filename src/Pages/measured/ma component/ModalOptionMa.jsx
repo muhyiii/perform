@@ -87,11 +87,7 @@ const ModalOptionMa = (props) => {
               }).then((result) => {
                 if (result.isConfirmed) {
                   updateStatus(props.maId, props.data.status, true);
-                  Swal.fire(
-                    "Archived!",
-                    "Your file has been Archived.",
-                    "success"
-                  );
+                
                 }
               });
             }}

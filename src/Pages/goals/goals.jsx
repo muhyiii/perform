@@ -72,7 +72,7 @@ const Goals = () => {
   //// DELETE MULTI GOALS
   const deleteMultiGoals = async () => {
     const response = await dispatch(functionDeleteMultiGoals(multiId));
-    console.log(response);
+    // console.log(response);
     if (response.status === "Success") {
       Swal.fire({
         title: "Succesfull!",
@@ -82,7 +82,7 @@ const Goals = () => {
       });
       setTimeout(() => {
         setMultiId([]);
-        getData();
+        isAll ? getData() : getAsUser();
       }, 1000);
     }
     if (response.status !== "Success")
@@ -98,7 +98,7 @@ const Goals = () => {
     const response = await dispatch(
       functionUpdateMultiGoals(multiId, value, archive)
     );
-    console.log(response);
+    // console.log(response);
     if (response.status === "Success") {
       Swal.fire({
         title: "Succesfull!",
@@ -108,7 +108,7 @@ const Goals = () => {
       });
       setTimeout(() => {
         setMultiId([]);
-        getData();
+        isAll ? getData() : getAsUser();
       }, 1000);
     }
     if (response.status !== "Success")
@@ -190,7 +190,7 @@ const Goals = () => {
                 onClose={() => {
                   navigate(".", { state: { isAddGoal: false }, replace: true });
                 }}
-                getData={getData}
+                getData={isAll ? getData : getAsUser}
               />
             </motion.div>
           )}
@@ -231,6 +231,7 @@ const Goals = () => {
               title="Change View"
               onClick={() => {
                 setRow(!row);
+                setMultiId([]);
               }}
             >
               {row ? <MdViewModule size={30} /> : <MdViewStream size={30} />}
@@ -428,7 +429,6 @@ const Goals = () => {
         <Scrollbars autoHide style={{ height: "100%" }}>
           <motion.div layout className="px-10">
             <AnimatePresence>
-              {" "}
               {row ? (
                 <div className="grid grid-cols-12">
                   {data
@@ -449,7 +449,7 @@ const Goals = () => {
                       status !== "" ? e.status === status : e.status !== null
                     )
 
-                    ?.map((e,index) => {
+                    ?.map((e, index) => {
                       let fromDate = new Date(e.fromDate).toLocaleDateString(
                         "id",
                         optionDateString
@@ -458,14 +458,7 @@ const Goals = () => {
                         "id",
                         optionDateString
                       );
-                      console.log(
-                        new Date(e.fromDate).toLocaleDateString(
-                          "id",
-                          optionDateString
-                        ) +
-                          "  " +
-                          thisDateMonth
-                      );
+
                       return (
                         <RowView
                           data={e}
@@ -485,7 +478,7 @@ const Goals = () => {
                           fromDateA={fromDate}
                           toDateA={toDate}
                           createdAt={e.createdAt}
-                          getData={getData}
+                          getData={isAll ? getData : getAsUser}
                           handleChange={handleChange}
                           length={index}
                         />
@@ -495,6 +488,12 @@ const Goals = () => {
               ) : (
                 <div>
                   {data
+                    ?.filter(
+                      (e) =>
+                        e.task.toLowerCase().includes(query) ||
+                        e.description.toLowerCase().includes(query) ||
+                        e.users[0].name.toLowerCase().includes(query)
+                    )
                     ?.filter((e) =>
                       progress === "onprogress"
                         ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
@@ -505,11 +504,6 @@ const Goals = () => {
                     ?.filter((e) =>
                       status !== "" ? e.status === status : e.status !== null
                     )
-                    ?.filter(
-                      (e) =>
-                        e.task.toLowerCase().includes(query) ||
-                        e.users[0].name.toLowerCase().includes(query)
-                    )
                     ?.map((e, index) => {
                       let fromDate = new Date(e.fromDate).toLocaleDateString(
                         "id",
@@ -519,6 +513,7 @@ const Goals = () => {
                         "id",
                         optionDateString
                       );
+
                       return (
                         <ColView
                           data={e}
@@ -539,7 +534,7 @@ const Goals = () => {
                           toDateA={toDate}
                           createdAt={e.createdAt}
                           updateMultiGoals={updateMultiGoals}
-                          getData={getData}
+                          getData={isAll ? getData : getAsUser}
                           length={index}
                         />
                       );

@@ -31,6 +31,7 @@ const Biodata = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    // console.log(selectedImage);
     const formData = new FormData();
     formData.append("image", selectedImage);
     formData.append("name", initialValues.name);
@@ -43,12 +44,12 @@ const Biodata = () => {
       initialValues.role === "" ||
       initialValues.position === "" ||
       initialValues.birthday === "" ||
-      selectedImage === ""
+      selectedImage === undefined
     ) {
       Swal.fire({
         icon: "error",
         title: "Error...",
-        text: "Please fill the input requirement.",
+        text: "Please fill all of input requirement.",
         timer: 3000,
       });
     } else {
