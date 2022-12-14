@@ -11,7 +11,7 @@ const RowView = (props) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const updateStatus = async (id, status) => {
-    console.log(status);
+    // console.log(status);
     const response = await dispatch(functionUpdateGoal(id, status));
     console.log(response);
     if (response.status === "Success") {
@@ -33,6 +33,7 @@ const RowView = (props) => {
       });
     }
   };
+  const [checked, setChecked] = React.useState(false);
   let dateNow = new Date(Date.now()).getDate();
   let createdData = new Date(props.createdAt).getDate();
   return (
@@ -61,10 +62,17 @@ const RowView = (props) => {
             name="goals"
             id=""
             value={props.goalId + "|" + props.status}
-            onChange={props.handleChange}
-            className="peer sr-only"
+            onChange={(e) => {
+              props.handleChange(e);
+              setChecked(!checked);
+            }}
+            className="sr-only"
           />{" "}
-          <span className="absolute left-1/2 z-10 opacity-0 transition-all peer-checked:opacity-100">
+          <span
+            className={`absolute left-1/2 z-10 opacity-0 transition-all ${
+              checked && "opacity-100"
+            }`}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="fill-blue-500 stroke-white"

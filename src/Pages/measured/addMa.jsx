@@ -118,6 +118,12 @@ const AddMA = (props) => {
     setIsLoading(true);
     getDataUsers();
     getPeriod();
+    if (location.state.dataSession) {
+      setData({
+        task: location.state.dataSesssion.task,
+        description: location.state.dataSession.description,
+      });
+    }
   }, []);
   ///////////////////////
   React.useEffect(() => {
@@ -166,28 +172,28 @@ const AddMA = (props) => {
                         : "Select User"}
                       <BiChevronDown />
                     </div>
-                    <div
-                      className={`bg-white z-10 shadow-lg  capitalize mt-2 rounded-md   w-full mr-10 left-0 ${
-                        openUser ? "h-[100px] absolute left-0  " : "h-0"
-                      } `}
-                    >
-                      <Scrollbars autoHide style={{ height: " 100%" }}>
-                        {users?.map((e, index) => (
-                          <p
-                            onClick={() => {
-                              setSelectedUser(e.name);
-                              setData({ ...data, userId: e.id });
-                              setOpenUser(false);
-                            }}
-                            className={`p-2 text-sm hover:bg-gray-200  hover:text-black hover:cursor-pointer`}
-                            value={`${e.id}`}
-                            key={index}
-                          >
-                            {e.name}
-                          </p>
-                        ))}{" "}
-                      </Scrollbars>
-                    </div>{" "}
+                    {openUser && users.length !== 0 && (
+                      <div
+                        className={`bg-white z-10 shadow-lg  h-[100px] absolute  capitalize rounded-md w-full  left-0 `}
+                      >
+                        <Scrollbars autoHide style={{ height: " 100%" }}>
+                          {users?.map((e, index) => (
+                            <p
+                              onClick={() => {
+                                setSelectedUser(e.name);
+                                setData({ ...data, userId: e.id });
+                                setOpenUser(false);
+                              }}
+                              className={`p-2 text-sm hover:bg-gray-200 rounded-md mb-0 hover:text-black hover:cursor-pointer`}
+                              value={`${e.id}`}
+                              key={index}
+                            >
+                              {e.name}
+                            </p>
+                          ))}{" "}
+                        </Scrollbars>
+                      </div>
+                    )}
                   </div>
                   <div className="mb-3 relative">
                     <p className="text-sm pl-2">Goal</p>
@@ -282,6 +288,7 @@ const AddMA = (props) => {
                       type="text"
                       className="border rounded-md w-full py-2 outline-none px-2 placeholder:italic "
                       placeholder="Input description here"
+                      value={data.task}
                       onChange={(e) => {
                         setData({
                           ...data,
@@ -296,6 +303,7 @@ const AddMA = (props) => {
                       type="text"
                       className="border rounded-md w-full py-2 outline-none px-2 placeholder:italic "
                       placeholder="Input task here"
+                      value={data.description}
                       onChange={(e) => {
                         setData({
                           ...data,
@@ -411,30 +419,62 @@ const AddMA = (props) => {
                           >
                             <Scrollbars autoHide style={{ height: " 100%" }}>
                               {periods.length !== 0 ? (
-                                periods?.map((e, index) => (
+                                <div>
+                                  {periods?.map((e, index) => (
+                                    <p
+                                      onClick={() => {
+                                        setSelectedPeriod(e.period);
+                                        setData({
+                                          ...data,
+                                          fromDate: e.fromDate,
+                                          toDate: e.toDate,
+                                        });
+                                        setOpenPeriod(false);
+                                      }}
+                                      className={`p-2 text-sm hover:bg-gray-200  hover:text-black hover:cursor-pointer`}
+                                      value={`${e.id}`}
+                                      key={index}
+                                    >
+                                      {e.period}
+                                    </p>
+                                  ))}
                                   <p
+                                    className=" p-2 hover:bg-gray-200  hover:text-black text-red-600 font-semibold hover:cursor-pointer"
                                     onClick={() => {
-                                      setSelectedPeriod(e.period);
-                                      setData({
-                                        ...data,
-                                        fromDate: e.fromDate,
-                                        toDate: e.toDate,
+                                      Swal.fire({
+                                        title: "Period is not emtpy.",
+                                        text: "You want to add new period?",
+                                        icon: "warning",
+                                        showCancelButton: true,
+                                        allowOutsideClick: false,
+                                        confirmButtonColor: "#3085d6",
+                                        cancelButtonColor: "#d33",
+                                        confirmButtonText: "Yes, i want add!",
+                                      }).then((result) => {
+                                        if (result.isConfirmed) {
+                                          console.log(location);
+                                          navigate("/acc/archives", {
+                                            state: {
+                                              isAddPeriods: true,
+                                              isArchivePage: false,
+                                              prevPath: location.pathname,
+                                              isAdd: true,
+                                              dataSession: data,
+                                            },
+                                          });
+                                        }
                                       });
-                                      setOpenPeriod(false);
                                     }}
-                                    className={`p-2 text-sm hover:bg-gray-200  hover:text-black hover:cursor-pointer`}
-                                    value={`${e.id}`}
-                                    key={index}
                                   >
-                                    {e.period}
+                                    Add Period
                                   </p>
-                                ))
+                                </div>
                               ) : (
                                 <p
                                   className=" p-2 hover:bg-gray-200  hover:text-black text-red-600 font-semibold hover:cursor-pointer"
                                   onClick={() => {
                                     Swal.fire({
-                                      title: "Peroid is emtpy.",
+                                      title: "Period is emtpy.",
                                       text: "You must create period first.",
                                       icon: "warning",
                                       showCancelButton: true,
@@ -450,6 +490,8 @@ const AddMA = (props) => {
                                             isArchivePage: false,
                                             isAddPeriods: true,
                                             prevPath: location.pathname,
+                                            isAdd: true,
+                                            dataSession: data,
                                           },
                                         });
                                       }

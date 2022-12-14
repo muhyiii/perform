@@ -25,9 +25,9 @@ function Archive() {
     toDate:
       new Date(now).getFullYear() +
       "-" +
-      new Date(now).getMonth() +
+      new Date(now).getDate() +
       "-" +
-      new Date(now).getDate(),
+      new Date(now).getMonth(),
   });
   // console.log(state.fromDate);
   const [archive, setArchive] = useState(true);
@@ -61,8 +61,26 @@ function Archive() {
         setState({});
         setIsLoading(false);
         setIsAddPeriod(false);
-        navigate(".", { state: { isAddPeriods: false } });
-        getPeriod();
+        if (location.state.prevPath) {
+          const path = location.state.prevPath.split("/")[2];
+          if (path === "goals")
+            navigate(location.state.prevPath, {
+              state: {
+                isAddGoal: true,
+                dataSession: location.state.dataSession,
+              },
+            });
+          else
+            navigate(location.state.prevPath, {
+              state: {
+                isAddMa: true,
+                dataSession: location.state.dataSession,
+              },
+            });
+        } else {
+          navigate(".", { state: { isAddPeriods: false } });
+          getPeriod();
+        }
       }
       setIsLoading(false);
     }
@@ -76,7 +94,7 @@ function Archive() {
       }, 500);
     }
   };
-
+  console.log(location);
   React.useEffect(() => {
     setIsLoading(true);
     getPeriod();
@@ -240,7 +258,7 @@ function Archive() {
                       <p className="text-xs">From Date</p>
                       <input
                         type="date"
-                        value={`${state.fromDate}`}
+                        value={state.fromDate}
                         onChange={(e) =>
                           setState({ ...state, fromDate: e.target.value })
                         }
@@ -252,6 +270,7 @@ function Archive() {
                       <input
                         type="date"
                         value={state.toDate}
+                        min={state.fromDate}
                         onChange={(e) =>
                           setState({ ...state, toDate: e.target.value })
                         }
@@ -274,9 +293,12 @@ function Archive() {
                 )}
               </AnimatePresence>
             </div>
-            <div className="h-full w-9/12  px-4">
+            <div className="h-full w-9/12 mb-20  px-4">
               <hr />
-              <Scrollbars autoHide style={{ height: "75vh", margin: "2px" }}>
+              <Scrollbars
+                autoHide
+                style={{ height: "70vh", margin: "2px", paddingBottom: "200px" }}
+              >
                 <AnimatePresence>
                   {periods.length !== 0 ? (
                     periods.map((e, index) => {

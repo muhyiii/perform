@@ -15,6 +15,7 @@ const PeriodComponent = () => {
   const [enabled, setEnabled] = React.useState(true);
   const [query, setQuery] = React.useState("");
   const { period } = useParams();
+  const location = useLocation();
   const [dataGoal, setDataGoal] = React.useState([]);
   const [dataMa, setDataMa] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -70,38 +71,55 @@ const PeriodComponent = () => {
             e.goals[0].task.toLowerCase().includes(query) ||
             e.users[0].name.toLowerCase().includes(query)
         );
+  const options = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
   React.useEffect(() => {
     setIsLoading(true);
     enabled ? getDataGoal() : getDataMa();
   }, []);
+  console.log(filteredGoal);
   React.useEffect(() => {
     enabled ? getDataGoal() : getDataMa();
   }, [enabled]);
+  let fromDate = new Date(location.state.fromDate).toLocaleDateString(
+    "id",
+    options
+  );
+  let toDate = new Date(location.state.toDate).toLocaleDateString(
+    "id",
+    options
+  );
 
   if (isLoading) return <Loadings />;
   return (
     <div className="p-10 h-full w-full">
-      <div className="flex items-center space-x-1 text-lg">
+      <div className="flex justify-between">
         {" "}
-        <h1
-          onClick={() => navigate(-1)}
-          className="hover:text-2xl  hover:cursor-pointer hover:text-blue-900 hover:font-medium"
-        >
-          Period
-        </h1>{" "}
-        <p className="">of</p> <p className="font-medium">{period}</p>
+        <div className="flex items-center space-x-1 text-lg">
+          {" "}
+          <h1
+            onClick={() => navigate(-1)}
+            className="hover:text-2xl  hover:cursor-pointer hover:text-blue-900 hover:font-medium"
+          >
+            Period
+          </h1>{" "}
+          <p className="">of</p> <p className="font-medium">{period}</p>
+        </div>
+        <p className="font-medium">From {fromDate} - To {toDate}</p>
       </div>
       <div className="flex items-center space-x-3">
         <h1
           className={`text-xl font-semibold my-2 ${enabled && "text-blue-500"}`}
-          // onClick={() => setEnabled(true)}
         >
           Goals
         </h1>
         <Switch
           checked={enabled}
           onChange={setEnabled}
-          className={`${enabled ? "bg-blue-900" : "bg-red-900"}
+          className={` bg-slate-800
           relative inline-flex h-[18px] w-[34px] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
         >
           <span className="sr-only">Use setting</span>
@@ -117,6 +135,7 @@ const PeriodComponent = () => {
           Measured Activity
         </h1>
       </div>
+
       <div className="flex items-center space-x-4 my-2  w-1/3">
         <label
           htmlFor=""
@@ -141,7 +160,18 @@ const PeriodComponent = () => {
       <div className=" w-full pb-20">
         <hr />
         {enabled ? (
-          filteredGoal.length === 0 && query !== "" ? (
+          filteredGoal.length === 0 ? (
+            <motion.div
+              layout
+              initial={{ opacity: 0, y: 100 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -100 }}
+              transition={{ delay: `0.4`, duration: 1 }}
+              className="text-xl mt-2 font-medium text-red-400 text-center"
+            >
+              Data is empty...
+            </motion.div>
+          ) : filteredGoal.length === 0 && query !== "" ? (
             <motion.div
               layout
               initial={{ opacity: 0, y: 100 }}
@@ -188,6 +218,17 @@ const PeriodComponent = () => {
               );
             })
           )
+        ) : filteredMa.length === 0 ? (
+          <motion.div
+            layout
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -100 }}
+            transition={{ delay: `0.4`, duration: 1 }}
+            className="text-xl mt-2 font-medium text-red-400 text-center"
+          >
+            Data is empty...
+          </motion.div>
         ) : filteredMa.length === 0 && query !== "" ? (
           <motion.div
             layout

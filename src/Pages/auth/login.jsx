@@ -28,11 +28,9 @@ export default function Login() {
   }
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleSubmit = async () => {
-    setIsLoading(true);
+  const handleSubmit = async (e) => {
     const response = await dispatch(functionLogin(value));
-
-    // console.log(response.status );
+    console.log(response);
     if (response.status === "Success") {
       setTimeout(() => {
         navigate("/acc/dashboard", { replace: true });

@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import "../measured/ma";
 import User from "../../Component/User";
 import AddMA from "./addMa";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   functionDeleteMultiMeasuredActivity,
@@ -28,9 +28,8 @@ import { IoArchiveOutline } from "react-icons/io5";
 
 const Ma = () => {
   const [data, setData] = React.useState([]);
-  // const [filtered, setFiltered] = React.useState([]);
   const [status, setStatus] = React.useState("");
-  const [isAll, setIsAll] = React.useState(false);
+  const isAll = useSelector((state) => state.rootReducer.isAllMa);
   const [isLoading, setIsLoading] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [progress, setProgress] = React.useState("onprogress");
@@ -64,7 +63,7 @@ const Ma = () => {
     const response = await dispatch(functionGetMeasuredActivities());
     if (response.status === "Success") {
       // console.log(typeof(status));
-      console.log(response.data.rows);
+      // console.log(response.data.rows);
       setData(response.data.rows?.filter((e) => e.isArchive === false));
       setTimeout(() => {
         setIsLoading(false);
@@ -114,7 +113,7 @@ const Ma = () => {
     const response = await dispatch(
       functionUpdateMultiMeasuredActivity(multiId, value, archive)
     );
-    console.log(response);
+    // console.log(response);
     if (response.status === "Success") {
       Swal.fire({
         title: "Succesfull!",
@@ -152,9 +151,9 @@ const Ma = () => {
     getAllDaysInMonth();
     isAll ? getData() : getDataUserNow();
   }, [isAll]);
-  React.useEffect(() => {
-    console.log(multiId);
-  }, [multiId]);
+  // React.useEffect(() => {
+  //   // console.log(multiId);
+  // }, [multiId]);
 
   //////////////////////
   const filteredQuery =
@@ -295,7 +294,7 @@ const Ma = () => {
                 isAll ? "ring-2 bg-blue-400 text-white" : " bg-black"
               }`}
               onClick={() => {
-                setIsAll(!isAll);
+                dispatch({ type: "CHANGE_ALL_MA" });
                 setMultiId([]);
               }}
             >

@@ -1,22 +1,58 @@
 import React from "react";
+
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+
+import { AnimatePresence, motion } from "framer-motion";
+
+import {
+  functionGetGoalsById,
+  functionUpdateGoal,
+  functionUpdateGoalImage,
+} from "../../redux/actions/goalsAction";
+import {
+  functionGetMeasuredActivityById,
+  functionUpdateMeasuredActivity,
+} from "../../redux/actions/maAction";
 import Loadings from "../../Component/Loading";
-import { functionGetMeasuredActivityById } from "../../redux/actions/maAction";
-import { motion } from "framer-motion";
+import { Player } from "@lottiefiles/react-lottie-player";
 import ReviewsProvider from "../../Component/Support/ReviewsProvider";
-import { BarProv } from "../../Component/Support/ReviewsProvider";
- 
+import Swal from "sweetalert2";
+import { IoClose } from "react-icons/io5";
+
+function getAllDate(params) {
+  const now = Date.now();
+  let year = now.getFullYear();
+  const date = new Date(year, 0, 1);
+  const allDate = [];
+  while (date.getFullYear() === year) {
+    allDate.push(new Date(date));
+    date.setDate(date.getDate() + 1);
+  }
+  return allDate;
+}
+
 const MaDetail = () => {
+  let { id } = useParams();
+  const [isLoading, setIsLoading] = React.useState(false);
   const [data, setData] = React.useState({});
   const [user, setUser] = React.useState({});
- 
   const [goal, setGoal] = React.useState({});
-  const [isLoading, setIsLoading] = React.useState(false);
-  const { id } = useParams();
- 
-  const dispatch = useDispatch();
+  const [yearDate, setYearDate] = React.useState([]);
+  const uploadImage = React.useRef(null);
+  const [show, setShow] = React.useState(false);
+  const [fileInputState, setFileInputState] = React.useState("");
+  const [previewSource, setPreviewSource] = React.useState("");
+  const [selectedFile, setSelectedFile] = React.useState();
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const options = {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  };
+
   const getData = async () => {
     const response = await dispatch(functionGetMeasuredActivityById(id));
     if (response.status === "Success") {
@@ -29,129 +65,306 @@ const MaDetail = () => {
       }, 500);
     }
   };
+
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
+    if (file.type.split("/")[0] !== "image") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Choose an image!",
+      });
+      previewFile();
+      setSelectedFile();
+    } else {
+      previewFile(file);
+      setSelectedFile(file);
+      setFileInputState(e.target.value);
+    }
+  };
+
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    };
+  };
+
+  const updateStatusMa = async (id, status, archive) => {
+    console.log(id, status);
+    const response = await dispatch(
+      functionUpdateMeasuredActivity(id, status, archive)
+    );
+    console.log(response);
+    if (response.status === "Success") {
+      Swal.fire({
+        title: "Succesfull!",
+        text: response.messege,
+        icon: "success",
+        timer: 1000,
+      });
+      setTimeout(() => {
+        getData();
+      }, 1000);
+    }
+    if (response.status !== "Success") {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: response.messege,
+      });
+    }
+  };
+
+  const handleSubmitFile = async () => {
+    setIsLoading(true);
+    const formData = new FormData();
+    formData.append("image", selectedFile);
+    console.log(selectedFile);
+    if (!selectedFile) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Choose an image!",
+      });
+    } else {
+      const response = await dispatch(functionUpdateGoalImage(id, formData));
+      console.log(response);
+      if (response.status === "Success") {
+        Swal.fire({
+          title: "Succesfull!",
+          text: response.messege,
+          icon: "success",
+          timer: 1000,
+        });
+        setIsLoading(false);
+        setTimeout(() => {
+          navigate(0, { replace: true });
+        }, 500);
+      }
+    }
+    setIsLoading(false);
+  };
+
   React.useEffect(() => {
     setIsLoading(true);
     getData();
-  }, [0]);
-  if (isLoading) <Loadings />;
-  const maDate = new Date(data.toDate).toLocaleDateString("id", {
-    month: "numeric",
-    year: "numeric",
-    day: "numeric",
-  });
-  const maDate2 = new Date(data.updatedAt).toLocaleDateString("id", {
-    month: "numeric",
-    year: "numeric",
-    day: "numeric",
-  });
- 
+    setYearDate(getAllDate());
+  }, [id]);
+  let fromDate = new Date(data.fromDate).toLocaleDateString("id", options);
+  let toDate = new Date(data.toDate).toLocaleDateString("id", options);
+console.log(yearDate);
+  if (isLoading) return <Loadings />;
   return (
-    <div className="px-10 py-7 flex justify-between">
-      {/* kiri ........................................................................*/}
-      <div>
-        <div className=" max-w-sm p-5 rounded-xl shadow-md  bg-slate-300 ">
-          <h1 className="text-2xl justify-center">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 1.0 }}
-              className="hover:cursor-pointer hover:text-gray-600 font-bold mx-2"
-              onClick={() => {
-                navigate(-1);
-              }}
-            >
-              Measured Activity
-            </motion.button>{" "}
-            Detail
-          </h1>
+    <div>
+      {" "}
+      {show && (
+        <div
+          data-cy="modal-add"
+          variant="primary"
+          className="absolute modal z-50 h-full w-full bg-black bg-opacity-80  flex items-center justify-center "
+        >
+          <motion.img
+            key={1}
+            animate={{ y: 0 }}
+            initial={{ y: -100 }}
+            exit={{ y: +100 }}
+            src={previewSource ? previewSource : data.image}
+            className=" w-1/4 rounded-md shadow-lg"
+          />
+          <IoClose
+            onClick={() => setShow(false)}
+            size={25}
+            color="white"
+            className="absolute right-5 top-5 cursor-pointer"
+          />
         </div>
- 
-        <div className="my-5 max-w-sm rounded-xl overflow-hidden shadow-md bg-slate-300">
-          <div className="m-6 py-3 px-5 justify-between flex bg-gray-200 rounded-xl items-center shadow-lg">
-            <img
-              src={user.image}
-              className="h-12 w-12 rounded-full "
-              alt="profilePhoto"
-            />
-            <div className="">
-              <p
-                title="Username"
-                class="hover:cursor-pointer mx-3 inline-block rounded-lg px-5 py-1 text-sm font-semibold text-gray-800 capitalize "
+      )}
+      <div className=" flex  w-full p-10 space-x-5 h-screen overflow-hidden">
+        <div className="w-[35%] space-y-5 h-[100%]  relative">
+          <div className="h-[7%]  ">
+            <h1 className="text-4xl font-bold ">
+              {" "}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className="hover:cursor-pointer hover:text-blue-700 "
+                onClick={() => {
+                  navigate(-1);
+                }}
               >
-                {user.name}
-              </p>
-              <p
-                title="Role"
-                class="hover:cursor-pointer mx-3 inline-block rounded-lg px-5 py-1 text-md font-tint text-gray-800  "
-              >
-                {user.role}
-              </p>
+                Measure Activity
+              </motion.button>{" "}
+              Detail
+            </h1>
+          </div>
+          <div className="bg-gradient-to-tr from-slate-300 to-white rounded-lg h-[50%]  shadow-lg">
+            <div className="m-auto text-center pt-10 capitalize ">
+              <h1 className="text-xl font-semibold">{user.name}</h1>
+              <p className="text-sm">{user.role}</p>
+            </div>
+            <div className="mt-10 w-1/3 m-auto ">
+              <ReviewsProvider
+                valueStart={0}
+                valueEnd={data.rate}
+                size={12}
+              ></ReviewsProvider>
+              {data.rate === 100 ? (
+                <p className="text-center mt-5 font-semibold">Completed</p>
+              ) : (
+                <div className="flex justify-center mt-5">
+                  {" "}
+                  <motion.button
+                    onClick={() => {
+                      if (
+                        data.status === "to-do" ||
+                        data.status === "ongoing"
+                      ) {
+                        Swal.fire({
+                          title: "Are you sure?",
+                          text: "You can only update to the next stage",
+                          icon: "warning",
+                          showCancelButton: true,
+                          confirmButtonColor: "#3085d6",
+                          cancelButtonColor: "#d33",
+                          confirmButtonText: "Yes, update it!",
+                        }).then(async (result) => {
+                          if (result.isConfirmed) {
+                            await Swal.fire({
+                              title: "Select value of status update",
+                              input: "select",
+                              inputOptions:
+                                data.status !== "ongoing"
+                                  ? {
+                                      ongoing: "Ongoing",
+                                      hold: "Hold",
+                                      done: "Done",
+                                    }
+                                  : {
+                                      hold: "Hold",
+                                      done: "Done",
+                                    },
+                              inputPlaceholder: "Select a status",
+                              showCancelButton: true,
+                              inputValidator: (value) => {
+                                return new Promise((resolve) => {
+                                  if (
+                                    value === "done" ||
+                                    value === "Hold" ||
+                                    value === "ongoing"
+                                  ) {
+                                    updateStatusMa(data.maId, value);
+                                    navigate(0);
+                                  } else {
+                                    resolve(
+                                      "Choose the next stage of your status"
+                                    );
+                                  }
+                                });
+                              },
+                            });
+                          }
+                        });
+                      } else {
+                        Swal.fire({
+                          icon: "error",
+                          title: "Oops...",
+                          text: "You cannot update to stage before!",
+                        });
+                      }
+                    }}
+                    className="bg-slate-300 px-5 py-1 rounded-md uppercase text-sm font-medium h-7 m-auto text-center"
+                  >
+                    Update
+                  </motion.button>
+                </div>
+              )}
             </div>
           </div>
-          <div class="px-6 ">
-            <div className="bg-gray-200 rounded-xl h-3/4  shadow-lg ">
-              <div className="m-auto text-center pt-5 capitalize ">
-                <h1
-                  title="Task Name"
-                  className="hover:cursor-pointer text-xl font-semibold break-words px-6 text-left"
-                >
-                  Tugas {data.task}
-                </h1>
-              </div>
- 
-              <div className="py-8 w-1/2 m-auto font-semibold hover:cursor-progress">
-                <ReviewsProvider
-                  valueStart={0}
-                  valueEnd={data.rate}
-                  size={12}
-                ></ReviewsProvider>
- 
-                {data.rate === 100 && (
-                  <p className=" mt-5 font-semibold text-md text-gray-600 text-center">Completed</p>
-                )}
-                {data.rate === 0 && (
-                  <p className="text-center mt-5 font-semibold">Hold</p>
-                )}
-              </div>
-            </div>
-            <div className="bg-gray-200 rounded-xl h-1/4 my-3 items-center  shadow-lg">
-              <BarProv valueStart={0} valueEnd={data.rate} className="items-center "/>
+          <div className="h-[37.5%]  w-full bg-gradient-to-br from-white to-slate-100 py-5 rounded-md flex justify-center shadow-md ">
+            <div className="flex justify-center items-start text-center">
+              {data.image === null ? (
+                <div className="text-xs">
+                  <p className="text-sm">no image</p>
+                  <p
+                    className="cursor-pointer hover:underline hover:text-blue-400 "
+                    title="upload image"
+                    onClick={() => uploadImage.current.click()}
+                  >
+                    {previewSource ? "change image" : " upload image"}
+                  </p>
+                  <input
+                    ref={uploadImage}
+                    onChange={handleFileInputChange}
+                    type="file"
+                    className="opacity-0"
+                  />
+                  {previewSource && (
+                    <div>
+                      {" "}
+                      <img
+                        onClick={() => setShow(!show)}
+                        src={previewSource}
+                        alt="chosen"
+                        className="h-24  m-auto"
+                      />
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="bg-blue-400 px-5 py-1 mt-5 rounded-md text-white"
+                        onClick={() => {
+                          Swal.fire({
+                            title: "Are you sure?",
+                            text: "You want to set image of this goal",
+                            icon: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#3085d6",
+                            cancelButtonColor: "#d33",
+                            confirmButtonText: "Yes, set it!",
+                          }).then(async (result) => {
+                            if (result.isConfirmed) {
+                              handleSubmitFile();
+                            }
+                          });
+                        }}
+                      >
+                        Submit
+                      </motion.button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div>
+                  <p className="text-sm font-medium mb-4">Proove Image</p>
+                  <img
+                    onClick={() => setShow(!show)}
+                    src={data.image}
+                    className="h-40 rounded-md shadow-md drop-shadow-md"
+                    alt=""
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
-      </div>
- 
-      {/* Kanan ........................................................................*/}
-      <div className="max-w-sm p-5 rounded-xl shadow-md bg-slate-300 mx-5 justify-center">
-        <p className="text-sm font-semibold text-gray-600 text-center">
-          Description
-        </p>
-        <div className="shadow-lg inline-block bg-gray-200 rounded-lg py-3 text-sm font-semibold text-gray-800 m-2 justify-center">
-          <p
-            title="Username"
-            class="mx-3 inline-block rounded-lg px-5 py-1 text-sm font-semibold text-gray-800 capitalize  "
-          >
-            {data.description}
-          </p>
-        </div>
-        <div class="px-6 pt-4 pb-2 flex justify-center">
-          <div className="text-center">
-            <p className="text-sm font-semibold text-gray-600">Updated at</p>
-            <span class="shadow-lg inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-800 m-2">
-              {maDate2}
-            </span>
+        <div className="w-[69%]  bg-white shadow-lg   mr-5 rounded-xl p-5 capitalize relative">
+          <div className="flex justify-between">
+            <h1 className="text-2xl font-semibold">{data.task}</h1>
+            <p className="font-semibold">
+              from <span className="">{fromDate}</span> to{" "}
+              <span className="text-red-700 font-bold">{toDate}</span>
+            </p>
           </div>
-          <div className="text-center">
-            <p className="text-sm font-semibold text-gray-600">Deadline</p>
-            <span className="shadow-lg inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-800 m-2 m-2">
-              {maDate}
-            </span>
+
+          <div>
+            <p>{data.description}</p>
           </div>
+          <div>{""}</div>
         </div>
       </div>
     </div>
   );
 };
- 
-export default MaDetail;
- 
 
+export default MaDetail;

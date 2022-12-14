@@ -65,7 +65,7 @@ const User = () => {
                   className="h-7 w-7 rounded-full"
                   alt="profilePhoto"
                 />
-                <h1>{user.name}</h1>
+                <h1 className="truncate">{user.name}</h1>
               </div>
               <hr />
               <div className="px-5 text-base text-gray-400 my-1  hover:bg-slate-100 hover:text-gray-800 ">

@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from "react";
+import React, { useContext } from "react";
 import Swal from "sweetalert2";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -15,7 +15,7 @@ import Loadings from "../../Component/Loading";
 import ColView from "./goals component/ColView";
 import RowView from "./goals component/RowView";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { HiPencil } from "react-icons/hi";
 import {
   functionDeleteMultiGoals,
@@ -28,14 +28,16 @@ import { functionUpdateMultiGoals } from "../../redux/actions/goalsAction";
 import Scrollbars from "react-custom-scrollbars-2";
 import { IoArchiveOutline } from "react-icons/io5";
 
+import { SetStateAll, StateAll } from "../../Component/ContextProvider";
+
 const Goals = () => {
   const [data, setData] = React.useState([]);
-  const [row, setRow] = React.useState(true);
+  const row = useSelector((state) => state.rootReducer.isRow);
+  const isAll = useSelector((state) => state.rootReducer.isAllGoal);
   const [multiId, setMultiId] = React.useState([]);
   const [multiStatus, setMultiStatus] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [status, setStatus] = React.useState("");
-  const [isAll, setIsAll] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [progress, setProgress] = React.useState("onprogress");
   const [thisDateMonth, setThisDateMonth] = React.useState([]);
@@ -82,7 +84,7 @@ const Goals = () => {
       });
       setTimeout(() => {
         setMultiId([]);
-        isAll ? getData() : getAsUser();
+        isAll.isAllGoal ? getData() : getAsUser();
       }, 1000);
     }
     if (response.status !== "Success")
@@ -108,7 +110,7 @@ const Goals = () => {
       });
       setTimeout(() => {
         setMultiId([]);
-        isAll ? getData() : getAsUser();
+        isAll.isAllGoal ? getData() : getAsUser();
       }, 1000);
     }
     if (response.status !== "Success")
@@ -123,7 +125,7 @@ const Goals = () => {
     const response = await dispatch(functionGetGoals());
     if (response.status === "Success") {
       setData(response.data.rows);
-      // console.log(response.data.rows);
+      console.log(response.data.rows);
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
@@ -143,14 +145,12 @@ const Goals = () => {
     let month = now.getMonth();
     let year = now.getFullYear();
     const date = new Date(year, month, 1);
-
     const dates = [];
-
     while (date.getMonth() === month) {
-      dates.push(new Date(date).getTime());
+      dates.push(new Date(date).toDateString("id"));
       date.setDate(date.getDate() + 1);
     }
-    // console.log(dates);
+
     return setThisDateMonth(dates);
   }
 
@@ -160,6 +160,31 @@ const Goals = () => {
     // console.log(location);
     isAll ? getData() : getAsUser();
   }, [isAll]);
+  // console.log(thisDateMonth);
+  const filteredQuery =
+    query === ""
+      ? data
+      : data.filter(
+          (e) =>
+            e.task.toLowerCase().includes(query) ||
+            e.description.toLowerCase().includes(query) ||
+            e.users[0].name.toLowerCase().includes(query)
+        );
+  const thisMonth =
+    progress !== "onprogress"
+      ? filteredQuery
+      : filteredQuery.filter((e) =>
+          progress === "onprogress"
+            ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
+              new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
+            : new Date(e.fromDate).getTime()
+        );
+  const filteredStatus =
+    status === ""
+      ? thisMonth
+      : thisMonth.filter((e) =>
+          status !== "" ? e.status === status : e.status !== null
+        );
 
   if (isLoading) return <Loadings />;
 
@@ -170,6 +195,7 @@ const Goals = () => {
       relative h-screen capitalize`}
     >
       <User />
+      {/* {text?.isAddGoal} */}
       <div className="px-10 pt-5   w-full   ">
         <AnimatePresence>
           {location.state?.isAddGoal && (
@@ -195,6 +221,7 @@ const Goals = () => {
             </motion.div>
           )}
         </AnimatePresence>
+
         <div className="flex justify-between items-center">
           <div className="flex space-x-5 ml-4">
             <p
@@ -230,7 +257,7 @@ const Goals = () => {
               className="rounded-xl border m-auto"
               title="Change View"
               onClick={() => {
-                setRow(!row);
+                dispatch({ type: "CHANGE_ROW_GOAL" });
                 setMultiId([]);
               }}
             >
@@ -260,7 +287,7 @@ const Goals = () => {
                     className="cursor-pointer"
                     onClick={(e) => setQuery("")}
                   />
-                </label>
+                </label>{" "}
               </div>
               <div className="border flex justify-center rounded">
                 <select
@@ -300,7 +327,7 @@ const Goals = () => {
                   : " bg-black"
               }`}
               onClick={() => {
-                setIsAll(!isAll);
+                dispatch({ type: "CHANGE_ALL_GOAL" });
                 setMultiId([]);
               }}
             >
@@ -308,11 +335,10 @@ const Goals = () => {
             </motion.button>
           </div>
           {/* {isFilter && ( */}
-          <div className="mx-4 mt-4 text-base font-semibold flex items-center justify-between ">
-            {" "}
-          </div>
+          <div className="mx-4 mt-4 text-base font-semibold flex items-center justify-between "></div>
           {/* )} */}
         </div>
+
         {multiId.length > 0 && (
           <div className="text-white flex mt-2">
             <motion.button
@@ -429,27 +455,66 @@ const Goals = () => {
         <Scrollbars autoHide style={{ height: "100%" }}>
           <motion.div layout className="px-10">
             <AnimatePresence>
+              {" "}
               {row ? (
                 <div className="grid grid-cols-12">
-                  {data
-                    ?.filter(
-                      (e) =>
-                        e.task.toLowerCase().includes(query) ||
-                        e.description.toLowerCase().includes(query) ||
-                        e.users[0].name.toLowerCase().includes(query)
-                    )
-                    ?.filter((e) =>
-                      progress === "onprogress"
-                        ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
-                          new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
-                        : new Date(e.fromDate).getTime()
-                    )
-                    ?.filter((e) => e.isArchive === false)
-                    ?.filter((e) =>
-                      status !== "" ? e.status === status : e.status !== null
-                    )
-
-                    ?.map((e, index) => {
+                  {data?.length === 0 ? (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 100 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -100 }}
+                      transition={{ delay: `0.4`, duration: 1 }}
+                      className="text-xl mt-2 font-medium text-red-400 text-center col-span-12"
+                    >
+                      Data of Goals is empty...
+                      <p
+                        className="hover:text-blue-400 cursor-pointer hover:underline"
+                        onClick={() =>
+                          navigate(".", {
+                            state: { isAddMA: true },
+                            replace: false,
+                          })
+                        }
+                      >
+                        Create Data
+                      </p>
+                    </motion.div>
+                  ) : filteredQuery.length === 0 && query !== "" ? (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 100 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -100 }}
+                      transition={{ delay: `0.4`, duration: 1 }}
+                      className="text-xl mt-2 font-medium text-red-400 text-center col-span-12"
+                    >
+                      Cannot get data of your requesting...
+                    </motion.div>
+                  ) : filteredStatus.length === 0 && status !== "" ? (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 100 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -100 }}
+                      transition={{ delay: `0.4`, duration: 1 }}
+                      className="text-xl mt-2 font-medium text-red-400 text-center col-span-12"
+                    >
+                      Cannot get data of status {status}...
+                    </motion.div>
+                  ) : thisMonth.length === 0 && progress !== "onprogress" ? (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 100 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -100 }}
+                      transition={{ delay: `0.4`, duration: 1 }}
+                      className="text-xl mt-2 font-medium text-red-400 text-center col-span-12"
+                    >
+                      Data of this month is empty
+                    </motion.div>
+                  ) : (
+                    thisMonth?.map((e, index) => {
                       let fromDate = new Date(e.fromDate).toLocaleDateString(
                         "id",
                         optionDateString
@@ -483,28 +548,57 @@ const Goals = () => {
                           length={index}
                         />
                       );
-                    })}
+                    })
+                  )}
                 </div>
               ) : (
                 <div>
-                  {data
-                    ?.filter(
-                      (e) =>
-                        e.task.toLowerCase().includes(query) ||
-                        e.description.toLowerCase().includes(query) ||
-                        e.users[0].name.toLowerCase().includes(query)
-                    )
-                    ?.filter((e) =>
-                      progress === "onprogress"
-                        ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
-                          new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
-                        : new Date(e.fromDate).getTime()
-                    )
-                    ?.filter((e) => e.isArchive === false)
-                    ?.filter((e) =>
-                      status !== "" ? e.status === status : e.status !== null
-                    )
-                    ?.map((e, index) => {
+                  {data.length === 0 ? (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 100 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -100 }}
+                      transition={{ delay: `0.4`, duration: 1 }}
+                      className="text-xl mt-2 font-medium text-red-400 text-center"
+                    >
+                      Data of Goals is empty...
+                      <p
+                        className="hover:text-blue-400 cursor-pointer hover:underline"
+                        onClick={() =>
+                          navigate(".", {
+                            state: { isAddMA: true },
+                            replace: false,
+                          })
+                        }
+                      >
+                        Create Data
+                      </p>
+                    </motion.div>
+                  ) : filteredQuery.length === 0 && query !== "" ? (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 100 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -100 }}
+                      transition={{ delay: `0.4`, duration: 1 }}
+                      className="text-xl mt-2 font-medium text-red-400 text-center"
+                    >
+                      Cannot get data of your requesting...
+                    </motion.div>
+                  ) : filteredStatus.length === 0 && status !== "" ? (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 100 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -100 }}
+                      transition={{ delay: `0.4`, duration: 1 }}
+                      className="text-xl mt-2 font-medium text-red-400 text-center"
+                    >
+                      Cannot get data of status {status}...
+                    </motion.div>
+                  ) : (
+                    thisMonth?.map((e, index) => {
                       let fromDate = new Date(e.fromDate).toLocaleDateString(
                         "id",
                         optionDateString
@@ -538,7 +632,8 @@ const Goals = () => {
                           length={index}
                         />
                       );
-                    })}
+                    })
+                  )}
                 </div>
               )}
             </AnimatePresence>

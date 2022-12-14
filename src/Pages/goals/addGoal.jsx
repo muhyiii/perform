@@ -38,7 +38,7 @@ const AddGoals = (props) => {
   // SUBMIT
   const sendData = async () => {
     console.log(data);
-
+    setIsLoading(true);
     if (
       data.description === "" ||
       data.fromDate === "" ||
@@ -76,6 +76,7 @@ const AddGoals = (props) => {
             navigate(".", { state: { isAddGoal: false }, replace: true });
           }
         }, 1000);
+        setIsLoading(false);
       }
       if (response.status !== "Success")
         Swal.fire({
@@ -107,7 +108,15 @@ const AddGoals = (props) => {
   React.useEffect(() => {
     getDataUsers();
     getPeriod();
+    console.log(location);
+    if (location.state.dataSession) {
+      setData({
+        task: location.state.dataSession.task,
+        description: location.state.dataSession.description,
+      });
+    }
   }, []);
+
   return (
     <AnimatePresence>
       {/* {props.AddGoals && ( */}
@@ -176,7 +185,8 @@ const AddGoals = (props) => {
                       <input
                         type="text"
                         className="border focus:border-black rounded-md w-full py-2 outline-none px-2 placeholder:italic "
-                        placeholder="Input description here"
+                        placeholder="Input task here"
+                        value={data.task}
                         onChange={(e) => {
                           setData({
                             ...data,
@@ -190,7 +200,8 @@ const AddGoals = (props) => {
                       <textarea
                         type="text"
                         className="border focus:border-black rounded-md w-full py-2 outline-none px-2 placeholder:italic "
-                        placeholder="Input task here"
+                        placeholder="Input description here"
+                        value={data.description}
                         onChange={(e) => {
                           setData({
                             ...data,
@@ -307,30 +318,63 @@ const AddGoals = (props) => {
                             >
                               <Scrollbars autoHide style={{ height: " 100%" }}>
                                 {periods.length !== 0 ? (
-                                  periods?.map((e, index) => (
+                                  <div>
+                                    {periods?.map((e, index) => (
+                                      <p
+                                        onClick={() => {
+                                          setSelectedPeriod(e.period);
+                                          setData({
+                                            ...data,
+                                            fromDate: e.fromDate,
+                                            toDate: e.toDate,
+                                          });
+                                          setOpenPeriod(false);
+                                        }}
+                                        className={`p-2 text-sm hover:bg-gray-200  hover:text-black hover:cursor-pointer`}
+                                        value={`${e.id}`}
+                                        key={index}
+                                      >
+                                        {e.period}
+                                      </p>
+                                    ))}
                                     <p
+                                      className=" p-2 hover:bg-gray-200  hover:text-black text-red-600 font-semibold hover:cursor-pointer"
                                       onClick={() => {
-                                        setSelectedPeriod(e.period);
-                                        setData({
-                                          ...data,
-                                          fromDate: e.fromDate,
-                                          toDate: e.toDate,
+                                        Swal.fire({
+                                          title: "Period is not emtpy.",
+                                          text: "You want to add new period?.",
+                                          icon: "warning",
+                                          showCancelButton: true,
+                                          allowOutsideClick: false,
+                                          confirmButtonColor: "#3085d6",
+                                          cancelButtonColor: "#d33",
+                                          confirmButtonText:
+                                            "Yes, i want add !",
+                                        }).then((result) => {
+                                          if (result.isConfirmed) {
+                                            console.log(location);
+                                            navigate("/acc/archives", {
+                                              state: {
+                                                isAddPeriods: true,
+                                                isArchivePage: false,
+                                                prevPath: location.pathname,
+                                                isAdd: true,
+                                                dataSession: data,
+                                              },
+                                            });
+                                          }
                                         });
-                                        setOpenPeriod(false);
                                       }}
-                                      className={`p-2 text-sm hover:bg-gray-200  hover:text-black hover:cursor-pointer`}
-                                      value={`${e.id}`}
-                                      key={index}
                                     >
-                                      {e.period}
+                                      Add Period
                                     </p>
-                                  ))
+                                  </div>
                                 ) : (
                                   <p
                                     className=" p-2 hover:bg-gray-200  hover:text-black text-red-600 font-semibold hover:cursor-pointer"
                                     onClick={() => {
                                       Swal.fire({
-                                        title: "Peroid is emtpy.",
+                                        title: "Period is emtpy.",
                                         text: "You must create period first.",
                                         icon: "warning",
                                         showCancelButton: true,
@@ -340,12 +384,18 @@ const AddGoals = (props) => {
                                         confirmButtonText: "Yes, create it!",
                                       }).then((result) => {
                                         if (result.isConfirmed) {
+                                          localStorage.setItem(
+                                            "addGoal",
+                                            JSON.stringify(data)
+                                          );
                                           console.log(location);
                                           navigate("/acc/archives", {
                                             state: {
                                               isAddPeriod: true,
                                               isArchivePage: false,
                                               prevPath: location.pathname,
+                                              isAdd: true,
+                                              dataSession: data,
                                             },
                                           });
                                         }

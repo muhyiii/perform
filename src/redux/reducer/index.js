@@ -1,9 +1,6 @@
 import { combineReducers } from "redux";
-import { authProcess, loadingProcess } from "./authReducers";
+import rootReducer from "./rootReducer";
 
 export const allReducers = combineReducers({
-  auth: authProcess,
-  // loadingState: loadingProcess,
-
-  // auth: namaReducer,
+  rootReducer,
 });

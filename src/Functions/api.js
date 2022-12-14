@@ -62,6 +62,10 @@ export function updateGoalById(goalId, payload, archive) {
     isArchive: archive,
   });
 }
+//// ADD IMAGE GOAL
+export function addImageGoal(goalId, value) {
+  return axioss.put(`/data/goals/${goalId}/update/image`, value);
+}
 //// UPDATE MULTI GOALS
 export function updateMultiGoals(multiId, value, archive) {
   return axioss.post(`/data/goals/multiple/update`, {

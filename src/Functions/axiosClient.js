@@ -1,4 +1,5 @@
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export const api = "http://34.128.85.173";
 const headers = {
@@ -16,18 +17,24 @@ axiosClient.interceptors.response.use(
   },
   (error) => {
     console.log("err axios", error);
+    // Swal.fire({
+    //   icon: "error",
+    //   title: "Oops...",
+    //   text: "Something went wrong!",
+    //   footer: window.location.reload(),
+    // });
     if (401 === error?.response?.status) {
       localStorage.removeItem("token");
 
       clearToken();
       localStorage.clear();
       window.location.replace("/login");
-    } else if (error) {
-      localStorage.removeItem("token");
-
-      clearToken();
-      localStorage.clear();
-      window.location.replace("/login");
+      // } else if (error) {
+      //   localStorage.removeItem("token");
+      //   console.log("error");
+      //   clearToken();
+      //   localStorage.clear();
+      //   window.location.replace("/login");
     } else {
       return Promise.reject(error);
     }

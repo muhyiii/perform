@@ -18,6 +18,7 @@ import PeriodComponent from "./Pages/archive/archive component/periodComponent";
 import ArchiveGoals from "./Pages/archive/archive component/archiveGoal";
 import ArchiveMa from "./Pages/archive/archive component/archiveMa";
 
+
 const ProtectedRoute = ({ user }) => {
   // const loading = useSelector((state) => state.auth?.isLoading);
   if (!user) {
@@ -28,26 +29,24 @@ const ProtectedRoute = ({ user }) => {
 };
 
 function App() {
-  const user = React.useState(localStorage.getItem("token"));
   return (
     <div className="relative  roboto">
       <Routes>
-        {" "}
-        <Route path="/" element={<EmptyPage />}>
-          {" "}
-        </Route>{" "}
+        <Route path="/" element={<EmptyPage />}></Route>
         {/* <Route path="/load" element={<Loadings />} /> */}
         <Route index path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         {/* <Route path="/loading" element={<Prototype />} /> */}
         <Route path="/add-biodata" element={<Biodata />} />
-        <Route element={<ProtectedRoute user={user} />}>
+        <Route
+          element={<ProtectedRoute user={localStorage.getItem("token")} />}
+        >
           <Route path="/acc" element={<Body />}>
             {/* <Route index path="peringkat" element={<Peringkat />}></Route> */}
             <Route index exact path="dashboard" element={<Dashboard />}></Route>
 
             <Route path="goals">
-              <Route index element={<Goals />} />{" "}
+              <Route index element={<Goals />} />
               <Route path=":id" element={<GoalsDetail />} />
             </Route>
             <Route path="ma">
@@ -57,7 +56,7 @@ function App() {
             <Route path="archives">
               <Route index element={<Archive />} />
               <Route path="period-page/:period" element={<PeriodComponent />} />
-              <Route path="archive-goals" element={<ArchiveGoals />} />{" "}
+              <Route path="archive-goals" element={<ArchiveGoals />} />
               <Route path="archive-measured-activity" element={<ArchiveMa />} />
             </Route>
           </Route>
