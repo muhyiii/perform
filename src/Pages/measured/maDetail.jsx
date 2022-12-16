@@ -46,7 +46,7 @@ const MaDetail = () => {
   const dispatch = useDispatch();
   const options = {
     year: "numeric",
-    month: "short",
+    month: "numeric",
     day: "numeric",
   };
 
@@ -170,8 +170,19 @@ const MaDetail = () => {
       new Date(e).getTime() <= new Date(data.toDate).getTime()
   );
   // console.log(new Date(data[0].fromDate).getTime());
-  console.log(filteredDates);
+  // console.log(filteredDates);
   const dataa = [{ name: "Page A", uv: 40, pv: 20, amt: 24 }];
+  const thiss = [];
+  for (let index = 0; index < filteredDates.length; index++) {
+    const a = {
+      name: new Date(filteredDates[index]).toLocaleDateString("id", options),
+      // name: `tes ${index}`,
+      status: index < 5 ? 0 : index < 11 ? 60 : 100,
+      rate: 100,
+    };
+    thiss.push(a);
+  }
+  console.log(thiss);
   if (isLoading) return <Loadings />;
   return (
     <div>
@@ -377,7 +388,7 @@ const MaDetail = () => {
           <div>
             <p>{data.description}</p>
           </div>
-          <div className="w-full bg-slate-100">
+          <div className="w-full  mt-16">
             {/* <div className="flex w-full justify-between h-[400px] relative bg-slate-500">
               {filteredDates.map((e, index) => {
                 return (
@@ -396,15 +407,16 @@ const MaDetail = () => {
             </div> */}
             <LineChart
               width={750}
-              
               height={400}
-              data={{}}
-              margin={{ top: 15, right: 20, bottom: 5, left: 0 }}
+              title="Time Stamp"
+              barSize="20"
+              data={thiss}
+              margin={{ top: 15, right: 25, bottom: 5, left: 0 }}
             >
-              <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+              <Line type="monotone" dataKey="status" stroke="#8884d8" />
               <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
               <XAxis dataKey="name" />
-              <YAxis />
+              <YAxis dataKey={"rate"} />
               <Tooltip />
             </LineChart>
           </div>

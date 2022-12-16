@@ -36,7 +36,8 @@ function SampleNextArrow(props) {
         justifyContent: "center",
         alignItems: "center",
         borderRadius: "12px",
-        background: "#495579",
+        // background: "#495579",
+        // color:'#324213'
       }}
       onClick={onClick}
     />
@@ -56,7 +57,7 @@ function SamplePrevArrow(props) {
         justifyContent: "center",
         alignItems: "center",
         borderRadius: "12px",
-        background: "#495579",
+        // background: "#495579",
       }}
       onClick={onClick}
     />

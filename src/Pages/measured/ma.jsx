@@ -98,7 +98,7 @@ const Ma = () => {
       setTimeout(() => {
         navigate(".");
         isAll ? getData() : getDataUserNow();
-        setMultiId([])
+        setMultiId([]);
       }, 1000);
     }
     if (response.status !== "Success")
@@ -195,7 +195,7 @@ const Ma = () => {
               transition={{ ease: "easeOut", duration: 1 }}
             >
               <AddMA
-                getData={isAll ? getData: getDataUserNow}
+                getData={isAll ? getData : getDataUserNow}
                 onClose={() =>
                   navigate(".", { state: { isAddMA: false }, replace: true })
                 }
@@ -222,16 +222,18 @@ const Ma = () => {
               Complete Date
             </p>
           </div>
-          <motion.button
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-            className="py-1 px-3 bg-white ring-1 ring-blue-400 rounded-full hover:ring-2 hover:bg-blue-400 hover:text-white font-semibold hover:shadow-md"
-            onClick={() =>
-              navigate(".", { state: { isAddMA: true }, replace: false })
-            }
-          >
-            Create New Measure Activity
-          </motion.button>
+          {decoded.position === "atasan" && (
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="py-1 px-3 bg-white ring-1 ring-blue-400 rounded-full hover:ring-2 hover:bg-blue-400 hover:text-white font-semibold hover:shadow-md"
+              onClick={() =>
+                navigate(".", { state: { isAddMA: true }, replace: false })
+              }
+            >
+              Create New Measure Activity
+            </motion.button>
+          )}
         </div>
         {/* NAV ////////////>....................... */}
 
@@ -365,66 +367,59 @@ const Ma = () => {
               <HiPencil />
               <span>Update</span>
             </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => {
-                Swal.fire({
-                  title: "Are you sure?",
-                  text: "You won't be able to revert this!",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Yes, archive it!",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    updateMultiMa(null, true);
-                  }
-                });
-              }}
-              className="px-2 space-x-1 py-1 bg-green-500 my-1 rounded-lg mx-3 shadow-md flex items-center"
-            >
-              <IoArchiveOutline />
-              <span>Archive</span>
-            </motion.button>
+            {decoded.position === "atasan " && (
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => {
+                  Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, archive it!",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      updateMultiMa(null, true);
+                    }
+                  });
+                }}
+                className="px-2 space-x-1 py-1 bg-green-500 my-1 rounded-lg mx-3 shadow-md flex items-center"
+              >
+                <IoArchiveOutline />
+                <span>Archive</span>
+              </motion.button>
+            )}
 
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => {
-                // return console.log(multiId);
+            {decoded.position === "atasan " && (
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => {
+                  // return console.log(multiId);
 
-                Swal.fire({
-                  title: "Are you sure?",
-                  text: "You won't be able to revert this!",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Yes, delete it!",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    deleteMultiMa();
-                  }
-                });
-              }}
-              className="px-2 space-x-1 py-1 bg-red-500 my-1 rounded-lg mx-3 shadow-md flex items-center "
-            >
-              <MdDelete />
-              <span>Delete</span>
-            </motion.button>
-            {/* <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => {
-                setMultiId([]);
-              }}
-              className="px-2 space-x-1 py-1 bg-black text-white my-1 rounded-lg mx-3 shadow-md flex items-center"
-            >
-              <MdOutlineClose />
-              <span>Cancel</span>
-            </motion.button> */}
+                  Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      deleteMultiMa();
+                    }
+                  });
+                }}
+                className="px-2 space-x-1 py-1 bg-red-500 my-1 rounded-lg mx-3 shadow-md flex items-center "
+              >
+                <MdDelete />
+                <span>Delete</span>
+              </motion.button>
+            )}
           </div>
         )}
       </div>

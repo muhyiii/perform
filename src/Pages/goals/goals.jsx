@@ -240,16 +240,18 @@ const Goals = () => {
             </p>
           </div>
           <div className="flex items-center space-x-5">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => {
-                navigate(".", { state: { isAddGoal: true }, replace: true });
-              }}
-              className=" bg-white ring-1 ring-blue-400 px-2 rounded-full py-1 font-semibold hover:text-white hover:bg-blue-400 hover:ring-2 hover:shadow-lg"
-            >
-              Add Goals
-            </motion.button>{" "}
+            {decoded.position === "atasan" && (
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => {
+                  navigate(".", { state: { isAddGoal: true }, replace: true });
+                }}
+                className=" bg-white ring-1 ring-blue-400 px-2 rounded-full py-1 font-semibold hover:text-white hover:bg-blue-400 hover:ring-2 hover:shadow-lg"
+              >
+                Add Goals
+              </motion.button>
+            )}
             <motion.button
               whileHover={{ scale: 1.1 }}
               className="rounded-xl border m-auto"
@@ -400,55 +402,60 @@ const Goals = () => {
               <HiPencil />
               <span>Update</span>
             </motion.button>
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => {
-                Swal.fire({
-                  title: "Are you sure?",
-                  text: "You want to archive this goal!",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Yes, archive it!",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    updateMultiGoals(null, true);
-                  }
-                });
-              }}
-              className="px-2 space-x-1 py-1 bg-green-500 my-1 rounded-lg mx-3 shadow-md flex items-center"
-            >
-              <IoArchiveOutline />
-              <span>Archive</span>
-            </motion.button>
 
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => {
-                // return console.log(multiId);
+            {decoded.position === "atasan " && (
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => {
+                  Swal.fire({
+                    title: "Are you sure?",
+                    text: "You want to archive this goal!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, archive it!",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      updateMultiGoals(null, true);
+                    }
+                  });
+                }}
+                className="px-2 space-x-1 py-1 bg-green-500 my-1 rounded-lg mx-3 shadow-md flex items-center"
+              >
+                <IoArchiveOutline />
+                <span>Archive</span>
+              </motion.button>
+            )}
 
-                Swal.fire({
-                  title: "Are you sure?",
-                  text: "You won't be able to revert this!",
-                  icon: "warning",
-                  showCancelButton: true,
-                  confirmButtonColor: "#3085d6",
-                  cancelButtonColor: "#d33",
-                  confirmButtonText: "Yes, delete it!",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    deleteMultiGoals();
-                  }
-                });
-              }}
-              className="px-2 space-x-1 py-1 bg-red-500 my-1 rounded-lg mx-3 shadow-md flex items-center "
-            >
-              <MdDelete />
-              <span>Delete</span>
-            </motion.button>
+            {decoded.position === "atasan " && (
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => {
+                  // return console.log(multiId);
+
+                  Swal.fire({
+                    title: "Are you sure?",
+                    text: "You won't be able to revert this!",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes, delete it!",
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      deleteMultiGoals();
+                    }
+                  });
+                }}
+                className="px-2 space-x-1 py-1 bg-red-500 my-1 rounded-lg mx-3 shadow-md flex items-center "
+              >
+                <MdDelete />
+                <span>Delete</span>
+              </motion.button>
+            )}
           </div>
         )}
       </div>
