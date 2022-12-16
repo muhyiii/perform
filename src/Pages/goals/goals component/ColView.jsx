@@ -156,7 +156,8 @@ const ColView = (props) => {
         {props.status}
       </p>
       <p>{props.value}.00</p>
-      {location?.pathname?.split("/")[2] === "goals" ? (
+      {location?.pathname?.split("/")[2] === "goals" ||
+      location.pathname.split("/").length > 4 ? (
         <div className="col-start-12 col-span-2 justify-center z-50 ">
           {" "}
           <BiDotsVerticalRounded
@@ -191,7 +192,7 @@ const ColView = (props) => {
               confirmButtonText: "Yes, undo it!",
             }).then((result) => {
               if (result.isConfirmed) {
-                updateStatus(props.goalId, props.status , false);
+                updateStatus(props.goalId, props.status, false);
               }
             });
           }}

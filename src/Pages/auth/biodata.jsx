@@ -16,10 +16,17 @@ const Biodata = () => {
   const dispatch = useDispatch();
 
   // This function will be triggered when the file field change
-  const imageChange = async (e, setFieldValue) => {
+  const imageChange = async (e) => {
     if (e.target.files && e.target.files.length > 0) {
       const fileImage = e.target.files[0];
-      setSelectedImage(fileImage);
+      if (fileImage.type.split("/")[0] !== "image") {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Choose an image!",
+        });
+        selectedImage();
+      } else setSelectedImage(fileImage);
     }
   };
   const [initialValues, setInitialValues] = React.useState({
@@ -191,7 +198,7 @@ const Biodata = () => {
                       placeholder="Enter name"
                       name="name"
                       type="text"
-                      className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md   outline-none py-2  w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
+                      className="capitalize ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md   outline-none py-2  w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
                     />
                   </div>
                 </label>
@@ -210,7 +217,7 @@ const Biodata = () => {
                       placeholder="Enter role"
                       name="role"
                       type="text"
-                      className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
+                      className="lowercase ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
                     />
                   </div>
                 </label>
@@ -229,7 +236,7 @@ const Biodata = () => {
                       placeholder="Enter position"
                       name="position"
                       type="text"
-                      className=" ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
+                      className="lowercase ring-black ring-1 placeholder:capitalize invalid:ring-red-500 invalid:ring-2  focus:ring-2 rounded-md  outline-none py-2 w-11/12 h-9 px-3  text-base bg-transparent shadow-sm"
                     />
                   </div>
                 </label>
@@ -292,7 +299,7 @@ const Biodata = () => {
               <div className="pl-10">
                 <button
                   type="submit"
-                  className="touch-pinch-zoom py-2 w-11/12 bg-amber-300 rounded-md mt-5 mb-5 hover:bg-amber-400 transition-all duration-500 ease-in"
+                  className="touch-pinch-zoom py-2 w-11/12 bg-blue-400 rounded-md mt-5 mb-5 hover:bg-amber-400 transition-all duration-500 ease-in"
                 >
                   {isLoading ? "Loadings..." : "Create Account"}
                 </button>

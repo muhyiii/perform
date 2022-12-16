@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { motion } from "framer-motion";
@@ -36,6 +36,9 @@ const RowView = (props) => {
   const [checked, setChecked] = React.useState(false);
   let dateNow = new Date(Date.now()).getDate();
   let createdData = new Date(props.createdAt).getDate();
+  // if (props.multiId.length > 1) setChecked(true);
+  React.useEffect(() => setChecked(false), [props.status]);
+
   return (
     <motion.div
       layout

@@ -19,18 +19,15 @@ import { Player } from "@lottiefiles/react-lottie-player";
 import ReviewsProvider from "../../Component/Support/ReviewsProvider";
 import Swal from "sweetalert2";
 import { IoClose } from "react-icons/io5";
-
-function getAllDate(params) {
-  const now = Date.now();
-  let year = now.getFullYear();
-  const date = new Date(year, 0, 1);
-  const allDate = [];
-  while (date.getFullYear() === year) {
-    allDate.push(new Date(date));
-    date.setDate(date.getDate() + 1);
-  }
-  return allDate;
-}
+import { date } from "yup";
+import {
+  CartesianGrid,
+  Line,
+  LineChart,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
 
 const MaDetail = () => {
   let { id } = useParams();
@@ -41,7 +38,7 @@ const MaDetail = () => {
   const [yearDate, setYearDate] = React.useState([]);
   const uploadImage = React.useRef(null);
   const [show, setShow] = React.useState(false);
-  const [fileInputState, setFileInputState] = React.useState("");
+  const [allDates, setAllDates] = React.useState([]);
   const [previewSource, setPreviewSource] = React.useState("");
   const [selectedFile, setSelectedFile] = React.useState();
 
@@ -53,6 +50,20 @@ const MaDetail = () => {
     day: "numeric",
   };
 
+  function getAllDaysInYear() {
+    const now = new Date();
+
+    let year = now.getFullYear();
+    const date = new Date(year, 0, 1);
+    const dates = [];
+    while (date.getFullYear() === year) {
+      dates.push(new Date(date));
+      date.setDate(date.getDate() + 1);
+    }
+
+    return setAllDates(dates);
+  }
+  console.log(allDates);
   const getData = async () => {
     const response = await dispatch(functionGetMeasuredActivityById(id));
     if (response.status === "Success") {
@@ -79,7 +90,6 @@ const MaDetail = () => {
     } else {
       previewFile(file);
       setSelectedFile(file);
-      setFileInputState(e.target.value);
     }
   };
 
@@ -150,11 +160,18 @@ const MaDetail = () => {
   React.useEffect(() => {
     setIsLoading(true);
     getData();
-    setYearDate(getAllDate());
+    getAllDaysInYear();
   }, [id]);
   let fromDate = new Date(data.fromDate).toLocaleDateString("id", options);
   let toDate = new Date(data.toDate).toLocaleDateString("id", options);
-console.log(yearDate);
+  let filteredDates = allDates.filter(
+    (e) =>
+      new Date(e).getTime() >= new Date(data.fromDate).getTime() &&
+      new Date(e).getTime() <= new Date(data.toDate).getTime()
+  );
+  // console.log(new Date(data[0].fromDate).getTime());
+  console.log(filteredDates);
+  const dataa = [{ name: "Page A", uv: 40, pv: 20, amt: 24 }];
   if (isLoading) return <Loadings />;
   return (
     <div>
@@ -184,7 +201,7 @@ console.log(yearDate);
       <div className=" flex  w-full p-10 space-x-5 h-screen overflow-hidden">
         <div className="w-[35%] space-y-5 h-[100%]  relative">
           <div className="h-[7%]  ">
-            <h1 className="text-4xl font-bold ">
+            <h1 className="text-3xl font-bold ">
               {" "}
               <motion.button
                 whileHover={{ scale: 1.1 }}
@@ -360,7 +377,37 @@ console.log(yearDate);
           <div>
             <p>{data.description}</p>
           </div>
-          <div>{""}</div>
+          <div className="w-full bg-slate-100">
+            {/* <div className="flex w-full justify-between h-[400px] relative bg-slate-500">
+              {filteredDates.map((e, index) => {
+                return (
+                  <div
+                    key={index}
+                    className={`h-2 w-2 rounded-full bg-red-500 ${
+                      index === 2 ? "mt-[200px]" : "mt-[396px]"
+                    }  flex justify-center`}
+                  >
+                    <svg width="500" height="500">
+                      <line x1=""  y1="" x2="" y2="" stroke="black" />
+                    </svg>
+                  </div>
+                );
+              })}
+            </div> */}
+            <LineChart
+              width={750}
+              
+              height={400}
+              data={{}}
+              margin={{ top: 15, right: 20, bottom: 5, left: 0 }}
+            >
+              <Line type="monotone" dataKey="uv" stroke="#8884d8" />
+              <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+            </LineChart>
+          </div>
         </div>
       </div>
     </div>

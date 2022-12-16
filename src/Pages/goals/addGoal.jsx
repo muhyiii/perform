@@ -334,7 +334,16 @@ const AddGoals = (props) => {
                                         value={`${e.id}`}
                                         key={index}
                                       >
-                                        {e.period}
+                                        {e.period +
+                                          "    (" +
+                                          new Date(
+                                            e.fromDate
+                                          ).toLocaleDateString("id") +
+                                          " - " +
+                                          new Date(
+                                            e.toDate
+                                          ).toLocaleDateString() +
+                                          ") "}
                                       </p>
                                     ))}
                                     <p
@@ -384,14 +393,10 @@ const AddGoals = (props) => {
                                         confirmButtonText: "Yes, create it!",
                                       }).then((result) => {
                                         if (result.isConfirmed) {
-                                          localStorage.setItem(
-                                            "addGoal",
-                                            JSON.stringify(data)
-                                          );
                                           console.log(location);
                                           navigate("/acc/archives", {
                                             state: {
-                                              isAddPeriod: true,
+                                              isAddPeriods: true,
                                               isArchivePage: false,
                                               prevPath: location.pathname,
                                               isAdd: true,

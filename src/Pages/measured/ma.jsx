@@ -62,9 +62,8 @@ const Ma = () => {
   const getData = async () => {
     const response = await dispatch(functionGetMeasuredActivities());
     if (response.status === "Success") {
-      // console.log(typeof(status));
-      // console.log(response.data.rows);
-      setData(response.data.rows?.filter((e) => e.isArchive === false));
+      const notArhive = response.data.rows.filter((e) => e.isArchive === false);
+      setData(notArhive);
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
@@ -75,7 +74,8 @@ const Ma = () => {
       functionGetMeasuredActivityByUserNow(decoded.id)
     );
     if (response.status === "Success") {
-      setData(response.data.rows?.filter((e) => e.isArchive === false));
+      const notArhive = response.data.rows.filter((e) => e.isArchive === false);
+      setData(notArhive);
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
@@ -98,6 +98,7 @@ const Ma = () => {
       setTimeout(() => {
         navigate(".");
         isAll ? getData() : getDataUserNow();
+        setMultiId([])
       }, 1000);
     }
     if (response.status !== "Success")
@@ -123,6 +124,7 @@ const Ma = () => {
       });
       setTimeout(() => {
         navigate(".");
+        setMultiId([]);
         isAll ? getData() : getDataUserNow();
       }, 1000);
     }
@@ -146,15 +148,6 @@ const Ma = () => {
     return setThisDateMonth(dates);
   }
 
-  React.useEffect(() => {
-    setIsLoading(true);
-    getAllDaysInMonth();
-    isAll ? getData() : getDataUserNow();
-  }, [isAll]);
-  // React.useEffect(() => {
-  //   // console.log(multiId);
-  // }, [multiId]);
-
   //////////////////////
   const filteredQuery =
     query === ""
@@ -167,21 +160,21 @@ const Ma = () => {
             e.users[0].name.toLowerCase().includes(query)
         );
   const thisMonth =
-    progress !== "onprogress"
-      ? filteredQuery
-      : filteredQuery.filter((e) =>
-          progress === "onprogress"
-            ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
-              new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
-            : new Date(e.fromDate).getTime()
-        );
+    progress === "onprogress"
+      ? filteredQuery.filter(
+          (e) => new Date(e.toDate).getTime() >= new Date(Date()).getTime()
+          // : null
+        )
+      : filteredQuery;
+  // console.log(filteredQuery);
   const filteredStatus =
-    status === ""
-      ? thisMonth
-      : thisMonth.filter((e) =>
-          status !== "" ? e.status === status : e.status !== null
-        );
+    status === "" ? thisMonth : thisMonth.filter((e) => e.status === status);
 
+  React.useEffect(() => {
+    setIsLoading(true);
+    getAllDaysInMonth();
+    isAll ? getData() : getDataUserNow();
+  }, [isAll]);
   if (isLoading) return <Loadings />;
   return (
     <div className={`overflow-hidden relative  h-screen`}>
@@ -202,7 +195,7 @@ const Ma = () => {
               transition={{ ease: "easeOut", duration: 1 }}
             >
               <AddMA
-                getData={getData}
+                getData={isAll ? getData: getDataUserNow}
                 onClose={() =>
                   navigate(".", { state: { isAddMA: false }, replace: true })
                 }
@@ -218,7 +211,7 @@ const Ma = () => {
                 progress === "onprogress" && "border-b-2  border-b-blue-400"
               } hover:bg-blue-50 hover:cursor-pointer px-2 py-1  rounded`}
             >
-              Active This Month
+              Active
             </p>
             <p
               onClick={() => setProgress("completedDate")}
@@ -439,7 +432,7 @@ const Ma = () => {
         <Scrollbars autoHide style={{ height: "100%" }}>
           <motion.div layout className="px-10">
             <AnimatePresence>
-              {data.length === 0 ? (
+              {data?.length === 0 ? (
                 <motion.div
                   layout
                   initial={{ opacity: 0, y: 100 }}
@@ -479,12 +472,23 @@ const Ma = () => {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -100 }}
                   transition={{ delay: `0.4`, duration: 1 }}
-                  className="text-xl mt-2 font-medium text-red-400 text-center"
+                  className="text-xl mt-2 font-medium text-red-400 text-center col-span-12"
                 >
                   Cannot get data of status {status}...
                 </motion.div>
+              ) : thisMonth.length === 0 && progress !== "onprogress" ? (
+                <motion.div
+                  layout
+                  initial={{ opacity: 0, y: 100 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -100 }}
+                  transition={{ delay: `0.4`, duration: 1 }}
+                  className="text-xl mt-2 font-medium text-red-400 text-center col-span-12"
+                >
+                  Data of this month is empty
+                </motion.div>
               ) : (
-                thisMonth?.map((e, index) => (
+                filteredStatus?.map((e, index) => (
                   <ListView
                     key={e.id}
                     data={e}
@@ -509,6 +513,7 @@ const Ma = () => {
                     setMultiId={setMultiId}
                     getData={isAll ? getData : getDataUserNow}
                     length={index}
+                    multiId={multiId}
                   />
                 ))
               )}

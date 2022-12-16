@@ -14,7 +14,7 @@ export function functionGetMeasuredActivities() {
   return async (dispatch) => {
     try {
       const response = await getMeasuredActivities();
-      // console.log(response);
+      console.log(response);
       const data = response.data;
 
       // console.log(data);
@@ -29,13 +29,13 @@ export function functionGetMeasuredActivityByUserNow(id) {
   return async (dispatch) => {
     try {
       const response = await getMeasuredActivitiesByUserNow(id);
-      // console.log(response);
-      const data = response.data;
-
-      // console.log(data);
+      
+      const data = response?.data;
+      console.log(data);
       return data;
     } catch (err) {
-      let data = err.response.data;
+      let data = err.response?.data;
+      console.log(err);
       return data;
     }
   };

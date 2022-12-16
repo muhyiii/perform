@@ -17,14 +17,15 @@ import Archive from "./Pages/archive/archive";
 import PeriodComponent from "./Pages/archive/archive component/periodComponent";
 import ArchiveGoals from "./Pages/archive/archive component/archiveGoal";
 import ArchiveMa from "./Pages/archive/archive component/archiveMa";
-
+import jwtDecode from "jwt-decode";
 
 const ProtectedRoute = ({ user }) => {
-  // const loading = useSelector((state) => state.auth?.isLoading);
+  const decoded = jwtDecode(user);
+  const now = Date();
+  const dateNow = new Date(now).getTime() / 1000;
   if (!user) {
-    return <Navigate to="/" replace />;
-  }
-  // if (loading) return <Loadings />;
+    return <Navigate to="/login" replace />;
+  } else if (dateNow > decoded.exp) return <Navigate to="/login" replace />;
   return <Outlet />;
 };
 

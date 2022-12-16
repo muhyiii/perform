@@ -41,6 +41,7 @@ const Goals = () => {
   const [query, setQuery] = React.useState("");
   const [progress, setProgress] = React.useState("onprogress");
   const [thisDateMonth, setThisDateMonth] = React.useState([]);
+  const [change, setChange] = React.useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -50,7 +51,7 @@ const Goals = () => {
     month: "numeric",
     year: "numeric",
   };
-
+  const now = Date();
   //// BUAT MULTI ID
   const handleChange = (state) => {
     const target = state.target.value;
@@ -69,8 +70,11 @@ const Goals = () => {
         ...item.filter((count) => count != statusData),
       ]);
     }
+    // if (multiId.length > 0) setChange(true);
+    // else setChange(false);
   };
 
+  console.log(change);
   //// DELETE MULTI GOALS
   const deleteMultiGoals = async () => {
     const response = await dispatch(functionDeleteMultiGoals(multiId));
@@ -84,7 +88,8 @@ const Goals = () => {
       });
       setTimeout(() => {
         setMultiId([]);
-        isAll.isAllGoal ? getData() : getAsUser();
+        isAll ? getData() : getAsUser();
+        setMultiStatus([]);
       }, 1000);
     }
     if (response.status !== "Success")
@@ -110,7 +115,8 @@ const Goals = () => {
       });
       setTimeout(() => {
         setMultiId([]);
-        isAll.isAllGoal ? getData() : getAsUser();
+        setMultiStatus([]);
+        isAll ? getData() : getAsUser();
       }, 1000);
     }
     if (response.status !== "Success")
@@ -124,7 +130,8 @@ const Goals = () => {
   const getData = async () => {
     const response = await dispatch(functionGetGoals());
     if (response.status === "Success") {
-      setData(response.data.rows);
+      const notArhive = response.data.rows.filter((e) => e.isArchive === false);
+      setData(notArhive);
       console.log(response.data.rows);
       setTimeout(() => {
         setIsLoading(false);
@@ -134,33 +141,34 @@ const Goals = () => {
   const getAsUser = async () => {
     const response = await dispatch(functionGetGoalsByUserNow(decoded.id));
     if (response.status === "Success") {
-      setData(response.data.rows);
+      const notArhive = response.data.rows.filter((e) => e.isArchive === false);
+      setData(notArhive);
+      console.log(response.data.rows);
       setTimeout(() => {
         setIsLoading(false);
       }, 500);
     }
   };
-  function getAllDaysInMonth() {
-    const now = new Date();
-    let month = now.getMonth();
-    let year = now.getFullYear();
-    const date = new Date(year, month, 1);
-    const dates = [];
-    while (date.getMonth() === month) {
-      dates.push(new Date(date).toDateString("id"));
-      date.setDate(date.getDate() + 1);
-    }
+  // console.log(decoded);
+  // function getAllDaysInMonth() {
+  //   const now = new Date();
+  //   let month = now.getMonth();
+  //   let year = now.getFullYear();
+  //   const date = new Date(year, month, 1);
+  //   const dates = [];
+  //   while (date.getMonth() === month) {
+  //     dates.push(new Date(date).getTime());
+  //     date.setDate(date.getDate() + 1);
+  //   }
 
-    return setThisDateMonth(dates);
-  }
+  //   return setThisDateMonth(dates);
+  // }
 
   React.useEffect(() => {
     setIsLoading(true);
-    getAllDaysInMonth();
-    // console.log(location);
+    // getAllDaysInMonth();
     isAll ? getData() : getAsUser();
   }, [isAll]);
-  // console.log(thisDateMonth);
   const filteredQuery =
     query === ""
       ? data
@@ -171,31 +179,22 @@ const Goals = () => {
             e.users[0].name.toLowerCase().includes(query)
         );
   const thisMonth =
-    progress !== "onprogress"
-      ? filteredQuery
-      : filteredQuery.filter((e) =>
-          progress === "onprogress"
-            ? new Date(e.fromDate).getTime() >= thisDateMonth[0] &&
-              new Date(e.toDate).getTime() <= thisDateMonth.at(-1)
-            : new Date(e.fromDate).getTime()
-        );
+    progress === "onprogress"
+      ? filteredQuery.filter(
+          (e) => new Date(e.toDate).getTime() >= new Date(now).getTime()
+        )
+      : filteredQuery;
   const filteredStatus =
-    status === ""
-      ? thisMonth
-      : thisMonth.filter((e) =>
-          status !== "" ? e.status === status : e.status !== null
-        );
+    status === "" ? thisMonth : thisMonth.filter((e) => e.status === status);
 
   if (isLoading) return <Loadings />;
 
-  // console.log(data.filter((e) => e.task.toLowerCase().includes(query)));
   return (
     <div
       className={`overflow-hidden
       relative h-screen capitalize`}
     >
       <User />
-      {/* {text?.isAddGoal} */}
       <div className="px-10 pt-5   w-full   ">
         <AnimatePresence>
           {location.state?.isAddGoal && (
@@ -221,7 +220,6 @@ const Goals = () => {
             </motion.div>
           )}
         </AnimatePresence>
-
         <div className="flex justify-between items-center">
           <div className="flex space-x-5 ml-4">
             <p
@@ -230,7 +228,7 @@ const Goals = () => {
                 progress === "onprogress" && "border-b-2  border-b-blue-400"
               } hover:bg-blue-50 hover:cursor-pointer px-2 py-1  rounded`}
             >
-              Active This Month
+              Active
             </p>
             <p
               onClick={() => setProgress("completedDate")}
@@ -259,6 +257,7 @@ const Goals = () => {
               onClick={() => {
                 dispatch({ type: "CHANGE_ROW_GOAL" });
                 setMultiId([]);
+                setMultiStatus([]);
               }}
             >
               {row ? <MdViewModule size={30} /> : <MdViewStream size={30} />}
@@ -297,6 +296,7 @@ const Goals = () => {
                   onChange={(e) => {
                     setStatus(e.target.value);
                     setMultiId([]);
+                    setMultiStatus([]);
                   }}
                   value={status}
                 >
@@ -328,6 +328,7 @@ const Goals = () => {
               }`}
               onClick={() => {
                 dispatch({ type: "CHANGE_ALL_GOAL" });
+                setMultiStatus([]);
                 setMultiId([]);
               }}
             >
@@ -514,7 +515,7 @@ const Goals = () => {
                       Data of this month is empty
                     </motion.div>
                   ) : (
-                    thisMonth?.map((e, index) => {
+                    filteredStatus?.map((e, index) => {
                       let fromDate = new Date(e.fromDate).toLocaleDateString(
                         "id",
                         optionDateString
@@ -546,6 +547,7 @@ const Goals = () => {
                           getData={isAll ? getData : getAsUser}
                           handleChange={handleChange}
                           length={index}
+                          multiId={multiId.length > 0 ? true : false}
                         />
                       );
                     })
@@ -553,14 +555,14 @@ const Goals = () => {
                 </div>
               ) : (
                 <div>
-                  {data.length === 0 ? (
+                  {data?.length === 0 ? (
                     <motion.div
                       layout
                       initial={{ opacity: 0, y: 100 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -100 }}
                       transition={{ delay: `0.4`, duration: 1 }}
-                      className="text-xl mt-2 font-medium text-red-400 text-center"
+                      className="text-xl mt-2 font-medium text-red-400 text-center col-span-12"
                     >
                       Data of Goals is empty...
                       <p
@@ -582,7 +584,7 @@ const Goals = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -100 }}
                       transition={{ delay: `0.4`, duration: 1 }}
-                      className="text-xl mt-2 font-medium text-red-400 text-center"
+                      className="text-xl mt-2 font-medium text-red-400 text-center col-span-12"
                     >
                       Cannot get data of your requesting...
                     </motion.div>
@@ -593,12 +595,23 @@ const Goals = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -100 }}
                       transition={{ delay: `0.4`, duration: 1 }}
-                      className="text-xl mt-2 font-medium text-red-400 text-center"
+                      className="text-xl mt-2 font-medium text-red-400 text-center col-span-12"
                     >
                       Cannot get data of status {status}...
                     </motion.div>
+                  ) : thisMonth.length === 0 && progress !== "onprogress" ? (
+                    <motion.div
+                      layout
+                      initial={{ opacity: 0, y: 100 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -100 }}
+                      transition={{ delay: `0.4`, duration: 1 }}
+                      className="text-xl mt-2 font-medium text-red-400 text-center col-span-12"
+                    >
+                      Data of this month is empty
+                    </motion.div>
                   ) : (
-                    thisMonth?.map((e, index) => {
+                    filteredStatus?.map((e, index) => {
                       let fromDate = new Date(e.fromDate).toLocaleDateString(
                         "id",
                         optionDateString

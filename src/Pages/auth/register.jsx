@@ -249,7 +249,7 @@ export default function Register() {
                           }
                         }
                         type="submit"
-                        className="py-2 w-full bg-amber-300 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
+                        className="py-2 w-full bg-blue-400 rounded-md mt-20 hover:bg-amber-400 transition-all duration-500 ease-in"
                       >
                         Sign Up
                       </motion.button>

@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 
 const ListView = (props) => {
   const [isOption, setIsOption] = React.useState(false);
+  const [checked, setChecked] = React.useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -58,13 +59,14 @@ const ListView = (props) => {
       });
     }
   };
+  React.useEffect(() => setChecked(false), [props.status]);
   return (
     <motion.div
       layout
       initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, x: -100 }}
-      transition={{ delay: `0.${props.length + 1}`, duration: 0.8}}
+      transition={{ delay: `0.${props.length + 1}`, duration: 0.8 }}
     >
       <div
         // onClick={() => setIsOption(!isOption)}
@@ -86,11 +88,16 @@ const ListView = (props) => {
               onChange={(e) => {
                 props.handleChange(e);
                 setIsOption(false);
+                setChecked(!checked);
               }}
               // checked={props.setMultiId([])}
               className="peer sr-only"
             />
-            <span className="  transition-all opacity-10 peer-checked:opacity-100">
+            <span
+              className={`  transition-all  ${
+                checked ? "opacity-100" : "opacity-10"
+              }`}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="fill-blue-500 stroke-white"
@@ -168,6 +175,7 @@ const ListView = (props) => {
               size={25}
               onClick={(e) => {
                 setIsOption(!isOption);
+                setChecked(false)
                 // props.setMultiId([])
               }}
             />

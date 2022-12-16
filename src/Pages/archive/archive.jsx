@@ -37,8 +37,16 @@ function Archive() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const checkPeriods = periods.filter(
+    (e) => e.fromDate === state.fromDate && e.toDate === state.toDate
+  ).length;
   const sendData = async (e) => {
-    console.log(state);
+    const checkPeriods = periods.filter(
+      (e) =>
+        new Date(e.fromDate).getTime() === new Date(state.fromDate).getTime() &&
+        new Date(e.toDate).getTime() === new Date(state.toDate).getTime()
+    ).length;
+    // return console.log(checkPeriods);
     e.preventDefault();
     setIsLoading(true);
     if (state.period === "" || state.fromDate === "" || state.toDate === "") {
@@ -49,37 +57,46 @@ function Archive() {
         timer: 3000,
       });
     } else {
-      const response = await dispatch(functionAddPeriod(state));
-      if (response.status === "Success") {
+      if (checkPeriods > 1) {
         Swal.fire({
-          position: "center",
-          icon: "success",
-          title: response.messege,
-          showConfirmButton: false,
-          timer: 1000,
+          icon: "error",
+          title: "Error...",
+          text: "Date has already exist, please choose another date.",
+          timer: 3000,
         });
-        setState({});
-        setIsLoading(false);
-        setIsAddPeriod(false);
-        if (location.state.prevPath) {
-          const path = location.state.prevPath.split("/")[2];
-          if (path === "goals")
-            navigate(location.state.prevPath, {
-              state: {
-                isAddGoal: true,
-                dataSession: location.state.dataSession,
-              },
-            });
-          else
-            navigate(location.state.prevPath, {
-              state: {
-                isAddMa: true,
-                dataSession: location.state.dataSession,
-              },
-            });
-        } else {
-          navigate(".", { state: { isAddPeriods: false } });
-          getPeriod();
+      } else {
+        const response = await dispatch(functionAddPeriod(state));
+        if (response.status === "Success") {
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: response.messege,
+            showConfirmButton: false,
+            timer: 1000,
+          });
+          setState({});
+          setIsLoading(false);
+          setIsAddPeriod(false);
+          if (location.state.prevPath) {
+            const path = location.state.prevPath.split("/")[2];
+            if (path === "goals")
+              navigate(location.state.prevPath, {
+                state: {
+                  isAddGoal: true,
+                  dataSession: location.state.dataSession,
+                },
+              });
+            else
+              navigate(location.state.prevPath, {
+                state: {
+                  isAddMa: true,
+                  dataSession: location.state.dataSession,
+                },
+              });
+          } else {
+            navigate(".", { state: { isAddPeriods: false } });
+            getPeriod();
+          }
         }
       }
       setIsLoading(false);
@@ -212,9 +229,9 @@ function Archive() {
             <div className="   col-span-2 w-3/12">
               <motion.button
                 onClick={() => {
-                  setIsAddPeriod(!isAddPeriod);
+                  // setIsAddPeriod(!isAddPeriod);
                   navigate(".", {
-                    state: { isAddPeriods: isAddPeriod, isArchivePage: false },
+                    state: { isAddPeriods: !location.state.isAddPeriods, isArchivePage: false },
                     replace: true,
                   });
                   console.log(location.state);
@@ -222,7 +239,7 @@ function Archive() {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 className={`bg-white outline-blue-400 px-3 py-1 outline-1 outline rounded-md hover:bg-blue-400 hover:shadow-md hover:text-white ${
-                  isAddPeriod &&
+                  location.state.isAddPeriods &&
                   "bg-blue-400 text-white shadow-lg outline-blue-400 outline"
                 }`}
               >
@@ -251,7 +268,7 @@ function Archive() {
                         onChange={(e) =>
                           setState({ ...state, period: e.target.value })
                         }
-                        className="bg-slate-100 border w-full focus:border-black rounded px-2 py-1 outline-none shadow-md"
+                        className=" capitalize bg-slate-100 border w-full focus:border-black rounded px-2 py-1 outline-none shadow-md"
                       />
                     </div>
                     <div>
@@ -297,7 +314,11 @@ function Archive() {
               <hr />
               <Scrollbars
                 autoHide
-                style={{ height: "70vh", margin: "2px", paddingBottom: "200px" }}
+                style={{
+                  height: "70vh",
+                  margin: "2px",
+                  paddingBottom: "200px",
+                }}
               >
                 <AnimatePresence>
                   {periods.length !== 0 ? (
