@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const EmptyPage = () => {
   const navigate = useNavigate();
-  //   React.useEffect(() => navigate("/login"), []);
+
   setTimeout(() => {
     if (localStorage.getItem("token")) return navigate("/acc/dashboard");
     return navigate("/login");

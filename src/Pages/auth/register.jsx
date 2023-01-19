@@ -6,9 +6,9 @@ import * as Yup from "yup";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-import { functionRegister } from "../../redux/actions/authAction";
 import Swal from "sweetalert2";
 import Loadings from "../../Component/Loading";
+import { FUNCTION_REGISTER } from "../../Redux/Actions/AUTH_ACTION";
 
 const validateSchema = Yup.object({
   username: Yup.string()
@@ -97,7 +97,7 @@ export default function Register() {
                   }}
                   onSubmit={async (values) => {
                     setIsLoading(true);
-                    const response = await dispatch(functionRegister(values));
+                    const response = await dispatch(FUNCTION_REGISTER(values));
                     console.log(response);
                     if (response.status === "Success") {
                       navigate("/add-biodata", { replace: true });

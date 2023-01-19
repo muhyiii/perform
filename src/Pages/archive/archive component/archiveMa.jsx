@@ -1,12 +1,12 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import Loadings from "../../../Component/Loading";
-import ColView from "../../goals/goals component/ColView";
+
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineCancel, MdSearch } from "react-icons/md";
-import { functionGetMeasuredActivities } from "../../../redux/actions/maAction";
-import ListView from "../../measured/ma component/ListView";
+import { functionGetMeasuredActivities } from "../../../Redux/Actions/MA_ACTION";
+import ListView from "../../MEASURED ACTIVITY/MA COMPONENT/ListView";
 
 const ArchiveMa = () => {
   const [dataMa, setDataMa] = React.useState([]);

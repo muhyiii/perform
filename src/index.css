@@ -2,11 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 @import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Amaranth&family=Jaldi&family=League+Spartan:wght@500&family=Poppins&family=Roboto:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Poppins&family=Roboto:wght@400;500&family=Ubuntu&display=swap');
 
 .eveleth {
   font-family: 'Eveleth';
   src: url('./Images/fonts/Eveleth\ Clean\ Regular.otf') format('otf')
+}
+.ubuntu{
+  font-family: 'Ubuntu', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
 }
 
 @font-face {
@@ -25,16 +30,10 @@
 
 
 
-.amaranth {
-  font-family: 'Amaranth', sans-serif;
-}
-
-.spartan {
-  font-family: 'League Spartan', sans-serif;
-}
-
-.jaldi {
-  font-family: 'Jaldi', sans-serif;
+.montserrat {
+  font-family: 'Montserrat', sans-serif;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
 }
 
 .roboto {

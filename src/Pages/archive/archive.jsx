@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import {
   functionAddPeriod,
   functionGetPeriods,
-} from "../../redux/actions/periodActions";
+} from "../../Redux/Actions/PERIOD_ACTION";
 import Loadings from "../../Component/Loading";
 import { data } from "autoprefixer";
 import Swal from "sweetalert2";

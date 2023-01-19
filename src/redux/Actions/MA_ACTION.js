@@ -8,7 +8,7 @@ import {
   getMeasuredActivityById,
   updateMeasuredActivityById,
   updateMultiMeasuredActivity,
-} from "../../Functions/api";
+} from "../../Functions/API";
 
 export function functionGetMeasuredActivities() {
   return async (dispatch) => {

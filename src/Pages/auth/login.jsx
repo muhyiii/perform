@@ -1,22 +1,19 @@
-import React, { useState, useContext } from "react";
-
-import Logo from "../../Images/logo.png";
-
+import React, { useState,  } from "react";
+import logo from "../../Images/LOGO2.png";
 import { Link, useNavigate } from "react-router-dom";
-
 import Swal from "sweetalert2";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { motion } from "framer-motion";
-import { useDispatch } from "react-redux";
-import { functionLogin } from "../../redux/actions/authAction";
+import { useDispatch, useSelector } from "react-redux";
 import { Player } from "@lottiefiles/react-lottie-player";
+import { FUNCTION_LOGIN } from "../../Redux/Actions/AUTH_ACTION";
 
 export default function Login() {
   const [value, setValues] = useState({
     username: "",
     password: "",
   });
-  const [isLoading, setIsLoading] = React.useState(false);
+  const isLoading = useSelector((state) => state.PROCESS_REDUCER.isLoading);
 
   const [show, setShow] = useState(false);
   function handleChange(e) {
@@ -29,12 +26,12 @@ export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleSubmit = async (e) => {
-    const response = await dispatch(functionLogin(value));
+    const response = await dispatch(FUNCTION_LOGIN(value));
     console.log(response);
     if (response.status === "Success") {
       setTimeout(() => {
         navigate("/acc/dashboard", { replace: true });
-        setIsLoading(false);
+        // setIsLoading(false);
       }, 2000);
       Swal.fire({
         title: "Succesfull!",
@@ -79,20 +76,22 @@ export default function Login() {
         <div className="z-0 h-40 w-40 left-48 top-14  opacity-40 bg-blue-600 skew-x-6 mix-blend-multiply absolute rounded-full shadow-xl"></div>
         <div className="grid grid-cols-2 w-3/4  py-10  bg-white  rounded-lg  z-10 ">
           <div className="  flex items-center justify-center">
-            <motion.img
-              initial={{ opacity: 0, scale: 0 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                delay: 0.4,
-                duration: 1,
-                ease: "easeOut",
-                type: "spring",
-                bounce: 0.3,
+          <div className="m-6  hover:cursor-pointer">
+            <img
+              src={logo}
+              alt="urun-ri.png"
+              className=" px-10 pt-10 pb-2 "
+              onClick={() => {
+                navigate("dashboard");
               }}
-              src={Logo}
-              alt=""
-              className=""
             />
+            <p className="eveleth text-center text-blue-900 text-5xl tracking-widemotion.">
+              URUN-RI
+            </p>
+            <p className="font-questrial text-center text-cyan-700 text-xl motion.">
+              Bangun Negeri
+            </p>
+          </div>
           </div>
           <div className=" rounded-r-2xl flex justify-center items-center ">
             <div className=" w-4/5">

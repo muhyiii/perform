@@ -1,14 +1,11 @@
 import Perkerjaan from "../../../Images/iconpekerjaan.png";
 import calendar from "../../../Images/calendar.png";
-import Delete from "../../../Images/delete.png";
- 
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import jwtDecode from "jwt-decode";
-import { functionGetGoalsByUserNow } from "../../../redux/actions/goalsAction";
+import { functionGetGoalsByUserNow } from "../../../Redux/Actions/GOALS_ACTION";
 import { useNavigate } from "react-router-dom";
- 
+
 const TodoGoal = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,23 +18,23 @@ const TodoGoal = (props) => {
       console.log(response.data.rows);
     }
   };
- 
+
   useEffect(() => {
     getData();
   }, []);
- 
+
   return (
     <div className="pl-2 pt-6 pr-2">
       <div className="font-medium w-16 h-7 bg-slate-700 rounded-lg pb-4">
         <h2 className="text-center text-white">Goal</h2>
       </div>
- 
+
       <div className="overflow-x-auto scrollbar-hide h-[343px] rounded-lg mt-4">
         <div className="pt-1">
           {goalData.map((pd) => {
             let formdate = new Date(pd.fromDate).toLocaleDateString();
             let todate = new Date(pd.toDate).toLocaleDateString();
- 
+
             return (
               <React.Fragment key={pd.id}>
                 <div
@@ -56,7 +53,7 @@ const TodoGoal = (props) => {
                         />
                       </div>
                     </div>
- 
+
                     <div className="col-span-6 w-[200px] pl-4 pt-1">
                       <div className="namatugas h-[49px] font-semibold text-sm pt-2 ">
                         <h3>{pd.task}</h3>
@@ -69,7 +66,7 @@ const TodoGoal = (props) => {
                         </div>
                       </div>
                     </div>
- 
+
                     <div className="flex col-span-1 ">
                       <div className=" pt-14 mx-auto flex">
                         <img
@@ -95,9 +92,5 @@ const TodoGoal = (props) => {
     </div>
   );
 };
- 
-export default TodoGoal;
- 
- 
- 
 
+export default TodoGoal;

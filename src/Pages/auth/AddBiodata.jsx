@@ -2,12 +2,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Profile from "../../Images/profile.png";
-import { functionRegisterBiodata } from "../../redux/actions/authAction";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 import { Player } from "@lottiefiles/react-lottie-player";
+import { FUNCTION_REGISTER_BIODATA } from "../../Redux/Actions/AUTH_ACTION";
 
 const Biodata = () => {
   const [selectedImage, setSelectedImage] = useState();
@@ -60,7 +60,7 @@ const Biodata = () => {
         timer: 3000,
       });
     } else {
-      const response = await dispatch(functionRegisterBiodata(formData));
+      const response = await dispatch(FUNCTION_REGISTER_BIODATA(formData));
       console.log(response);
       if (response.status === "Success") {
         Swal.fire({

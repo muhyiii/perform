@@ -7,7 +7,7 @@ import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
 import ModalOptionMa from "./ModalOptionMa";
 import { BiUndo } from "react-icons/bi";
 import { useDispatch } from "react-redux";
-import { functionUpdateMeasuredActivity } from "../../../redux/actions/maAction";
+import { functionUpdateMeasuredActivity } from "../../../Redux/Actions/MA_ACTION";
 import Swal from "sweetalert2";
 
 const ListView = (props) => {

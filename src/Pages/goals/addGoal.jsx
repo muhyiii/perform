@@ -4,14 +4,14 @@ import { CgClose } from "react-icons/cg";
 import { useDispatch } from "react-redux";
 import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
-import { functionGetUsers } from "../../redux/actions/authAction";
-import { functionAddGoal } from "../../redux/actions/goalsAction";
+import { functionAddGoal } from "../../Redux/Actions/GOALS_ACTION";
 import { useLocation, useNavigate } from "react-router-dom";
 import Loadings from "../../Component/Loading";
 import Scrollbars from "react-custom-scrollbars-2";
 import { FiChevronDown } from "react-icons/fi";
 import { BiChevronDown } from "react-icons/bi";
-import { functionGetPeriods } from "../../redux/actions/periodActions";
+import { functionGetPeriods } from "../../Redux/Actions/PERIOD_ACTION";
+import { FUNCTION_GET_USERS } from "../../Redux/Actions/AUTH_ACTION";
 
 const AddGoals = (props) => {
   let [users, setUsers] = React.useState([]);
@@ -98,7 +98,7 @@ const AddGoals = (props) => {
   };
   const getDataUsers = async () => {
     setIsLoading(true);
-    const response = await dispatch(functionGetUsers());
+    const response = await dispatch(FUNCTION_GET_USERS());
     if (response.status === "Success") {
       setUsers(response.data.rows);
       setIsLoading(false);

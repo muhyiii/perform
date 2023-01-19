@@ -8,13 +8,12 @@ import { BiChevronDown } from "react-icons/bi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FiChevronDown } from "react-icons/fi";
-import { functionGetPeriods } from "../../redux/actions/periodActions";
+import { functionGetPeriods } from "../../Redux/Actions/PERIOD_ACTION";
 import {
-  functionGetGoalsById,
   functionGetGoalsByUserNow,
-} from "../../redux/actions/goalsAction";
-import { functionGetUsers } from "../../redux/actions/authAction";
-import { functionAddMeasuredActivity } from "../../redux/actions/maAction";
+} from "../../Redux/Actions/GOALS_ACTION";
+import { FUNCTION_GET_USERS } from "../../Redux/Actions/AUTH_ACTION";
+import { functionAddMeasuredActivity } from "../../Redux/Actions/MA_ACTION";
 
 const AddMA = (props) => {
   const toDay = new Date().toISOString().substring(0, 10);
@@ -92,7 +91,7 @@ const AddMA = (props) => {
   };
 
   const getDataUsers = async () => {
-    const response = await dispatch(functionGetUsers());
+    const response = await dispatch(FUNCTION_GET_USERS());
     if (response.status === "Success") {
       setUsers(response.data.rows);
       setTimeout(() => {

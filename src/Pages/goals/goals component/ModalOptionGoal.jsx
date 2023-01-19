@@ -1,12 +1,11 @@
 import React from "react";
 import Swal from "sweetalert2";
 import { IoTrashOutline, IoArchiveOutline } from "react-icons/io5";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
   functionDeleteGoal,
   functionUpdateGoal,
-} from "../../../redux/actions/goalsAction";
+} from "../../../Redux/Actions/GOALS_ACTION";
 import { HiPencil } from "react-icons/hi";
 
 const ModalOptionGoal = (props) => {

@@ -4,12 +4,10 @@ import {
   MdSearch,
   MdOutlineCancel,
   MdDelete,
-  MdOutlineClose,
 } from "react-icons/md";
 import { motion, AnimatePresence } from "framer-motion";
-import "../measured/ma";
 import User from "../../Component/User";
-import AddMA from "./addMa";
+import AddMA from "./AddMA";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
@@ -17,8 +15,8 @@ import {
   functionGetMeasuredActivities,
   functionGetMeasuredActivityByUserNow,
   functionUpdateMultiMeasuredActivity,
-} from "../../redux/actions/maAction";
-import ListView from "./ma component/ListView";
+} from "../../Redux/Actions/MA_ACTION";
+import ListView from "./MA COMPONENT/ListView";
 import Loadings from "../../Component/Loading";
 import jwtDecode from "jwt-decode";
 import Swal from "sweetalert2";
@@ -29,7 +27,7 @@ import { IoArchiveOutline } from "react-icons/io5";
 const Ma = () => {
   const [data, setData] = React.useState([]);
   const [status, setStatus] = React.useState("");
-  const isAll = useSelector((state) => state.rootReducer.isAllMa);
+  const isAll = useSelector((state) => state.MA_REDUCER.isAll);
   const [isLoading, setIsLoading] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [progress, setProgress] = React.useState("onprogress");

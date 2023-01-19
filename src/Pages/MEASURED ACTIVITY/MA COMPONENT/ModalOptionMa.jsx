@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import {
   functionDeleteMeasuredActivity,
   functionUpdateMeasuredActivity,
-} from "../../../redux/actions/maAction";
+} from "../../../Redux/Actions/MA_ACTION";
 
 const ModalOptionMa = (props) => {
   const navigate = useNavigate();

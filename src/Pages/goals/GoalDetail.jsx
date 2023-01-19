@@ -9,11 +9,11 @@ import {
   functionGetGoalsById,
   functionUpdateGoal,
   functionUpdateGoalImage,
-} from "../../redux/actions/goalsAction";
+} from "../../Redux/Actions/GOALS_ACTION";
 import {
   functionGetMeasuredActivityByGoalId,
   functionUpdateMeasuredActivity,
-} from "../../redux/actions/maAction";
+} from "../../Redux/Actions/MA_ACTION";
 import Loadings from "../../Component/Loading";
 import { Player } from "@lottiefiles/react-lottie-player";
 import ReviewsProvider from "../../Component/Support/ReviewsProvider";
@@ -87,7 +87,7 @@ const GoalsDetail = () => {
     } else {
       previewFile(file);
       setSelectedFile(file);
-      setFileInputState(e.target.value);
+
     }
   };
 

@@ -5,7 +5,7 @@ import ModalOptionGoal from "./ModalOptionGoal";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useDispatch } from "react-redux";
-import { functionUpdateGoal } from "../../../redux/actions/goalsAction";
+import { functionUpdateGoal } from "../../../Redux/Actions/GOALS_ACTION";
 import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
 import { GoPrimitiveDot } from "react-icons/go";
 
@@ -71,12 +71,12 @@ const ColView = (props) => {
         onClick={() => {
           if (location.pathname.split("/")[2] === "goals")
             navigate(`${props.goalId}`);
-          navigate(`/acc/goals/${props.goalId}`);
+          else navigate(`/acc/goals/${props.goalId}`);
         }}
       >
         <div className="truncate">
           {" "}
-          <p className="text-xl font-semibold  ">{props.task}</p>
+          <p className="text-xl font-semibold">{props.task}</p>
           <p className="font-medium text-xs">{props.description}</p>
         </div>
         <p
@@ -84,7 +84,7 @@ const ColView = (props) => {
             props.rate === 100 && "font-medium text-lg"
           }`}
         >
-          {props.rate == 100
+          {props.rate === 100
             ? "Completed"
             : props.fromDateA + " - " + props.toDateA}
         </p>

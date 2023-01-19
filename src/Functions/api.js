@@ -1,4 +1,4 @@
-import axioss from "./axiosClient";
+import axioss from "./AXIOS_CLIENT";
 
 // USERS
 //// LOGIN

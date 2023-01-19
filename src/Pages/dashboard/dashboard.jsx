@@ -12,16 +12,16 @@ import {
 import "swiper/css";
 import "swiper/css/free-mode";
 import User from "../../Component/User";
-import TodoGoal from "./dashboard component/TodoGoal";
-import TodoMa from "./dashboard component/TodoMa";
+import TodoGoal from "./DASHBOARD COMPONENT/TodoGoal";
+import TodoMa from "./DASHBOARD COMPONENT/TodoMa";
 import ReviewsProvider from "../../Component/Support/ReviewsProvider";
-import Peringkat from "./dashboard component/Peringkat";
+import Peringkat from "./DASHBOARD COMPONENT/Peringkat";
 import Scrollbars from "react-custom-scrollbars-2";
 import Target from "../../Images/target.png";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import AOS from "aos";
+
 
 function SampleNextArrow(props) {
   const { className, style, onClick } = props;

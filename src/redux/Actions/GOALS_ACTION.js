@@ -8,18 +8,19 @@ import {
   getGoalsByUserNow,
   updateGoalById,
   updateMultiGoals,
-} from "../../Functions/api";
+} from "../../Functions/API";
 
 export function functionGetGoals() {
   return async (dispatch) => {
+    dispatch({ type: "Loading" });
     try {
       const response = await getGoals();
-      console.log(response);
-      const data = response?.data;
-
-      // console.log(data);
+      const data = response?.data.data;
+      dispatch({ type: "GET_GOALS", goals: data.rows });
+      dispatch({ type: "LoadingStop" });
       return data;
     } catch (err) {
+      dispatch({ type: "LoadingStop" });
       let data = err.response?.data;
       return data;
     }
@@ -27,11 +28,15 @@ export function functionGetGoals() {
 }
 export function functionGetGoalsByUserNow(id) {
   return async (dispatch) => {
+    dispatch({ type: "Loading" });
     try {
       const response = await getGoalsByUserNow(id);
-      const data = response?.data;
+      const data = response?.data.data;
+      dispatch({ type: "GET_GOALS", goals: data.rows });
+      dispatch({ type: "LoadingStop" });
       return data;
     } catch (err) {
+      dispatch({ type: "LoadingStop" });
       let data = err.response?.data;
       return data;
     }

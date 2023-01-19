@@ -6,7 +6,6 @@ import logo from ".././Images/LOGO2.png";
 
 const Body = () => {
   const navigate = useNavigate();
-
   return (
     <div className="grid grid-cols-11 w-screen h-screen">
       <div className="bg-gradient-to-tr from-[#101424] to-[#091546] w-full  flex h-screen col-span-2">
@@ -34,7 +33,9 @@ const Body = () => {
                 <NavLink
                   to="dashboard"
                   className={({ isActive }) =>
-                    isActive ? "font-semibold bg-gray-200 w-full h-min text-2xl  pb-1 " : "text-lg "
+                    isActive
+                      ? "font-semibold bg-gray-200 w-full h-min text-2xl  pb-1 "
+                      : "text-lg "
                   }
                 >
                   <div className=" hover:text-black bg-opacity-5 p-2 rounded-lg">
@@ -111,22 +112,6 @@ const Body = () => {
                   </div>
                 </NavLink>
               </motion.li>
-              <li className="pb-5">
-                <hr />
-              </li>
-              {/* <motion.li whileHover={{ x: 5, scaleY: 1 }} className='mt-5'>
-                <button
-                  className="rounded-lg bg-opacity-5text-white text-2<motion.p>xl py-2 items-end</p> px-motion.5"
-                  onClick={() => {
-                    localStorage.clear();
-                    setTimeout(() => {
-                      navigate("/", { replace: true });
-                    });
-                  }}
-                >
-                  LOGOUT
-                </button>
-              </motion.li> */}
             </ul>
           </nav>
         </div>

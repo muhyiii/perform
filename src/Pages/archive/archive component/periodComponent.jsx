@@ -1,15 +1,14 @@
 import { Switch } from "@headlessui/react";
 import React from "react";
 import { MdOutlineCancel, MdSearch } from "react-icons/md";
-
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Loadings from "../../../Component/Loading";
 import { motion } from "framer-motion";
-import { functionGetGoals } from "../../../redux/actions/goalsAction";
-import { functionGetMeasuredActivities } from "../../../redux/actions/maAction";
-import ColView from "../../goals/goals component/ColView";
-import ListView from "../../measured/ma component/ListView";
+import { functionGetGoals } from "../../../Redux/Actions/GOALS_ACTION";
+import { functionGetMeasuredActivities } from "../../../Redux/Actions/MA_ACTION";
+import ColView from "../../GOALS/GOALS COMPONENT/ColumnView";
+import ListView from "../../MEASURED ACTIVITY/MA COMPONENT/ListView";
 
 const PeriodComponent = () => {
   const [enabled, setEnabled] = React.useState(true);

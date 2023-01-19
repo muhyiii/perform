@@ -1,25 +1,15 @@
 import React from "react";
-
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-
-import { AnimatePresence, motion } from "framer-motion";
-
-import {
-  functionGetGoalsById,
-  functionUpdateGoal,
-  functionUpdateGoalImage,
-} from "../../redux/actions/goalsAction";
+import { motion } from "framer-motion";
+import { functionUpdateGoalImage } from "../../Redux/Actions/GOALS_ACTION";
 import {
   functionGetMeasuredActivityById,
   functionUpdateMeasuredActivity,
-} from "../../redux/actions/maAction";
+} from "../../Redux/Actions/MA_ACTION";
 import Loadings from "../../Component/Loading";
-import { Player } from "@lottiefiles/react-lottie-player";
 import ReviewsProvider from "../../Component/Support/ReviewsProvider";
 import Swal from "sweetalert2";
-import { IoClose } from "react-icons/io5";
-import { date } from "yup";
 import {
   CartesianGrid,
   Line,
@@ -28,6 +18,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { IoClose } from "react-icons/io5";
 
 const MaDetail = () => {
   let { id } = useParams();

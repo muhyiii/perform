@@ -1,13 +1,13 @@
 import Perkerjaan from "../../../Images/iconpekerjaan.png";
 import calendar from "../../../Images/calendar.png";
-import Delete from "../../../Images/delete.png";
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+
+import React, {  useEffect } from "react";
+
 import { useDispatch } from "react-redux";
 import {
-  functionGetMeasuredActivities,
+
   functionGetMeasuredActivityByUserNow,
-} from "../../../redux/actions/maAction";
+} from "../../../Redux/Actions/MA_ACTION";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
  

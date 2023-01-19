@@ -1,4 +1,4 @@
-import { addPeriod, getAllPeriods } from "../../Functions/api";
+import { addPeriod, getAllPeriods } from "../../Functions/API";
 
 export function functionAddPeriod(payload) {
   return async (dispatch) => {

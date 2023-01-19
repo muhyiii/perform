@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import ReviewsProvider from "../../../Component/Support/ReviewsProvider";
 import { GoPrimitiveDot } from "react-icons/go";
 import { useDispatch } from "react-redux";
-import { functionUpdateGoal } from "../../../redux/actions/goalsAction";
+import { functionUpdateGoal } from "../../../Redux/Actions/GOALS_ACTION";
 
 const RowView = (props) => {
   const navigate = useNavigate();

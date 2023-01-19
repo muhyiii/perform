@@ -1,8 +1,8 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import Loadings from "../../../Component/Loading";
-import { functionGetGoals } from "../../../redux/actions/goalsAction";
-import ColView from "../../goals/goals component/ColView";
+import { functionGetGoals } from "../../../Redux/Actions/GOALS_ACTION";
+import ColView from "../../GOALS/GOALS COMPONENT/ColumnView";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { MdOutlineCancel, MdSearch } from "react-icons/md";

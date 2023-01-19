@@ -1,12 +1,11 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect,  } from "react";
 import profile from "../../../Images/profile.png";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { FreeMode } from "swiper";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useDispatch } from "react-redux";
-import { functionGetStaticUsers } from "../../../redux/actions/authAction";
+import { FUNCTION_GET_STATIC_ALL_USERS } from "../../../Redux/Actions/AUTH_ACTION";
+
 
 // import { data } from 'autoprefixer';
 
@@ -73,7 +72,7 @@ const Peringkat = () => {
     prevArrow: <SamplePrevArrow />,
   };
   const getDataa = async () => {
-    const response = await dispatch(functionGetStaticUsers());
+    const response = await dispatch(FUNCTION_GET_STATIC_ALL_USERS());
     if (response.status === "Success") {
       setUsers(response.data.rows);
       console.log(response.data.rows);
